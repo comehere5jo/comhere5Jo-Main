@@ -1,0 +1,19 @@
+{
+  "name": "comhere5jo-main",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/comehere5jo/comhere5Jo-Main.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/comehere5jo/comhere5Jo-Main/issues"
+  },
+  "homepage": "https://github.com/comehere5jo/comhere5Jo-Main#readme"
+}
