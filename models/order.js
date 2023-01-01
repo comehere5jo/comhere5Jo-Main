@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       models.Order.belongsTo(models.Manager, {foreignKey: "id"});
       models.Order.belongsTo(models.Customer, {foreignKey: "id"});
       models.Order.hasOne(models.Review, {foreignKey: "order_id"});
-
     }
 
   }
