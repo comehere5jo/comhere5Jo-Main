@@ -15,5 +15,14 @@
   "bugs": {
     "url": "https://github.com/comehere5jo/comhere5Jo-Main/issues"
   },
-  "homepage": "https://github.com/comehere5jo/comhere5Jo-Main#readme"
+  "homepage": "https://github.com/comehere5jo/comhere5Jo-Main#readme",
+  "devDependencies": {
+    "sequelize-cli": "^6.5.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.28.0"
+  }
 }

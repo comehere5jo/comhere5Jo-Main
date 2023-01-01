@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Review extends Model {
     /**
@@ -10,24 +8,38 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      models.Review.belongsTo(models.Manager, {foreignKey: "id"})
-      models.Review.belongsTo(models.Customer, {foreignKey: "id"})
-      models.Review.belongsTo(models.Order, {foreignKey: "id"})
-
+      models.Order.belongsTo(models.Manager, {
+        foreignKey: 'manager_id',
+        as: 'manager',
+        onDelete: 'NO ACTION',
+      });
+      models.Order.belongsTo(models.Customer, {
+        foreignKey: 'customer_id',
+        as: 'customer',
+        onDelete: 'NO ACTION',
+      });
+      models.Order.belongsTo(models.Review, {
+        foreignKey: 'order_id',
+        as: 'order',
+        onDelete: 'NO ACTION',
+      });
     }
   }
-  Review.init({
-    order_id: DataTypes.INTEGER,
-    customer_id: DataTypes.INTEGER,
-    manager_id: DataTypes.INTEGER,
-    rating: DataTypes.INTEGER,
-    content: DataTypes.TEXT,
-    picture: DataTypes.TEXT,
-    comment: DataTypes.TEXT,
-    status: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'Review',
-  });
+  Review.init(
+    {
+      order_id: DataTypes.INTEGER,
+      customer_id: DataTypes.INTEGER,
+      manager_id: DataTypes.INTEGER,
+      rating: DataTypes.INTEGER,
+      content: DataTypes.TEXT,
+      picture: DataTypes.TEXT,
+      comment: DataTypes.TEXT,
+      status: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: 'Review',
+    },
+  );
   return Review;
 };
