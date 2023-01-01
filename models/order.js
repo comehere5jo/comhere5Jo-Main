@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+
       models.Order.belongsTo(models.Manager, {
         foreignKey: 'manager_id',
         as: 'manager',
@@ -23,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'review',
         onDelete: 'NO ACTION',
       });
+
     }
   }
   Order.init(
