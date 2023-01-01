@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/comehere5jo/comhere5Jo-Main/issues"
   },
-  "homepage": "https://github.com/comehere5jo/comhere5Jo-Main#readme"
+  "homepage": "https://github.com/comehere5jo/comhere5Jo-Main#readme",
+  "dependencies": {
+    "ejs": "^3.1.8"
+  }
 }

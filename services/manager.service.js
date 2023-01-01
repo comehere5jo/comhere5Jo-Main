@@ -11,3 +11,17 @@
 // req , res 활용
 // 클라이언트에 대한 응답 처리
 // 데이터베이스와 직접 상호 작용
+
+const ManagerRepository = require('../repositories/manager.repository');
+const { Manager } = require('../models/index.js');
+
+
+class ManagerService {
+
+
+}
+
+
+
+
+module.exports = ManagerService;
