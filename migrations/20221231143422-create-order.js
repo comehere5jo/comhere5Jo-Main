@@ -7,43 +7,48 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      customer_id: {
-        type: Sequelize.INTEGER
-      },
-      manager_id: {
-        type: Sequelize.INTEGER
-      },
+
       phone_number: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       address: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       cloth_type: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       picture: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       requests: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       status: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
+
+      review_id: {
+        type: Sequelize.INTEGER,
+      },
+      customer_id: {
+        type: Sequelize.INTEGER,
+      },
+      manager_id: {
+        type: Sequelize.INTEGER,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Orders');
-  }
+  },
 };

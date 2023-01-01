@@ -7,43 +7,44 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      order_id: {
-        type: Sequelize.INTEGER
-      },
-      customer_id: {
-        type: Sequelize.INTEGER
-      },
-      manager_id: {
-        type: Sequelize.INTEGER
-      },
+
       rating: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       content: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       picture: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       comment: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       status: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
+      order_id: {
+        type: Sequelize.INTEGER,
+      },
+      customer_id: {
+        type: Sequelize.INTEGER,
+      },
+      manager_id: {
+        type: Sequelize.INTEGER,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Reviews');
-  }
+  },
 };
