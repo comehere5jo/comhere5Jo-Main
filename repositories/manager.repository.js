@@ -14,24 +14,23 @@ constructor(managerModel) {
    this.managerModel = managerModel;
 } 
 
-managerLogin = async () => {
-
-    
+findManager = async () => {
+  const findManager = await this.managerModel.findAll();
+  return findManager;
 }
 
-managerSignin = async (loginId,loginPw,name,point) => {
+createManager = async (loginId,loginPw,name) => {
     const createManagerdata = await this.managerModel.create({
       loginId,
       loginPw,
       name,
-      point
     });
     return createManagerdata;
 }
-managerPoint = async (id) => {
-    const point = await this.managerModel.findByPk(id);
 
-    return post;
+managerPoint = async (id) => {
+    const managerPoint = await this.managerModel.findAll(id);
+    return managerPoint;
   };
 
 }    
