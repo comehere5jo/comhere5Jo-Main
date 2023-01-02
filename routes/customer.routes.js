@@ -7,7 +7,9 @@ const customerController = new CustomerController();
 
 // router.get('/', postsController.getPosts);
 // router.post('/', postsController.createPost);
-router.get('/', customerController.customerSignup);
+router.post('/signup/customer', customerController.customerSignup);
+router.post('/signin/customer', customerController.customerSignin);
+
 
 
 module.exports = router;
