@@ -33,13 +33,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      order_id: {
+      orderId: {
         type: Sequelize.INTEGER,
       },
-      customer_id: {
+      customerId: {
         type: Sequelize.INTEGER,
       },
-      manager_id: {
+      managerId: {
         type: Sequelize.INTEGER,
       },
     });

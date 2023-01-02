@@ -10,13 +10,13 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
 
-      phone_number: {
+      phoneNumber: {
         type: Sequelize.INTEGER,
       },
       address: {
         type: Sequelize.STRING,
       },
-      cloth_type: {
+      clothType: {
         type: Sequelize.STRING,
       },
       picture: {
@@ -37,13 +37,13 @@ module.exports = {
         type: Sequelize.DATE,
       },
 
-      review_id: {
+      reviewId: {
         type: Sequelize.INTEGER,
       },
-      customer_id: {
+      customerId: {
         type: Sequelize.INTEGER,
       },
-      manager_id: {
+      managerId: {
         type: Sequelize.INTEGER,
       },
     });

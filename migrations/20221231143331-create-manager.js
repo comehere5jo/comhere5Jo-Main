@@ -9,10 +9,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      login_id: {
+      loginId: {
         type: Sequelize.STRING,
       },
-      pw: {
+      loginPw: {
         type: Sequelize.STRING,
       },
       point: {
