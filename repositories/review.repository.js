@@ -5,36 +5,36 @@
 
 class ReviewRepository {
   constructor(reviewModel) {
-    this.reviewModel = reviewModel
+    this.reviewModel = reviewModel;
   }
 
   findAllReview = async () => {
-    const reviews = await this.reviewModel.findAll()
-    return reviews
+    const reviews = await this.reviewModel.findAll();
+    return reviews;
   };
 
   findReviewId = async (id) => {
-    const review = await this.review_model.findByPk(id)
-    return review
-  }
+    const review = await this.reviewModel.findByPk(id);
+    return review;
+  };
 
   createReview = async (customerId, rating, content, picture) => {
-    const createReviewData = await this.review_model.create({
+    const createReviewData = await this.reviewModel.create({
       customerId,
       rating,
       content,
       picture,
-    })
-    return createReviewData 
-  }
+    });
+    return createReviewData;
+  };
 
-managerReviewUpdate = async (id ,managerId,comment) => {
-  const managerReviewUpdateData = await this.review_model.update(
-    {managerId,comment},
-    {where: {id:id}}
-  )
-  return managerReviewUpdateData
-}
+  managerReviewUpdate = async (id, managerId, comment) => {
+    const managerReviewUpdateData = await this.reviewModel.update(
+      { managerId, comment },
+      { where: { id: id } },
+    );
+    return managerReviewUpdateData;
+  };
 }
 
 module.exports = ReviewRepository;
