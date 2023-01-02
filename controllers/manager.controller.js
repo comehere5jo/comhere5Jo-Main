@@ -24,6 +24,10 @@ class ManagerController {
         const getOrderReview = await this.managerService.getOrderReview();
         res.status(200).json({data:getOrderReview})
     }
+    getMyOrderReview = async (req, res, next) => {
+        const getOrderReview = await this.managerService.getOrderReview();
+        res.status(200).json({data:getOrderReview})
+    }
 }
 
 module.exports = ManagerController;

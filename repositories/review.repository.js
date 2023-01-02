@@ -3,6 +3,8 @@
 // sequelize를 사용하지 않으면 아래와 같이 data Access Layer를 담당하는 파일에 쿼리문을 모아서 필요할 때 service 계층에서 호출해서 사용합니다.
 // const { Review } = require('.././models');
 
+
+// try catch 넣기
 class ReviewRepository {
   constructor(reviewModel) {
     this.reviewModel = reviewModel;
@@ -17,6 +19,21 @@ class ReviewRepository {
     const review = await this.reviewModel.findByPk(id);
     return review;
   };
+
+  findReviewOrderId = async (orderId) => {
+    const review = await this.reviewModel.findOne(orderId);
+    return review;
+  };
+
+  findReviewManagerId = async (managerId) => {
+    const review = await this.reviewModel.findAll({
+      where: {
+        managerId: managerId
+      }
+    });
+    return review;
+  };
+
 
   createReview = async (customerId, rating, content, picture) => {
     const createReviewData = await this.reviewModel.create({

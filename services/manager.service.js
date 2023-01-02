@@ -20,7 +20,7 @@ const { Manager, Review, Order } = require('../models/index.js');
 // 서비스 계층은 나머지 애플리케이션에서 모든 비즈니스 로직을 캡슐화하고 추상화합니다.
 class ManagerService {
     managerRepository = new ManagerRepository(Manager);
-    reviewRepository = new ReviewRepository(Review);
+
     orderRepository = new OrderRepository(Order);
     //가져올때 0이 아닌것들 다 제외 (0만 불러오면 됨)
     getOrder = async () => {
@@ -38,10 +38,10 @@ class ManagerService {
         };
       })
       };
-};
-//본인의 세탁 서비스 평점 및 리뷰 조회
-    getmyOrderReview = async (id) => {
-        const getOrderReview = await this.reviewRepository.findReviewId(id);
+      //주문 1건에 대한 리뷰 보기
+      reviewRepository = new ReviewRepository(Review);
+    getOrderReview = async (orderId) => {
+        const getOrderReview = await this.reviewRepository.findReviewOrderId(orderId);
         return {   
             orderId: getOrderReview.orderId,
             createdAt:getOrderReview.createdAt,
@@ -51,6 +51,22 @@ class ManagerService {
             status: getOrderReview.status
           };
     }
+      //내 가게 리뷰보기, 추후 토큰에서 managerId 가져와야함?
+    getMyOrderReview = async (managerId) => {
+      const getOrderReview = await this.reviewRepository.findReviewManagerId(managerId);
+      return getOrderReview.map((order)=> {
+      return {   
+          orderId: order.orderId,
+          createdAt:order.createdAt,
+          comment: order.comment,
+          content: order.content,
+          rating: order.rating,
+          status: order.status
+        };
+      })
+  }
+};
+
 
 
 
