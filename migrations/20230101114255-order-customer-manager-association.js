@@ -4,7 +4,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.addConstraint('Orders', {
-      fields: ['customer_id'],
+      fields: ['customerId'],
       type: 'foreign key',
       name: 'order_customer_association',
       references: {
@@ -13,7 +13,7 @@ module.exports = {
       },
     });
     await queryInterface.addConstraint('Orders', {
-      fields: ['manager_id'],
+      fields: ['managerId'],
       type: 'foreign key',
       name: 'order_manager_association',
       references: {
