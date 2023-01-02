@@ -9,8 +9,8 @@ const requestMiddleware = (req, res, next) => {
   console.log('Request URL:', req.originalUrl, ' - ', new Date());
   next();
 };
-app.set('view engine', 'ejs'); //view engine이 사용할 Template Engine
-app.set('views', path.join(__dirname, 'views')); // Template가 있는 디렉토리
+// app.set('view engine', 'ejs'); //view engine이 사용할 Template Engine
+// app.set('views', path.join(__dirname, 'views')); // Template가 있는 디렉토리
 app.use(express.json());
 app.use(requestMiddleware);
 app.use('/', router);
