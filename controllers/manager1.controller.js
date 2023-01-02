@@ -11,11 +11,18 @@ class ManagerController {
     res.status(200).json({data:managers})
   }
 
-  getReviews = async(req,res,next) => {
-    const { managerId} = req.params
-    const review = await this.managerService.findMyReview(managerId)
+  putFirstOreder = async(req,res,next) => {
+    const { managerId } = req.params
+    const {orderId} = req.body
+    const firstOrder = await this.managerService.selectOrder(orderId, managerId)
+    res.status(200).json({data:firstOrder})
+  }
 
-    res.status(200).json({data:review})
+  putOrederUpdate = async(req,res,next) => {
+    const { managerId, orderId } = req.params
+    const {status} = req.body
+    const updateOrder = await this.managerService.updateOrder(orderId, managerId, status)
+    res.status(200).json({data:updateOrder})
   }
 }
 

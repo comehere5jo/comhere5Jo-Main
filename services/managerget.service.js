@@ -18,7 +18,7 @@ const ReviewRepository = require('../repositories/review.repository');
 const { Manager } = require('../models/index.js');
 const { Oreder } = require('../models/order');
 const { Review } = require('../models/review');
-
+const { or } = require('sequelize');
 
 
 class ManagerService {
@@ -35,7 +35,7 @@ class ManagerService {
 
     return customerOrder.map((customer) => {
       return {
-        id: post.id,
+        id: customer.id,
         customerId: customer.customerId,
         phoneNumber: customer.phoneNumber,
         address: customer.address,
@@ -46,20 +46,130 @@ class ManagerService {
       }
     })
   }
-  findMyReview = async (managerId) => {
-    const findReview = await this.reviewRepository.findAllReview({
-      where: { managerId }
-    })
+  selectOrder = async (orderId, managerId) => {
+    const selectOrder = await this.orderRepository.selectOrder(orderId)
+    let status = await this.orderRepository.statusFind(orderId)
+    
+    console.log('스테이터스',status)
+    console.log('1234',selectOrder[0].managerId )
+    console.log('스테이터스111',status[0].status)
+    console.log('스테이터스참',selectOrder[0].managerId === 0)
+    console.log('참?',  1 < Number(status[0].status) < 4)
+    console.log("내눈이 정상인가",Number(status[0].status))
+    if (!selectOrder){
+      return console.log("없습니다.")
+    }
+    if(selectOrder[0].managerId === 0 &&  1< status[0].status <4){
+     return console.log("이미 진행중")
+    }
+    let new_status = status[0].status + 1
+    console.log("aaaa",status)
+    console.log("vvvv",new_status)
+    await this.orderRepository.statusUpdate(new_status, orderId)
+
+    const updateOreder = await this.orderRepository.selectOrder(managerId)
+    return updateOreder.map((order) =>{
     return {
-      id: findReview.id,
-      orderId:findReview.orderId,
-      customerId:findReview.customerId,
-      managerId:findReview.managerId,
-      rating:findReview.rating,
-      content:findReview.content,
-      picture:findReview.picture,
-      comment:findReview.comment,
-      status:findReview.status,
+      id: order.id,
+      customerId: order.customerId,
+      phoneNumber: order.phoneNumber,
+      address: order.address,
+      clothType: order.clothType,
+      picture: order.picture,
+      requests: order.requests,
+      status:order.status
+    }
+  })
+}
+
+  updateOrder = async (orderId, managerId, status) => {
+    const myOrder = await this.orderRepository.findAllOrder(orderId,status)
+    try {
+      if (myOrder.status === 1) {
+        status = status + 1
+        await this.orderRepository.updateOrder(managerId, status)
+        const updateOrder = await this.orderRepository.startOrder(orderId,status)
+        return updateOrder.map((order) =>{
+          return {
+            id: order.id,
+            customerId: order.customerId,
+            phoneNumber: order.phoneNumber,
+            address: order.address,
+            clothType: order.clothType,
+            picture: order.picture,
+            requests: order.requests,
+            status:order.status
+          }
+        })
+      }
+      if (myOrder.status === 2) {
+        status = status + 1
+        await this.orderRepository.updateOrder(managerId, status)
+        const updateOrder = await this.orderRepository.startOrder(orderId,status)
+        return updateOrder.map((order) =>{
+          return {
+            id: order.id,
+            customerId: order.customerId,
+            phoneNumber: order.phoneNumber,
+            address: order.address,
+            clothType: order.clothType,
+            picture: order.picture,
+            requests: order.requests,
+            status:order.status
+          }
+        })
+      }
+      if (myOrder.status === 3) {
+        status = status + 1
+        await this.orderRepository.updateOrder(managerId, status)
+        const updateOrder = await this.orderRepository.startOrder(orderId,status)
+        return updateOrder.map((order) =>{
+          return {
+            id: order.id,
+            customerId: order.customerId,
+            phoneNumber: order.phoneNumber,
+            address: order.address,
+            clothType: order.clothType,
+            picture: order.picture,
+            requests: order.requests,
+            status:order.status
+          }
+        })
+      }
+      if (myOrder.status === 4) {
+        await this.managerRepository.update({
+          point: +10000
+        })
+        const updateOrder = await this.orderRepository.startOrder(orderId,status)
+        return updateOrder.map((order) =>{
+          return {
+            id: order.id,
+            customerId: order.customerId,
+            phoneNumber: order.phoneNumber,
+            address: order.address,
+            clothType: order.clothType,
+            picture: order.picture,
+            requests: order.requests,
+            status:order.status
+          }
+        })
+      }
+      const updateOrder = await this.orderRepository.startOrder(orderId,status)
+      return updateOrder.map((order) =>{
+        return {
+          id: order.id,
+          customerId: order.customerId,
+          phoneNumber: order.phoneNumber,
+          address: order.address,
+          clothType: order.clothType,
+          picture: order.picture,
+          requests: order.requests,
+          status:order.status
+        }
+      })
+    }
+    catch(err) {
+      console.log('error',err)
     }
 
   }

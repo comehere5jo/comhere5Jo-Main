@@ -6,6 +6,6 @@ const managerController = new ManagerController();
 
 
 router.get('/', managerController.getMangers)
-router.get('/:managerId', managerController.getReviews)
-
+router.put('/:managerId', managerController.putFirstOreder)
+router.put('/:managerId/:orderId', managerController.putFirstOreder)
 module.exports = router;

@@ -37,10 +37,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-
-      reviewId: {
-        type: Sequelize.INTEGER,
-      },
       customerId: {
         type: Sequelize.INTEGER,
       },
