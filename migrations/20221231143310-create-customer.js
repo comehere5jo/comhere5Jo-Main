@@ -17,6 +17,7 @@ module.exports = {
       },
       point: {
         type: Sequelize.INTEGER,
+        defaultValue:1000000
       },
       name: {
         type: Sequelize.STRING,

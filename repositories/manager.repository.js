@@ -5,24 +5,35 @@
 // const { Manager } = require('.././models');
 
 // Manager에 들어가야 할것들
-// 사장님 회원가입, 회원 정보 수정, 사장님 포인트 확인
+// 사장님 회원가입, 로그인, 포인트 확인 find create / point
 
 
 
-class Manager_repository {
-constructor(manager_model) {
-   this.manager_model = manager_model;
+class ManagerRepository {
+constructor(managerModel) {
+   this.managerModel = managerModel;
 } 
-manager_signin = async (login_id,name,pw,point) => {
-    const create_managerdata = await this.manager_model.create({
-      login_id,
+
+managerLogin = async () => {
+
+    
+}
+
+managerSignin = async (loginId,loginPw,name,point) => {
+    const createManagerdata = await this.managerModel.create({
+      loginId,
+      loginPw,
       name,
-      pw,
       point
     });
-    return create_managerdata;
+    return createManagerdata;
 }
+managerPoint = async (id) => {
+    const point = await this.managerModel.findByPk(id);
+
+    return post;
+  };
 
 }    
 
-module.exports = Manager_repository;
+module.exports = ManagerRepository;
