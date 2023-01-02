@@ -9,7 +9,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-
       phoneNumber: {
         type: Sequelize.INTEGER,
       },
@@ -36,10 +35,6 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-      },
-
-      reviewId: {
-        type: Sequelize.INTEGER,
       },
       customerId: {
         type: Sequelize.INTEGER,

@@ -19,6 +19,16 @@ class OrderRepository {
     return orders;
   };
 
+  findAllOrderStatus0 = async () => {
+    const orders = await this.orderModle.findAll({
+      where: {
+        status: '0'
+      }
+    });
+    return orders;
+  };
+
+
   createOrder = async (phone_number, address, cloth_type, picture, requests, status) => {
     const createOrderData = await this.orderModle.create(
       {

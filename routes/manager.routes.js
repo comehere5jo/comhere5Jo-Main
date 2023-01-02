@@ -5,7 +5,10 @@ const ManagerController = require('../controllers/manager.controller');
 const managerController = new ManagerController();
 
 
-// router.get('/', postsController.getPosts);
-// router.post('/', postsController.createPost);
+
+
+router.get('/manager/order', managerController.getOrder);
+
+router.get('/order/:order_id/review', managerController.getOrderReview);
 
 module.exports = router;

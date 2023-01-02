@@ -11,13 +11,15 @@
 
 class ManagerRepository {
 constructor(managerModel) {
-   this.managerModel = managerModel;
+   this.managerModel = new managerModel;
 } 
 
 findManager = async () => {
   const findManager = await this.managerModel.findAll();
   return findManager;
 }
+
+
 
 createManager = async (loginId,loginPw,name) => {
     const createManagerdata = await this.managerModel.create({
@@ -28,8 +30,9 @@ createManager = async (loginId,loginPw,name) => {
     return createManagerdata;
 }
 
+
 managerPoint = async (id) => {
-    const managerPoint = await this.managerModel.findAll(id);
+    const managerPoint = await this.managerModel.findByPk(id);
     return managerPoint;
   };
 
