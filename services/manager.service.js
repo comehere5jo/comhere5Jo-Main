@@ -17,6 +17,7 @@ const { Manager } = require('../models/index.js');
 
 
 class ManagerService {
+  managerService
 
 
 }

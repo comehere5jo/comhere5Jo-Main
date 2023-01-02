@@ -15,7 +15,6 @@ class OrderRepository {
 
   findAllOrder = async () => {
     const orders = await this.orderModle.findAll();
-
     return orders;
   };
 
