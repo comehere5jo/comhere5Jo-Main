@@ -9,17 +9,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       models.Review.belongsTo(models.Manager, {
-        foreignKey: 'manager_id',
+        foreignKey: 'managerId',
         as: 'manager',
         onDelete: 'NO ACTION',
       });
       models.Review.belongsTo(models.Customer, {
-        foreignKey: 'customer_id',
+        foreignKey: 'customerId',
         as: 'customer',
         onDelete: 'NO ACTION',
       });
       models.Review.belongsTo(models.Order, {
-        foreignKey: 'order_id',
+        foreignKey: 'orderId',
         as: 'order',
         onDelete: 'NO ACTION',
       });
@@ -27,9 +27,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   Review.init(
     {
-      order_id: DataTypes.INTEGER,
-      customer_id: DataTypes.INTEGER,
-      manager_id: DataTypes.INTEGER,
+      orderId: DataTypes.INTEGER,
+      customerId: DataTypes.INTEGER,
+      managerId: DataTypes.INTEGER,
       rating: DataTypes.INTEGER,
       content: DataTypes.TEXT,
       picture: DataTypes.TEXT,
