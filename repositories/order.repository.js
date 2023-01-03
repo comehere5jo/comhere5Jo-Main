@@ -4,6 +4,7 @@
 // sequelize를 사용하지 않으면 아래와 같이 data Access Layer를 담당하는 파일에 쿼리문을
 // 모아서 필요할 때 service 계층에서 호출해서 사용합니다.
 
+
 const { Order } = require('../models');
 
 
@@ -13,10 +14,13 @@ class OrderRepository {
   // }
 
   findAllOrder = async () => {
+
     const orders = await Order.findAll();
+
 
     return orders;
   };
+
 
   findOrderById = async (orderId) => {
     const byIdOders = await Order.findByPk(orderId);
@@ -37,10 +41,19 @@ class OrderRepository {
       }
     );
     // console.log("레파지토리", createOrderData);
+
     return createOrderData;
   };
 
-  updateOrder = async (orderId, phone_number, address, cloth_type, picture, requests, status) => {
+  updateOrder = async (
+    orderId,
+    phone_number,
+    address,
+    cloth_type,
+    picture,
+    requests,
+    status,
+  ) => {
     const updateOrder = await this.orderModle.update(
       {
         phone_number,
@@ -48,23 +61,19 @@ class OrderRepository {
         cloth_type,
         picture,
         requests,
-        status
-      }, { where: { orderId } }
+        status,
+      },
+      { where: { orderId } },
     );
 
     return updateOrder;
   };
 
   deleteOrder = async (orderId) => {
-    const deleteOrder = await this.orderModle.destroy(
-      { where: { orderId } }
-    );
+    const deleteOrder = await this.orderModle.destroy({ where: { orderId } });
 
     return deleteOrder;
   };
-
-
 }
-
 
 module.exports = OrderRepository;

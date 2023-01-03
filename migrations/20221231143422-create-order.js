@@ -27,7 +27,7 @@ module.exports = {
       },
       status: {
         type: Sequelize.INTEGER,
-        defaultValue:0
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,
@@ -37,7 +37,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-
       customerId: {
         type: Sequelize.INTEGER,
       },
