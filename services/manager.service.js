@@ -77,7 +77,7 @@ class ManagerService {
     
 }
 
-findCustomerOreder = async () => {
+findCustomerOrder = async () => {
   const customerOrder = await this.orderRepository.findAllOrder()
 
   customerOrder.sort((a, b) => {
