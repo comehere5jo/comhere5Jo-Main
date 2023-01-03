@@ -7,7 +7,8 @@ class ManagerController {
   managerService = new ManagergetService()
     getMangers = async (req,res,next) => {
       const managers = await this.managerService.findCustomerOreder()
-      res.status(200).json({data:managers})
+      console.log("불러올값",managers)
+      res.status(200).render('main',{data:managers})
     }
  
   putFirstOreder = async(req,res,next) => {

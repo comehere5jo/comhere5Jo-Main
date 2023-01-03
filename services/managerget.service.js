@@ -15,16 +15,16 @@
 const ManagerRepository = require('../repositories/manager.repository');
 const OrderRepository = require('../repositories/order.repository');
 const ReviewRepository = require('../repositories/review.repository');
-const { Manager } = require('../models/index.js');
-const { Oreder } = require('../models/order');
-const { Review } = require('../models/review');
-
+const { Manager, Review, Order } = require('../models');
 
 class ManagerService {
-  managerRepository = new ManagerRepository(Manager)
-  orderRepository = new OrderRepository(Oreder)
-  reviewRepository = new ReviewRepository(Review)
-
+  constructor(){
+    this.managerRepository = new ManagerRepository(Manager)
+    this.orderRepository = new OrderRepository(Order)
+    this.reviewRepository = new ReviewRepository(Review)
+  }
+  
+  
   findCustomerOreder = async () => {
     const customerOrder = await this.orderRepository.findAllOrder()
 

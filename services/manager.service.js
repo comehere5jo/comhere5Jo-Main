@@ -13,7 +13,7 @@
 // 데이터베이스와 직접 상호 작용
 
 const ManagerRepository = require('../repositories/manager.repository');
-const { Manager } = require('../models/index.js');
+const { Manager } = require('../models');
 
 
 class ManagerService {
