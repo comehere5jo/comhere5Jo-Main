@@ -6,7 +6,7 @@
 
 const { Order } = require('../models');
 const { Op } = require('sequelize')
-
+const { Manager } = require('../models');
 class OrderRepository {
   // constructor(orderModel) {
   //   this.orderModle = orderModel;
@@ -66,22 +66,7 @@ class OrderRepository {
     });
     return orders;
   }
-  startOrder = async (id, managerId, status) => {
-    const orders = await Order.findAll({
-      where: {
-        [Op.or]: [{ id }, { status }],
-      },
-    });
-    return orders;
-  }
-  statusFind = async (id) => {
-    const status = await Order.findAll({
-      // attributes: ['status'],
-      where: { id },
-    })
-    console.log('aaa', status)
-    return status;
-  }
+  
   statusUpdate = async (new_status,orderId) => {
     const statusUpdate = await Order.update({
       status: new_status
@@ -89,6 +74,14 @@ class OrderRepository {
     {where:{id:orderId}})
     return statusUpdate
   }
+  // pointUpdate = async(point,managerId) => {
+  //   const pointUpdate = await Manager.update({
+  //     point
+  //   },{
+  //     where: {id:managerId}
+  //   })
+  //   return pointUpdate
+  // }
 }
 
 module.exports = OrderRepository;

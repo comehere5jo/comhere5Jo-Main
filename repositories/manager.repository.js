@@ -10,29 +10,43 @@ const { Manager } = require('.././models');
 
 
 class ManagerRepository {
-// constructor(managerModel) {
-//    this.managerModel = managerModel;
-// } 
+  // constructor(managerModel) {
+  //    this.managerModel = managerModel;
+  // } 
 
-findManager = async () => {
-  const findManager = await Manager .findAll();
-  return findManager;
-}
+  findManager = async () => {
+    const findManager = await Manager.findAll();
+    return findManager;
+  }
 
-createManager = async (loginId,loginPw,name) => {
-    const createManagerdata = await  Manager.create({
+  createManager = async (loginId, loginPw, name) => {
+    const createManagerdata = await Manager.create({
       loginId,
       loginPw,
       name,
     });
     return createManagerdata;
-}
+  }
 
-managerPoint = async (id) => {
-    const managerPoint = await  Manager.findAll(id);
+  managerPoint = async (id) => {
+    const managerPoint = await Manager.findAll(id);
     return managerPoint;
   };
-
-}    
+  managerPointUpdate = async (point, id) => {
+    const pointUp = await Manager.update(
+      {
+        point: point
+      },
+      { where: { id: id } }
+    )
+    return pointUp
+  }
+  findOneManager = async (managerId) => {
+    const manager = await Manager.findAll({
+      where: { id: managerId }
+    })
+    return manager
+  }
+}
 
 module.exports = ManagerRepository;

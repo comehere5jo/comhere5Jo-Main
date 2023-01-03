@@ -7,5 +7,5 @@ const managerController = new ManagerController();
 
 router.get('/', managerController.getMangers)
 router.put('/:managerId', managerController.putFirstOreder)
-router.put('/:managerId/:orderId', managerController.putFirstOreder)
+router.put('/:managerId/:orderId', managerController.putOrederUpdate)
 module.exports = router;
