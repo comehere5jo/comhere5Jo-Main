@@ -26,8 +26,14 @@ class OrderRepository {
     });
     return orders;
   };
-
-
+  // statusFind = async (id) => {
+  //   const status = await Order.findAll({
+  //     // attributes: ['status'],
+  //     where: { id },
+  //   })
+  //   console.log('aaa', status)
+  //   return status;
+  // }
   createOrder = async (phone_number, address, cloth_type, picture, requests, status) => {
     const createOrderData = await this.orderModel.create(
       {
@@ -72,18 +78,20 @@ class OrderRepository {
     })
     return manager;
   }
-  selectOrder = async (id) => {
+  selectOrder = async (orderId) => {
     const orders = await this.orderModel.findAll({
-      where: { id }
+      where: { id:orderId}
+      
     });
+    console.log('오더아이디 비교',orders)
     return orders;
   }
-  
-  statusUpdate = async (new_status,orderId) => {
+
+  statusUpdate = async (new_status, orderId) => {
     const statusUpdate = await this.orderModel.update({
       status: new_status
     },
-    {where:{id:orderId}})
+      { where: { id: orderId } })
     return statusUpdate
   }
   // pointUpdate = async(point,managerId) => {

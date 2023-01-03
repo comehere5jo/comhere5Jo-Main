@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Manager</h1>
+  <% for (let i = 0; i<data.length; i++){ %>
+    <h3 name="orderId">오더 아이디: <%=data[i].id %></h3>
+    <p name="customerId">고객 아이디: <%=data[i].customerId %></p>
+    <p>폰번호: <%=data[i].phoneNumber %></p>
+    <p>옷 목록: <%=data[i].clothType %></p>
+    <p>사진: <%=data[i].picture %></p>
+    <p>추가 요청사항: <%=data[i].requests %></p>
+    <p name="status">진행상황 : <%=data[i].status %></p>
+    <% if(data[i].status === 0) { %>
+    <button type="button" class="order-accept" value="<%= data[i].id %>"> 수락 </button>
+    <!-- <button type="button" class="btn btn-secondary order-accept" value="<%= data.id %>">대기 중</button> -->
+  <%}%>
+  <%}%>
+  </body>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => { //html을 다 읽을때 실행
+      const accpet_btn = document.getElementsByClassName('order-accept') 
+      for(let i = 0 ; i< accpet_btn.length; i++){
+        accpet_btn[i].addEventListener('click',() => {
+          const orderId = accpet_btn[i].value
+        axios({
+        method: 'put',
+        url: "/api/"+orderId,  // -> /api/3
+        data:{}
+      }).then(() => {
+        window.location.href = '/'
+        console.log(orderId)
+      })
+        })
+      }
+    })
+    
+  </script> 
+</html>
