@@ -4,7 +4,9 @@
 // sequelize를 사용하지 않으면 아래와 같이 data Access Layer를 담당하는 파일에 쿼리문을
 // 모아서 필요할 때 service 계층에서 호출해서 사용합니다.
 
-const { Orders } = require('../models');
+
+const { Order } = require('../models');
+
 
 class OrderRepository {
   // constructor(orderModel) {
@@ -12,27 +14,33 @@ class OrderRepository {
   // }
 
   findAllOrder = async () => {
-    const orders = await this.Orders.findAll();
+
+    const orders = await Order.findAll();
+
 
     return orders;
   };
 
-  createOrder = async (
-    phone_number,
-    address,
-    cloth_type,
-    picture,
-    requests,
-    status,
-  ) => {
-    const createOrderData = await this.orderModle.create({
-      phone_number,
-      address,
-      cloth_type,
-      picture,
-      requests,
-      status,
-    });
+
+  findOrderById = async (orderId) => {
+    const byIdOders = await Order.findByPk(orderId);
+    return byIdOders;
+  };
+
+
+
+  createOrder = async (phoneNumber, address, clothType, picture, requests, status) => {
+    const createOrderData = await Order.create(
+      {
+        phoneNumber,
+        address,
+        clothType,
+        picture,
+        requests,
+        status
+      }
+    );
+    // console.log("레파지토리", createOrderData);
 
     return createOrderData;
   };

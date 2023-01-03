@@ -13,7 +13,7 @@
 // 데이터베이스와 직접 상호 작용
 
 const OrderRepository = require('../repositories/order.repository');
-const { Orders } = require('../models');
+// const { Orders } = require('../models');
 
 class OrderService {
   orderRepository = new OrderRepository();
@@ -27,9 +27,9 @@ class OrderService {
 
     return allOrder.map(order => {
       return {
-        phone_number: order.phone_number,
+        phoneNumber: order.phoneNumber,
         address: order.address,
-        cloth_type: order.cloth_type,
+        clothType: order.clothType,
         picture: order.picture,
         requests: order.requests,
         createdAt: order.createdAt,
@@ -38,15 +38,31 @@ class OrderService {
     });
   };
 
+  findOrderById = async (orderId) => {
 
-    createOrder = async (phone_number, address, cloth_type, picture, requests, status) => {
+    const byIdOrder = await this.orderRepository.findOrderById(orderId);
+      return {
+        orderId: byIdOrder.id,
+        phoneNumber: byIdOrder.phoneNumber,
+        address: byIdOrder.address,
+        clothType: byIdOrder.clothType,
+        picture: byIdOrder.picture,
+        requests: byIdOrder.requests,
+        createdAt: byIdOrder.createdAt,
+        updatedAt: byIdOrder.updatedAt
+      };
+
+  }
+
+
+    createOrder = async (phoneNumber, address, clothType, picture, requests, status) => {
     const createOrderData = await this.orderRepository.createOrder(
-      phone_number, address, cloth_type, picture, requests, status);
+      phoneNumber, address, clothType, picture, requests, status);
 
     return {
-      phone_number: createOrderData.phone_number,
+      phoneNumber: createOrderData.phoneNumber,
       address: createOrderData.address,
-      cloth_type: createOrderData.cloth_type,
+      clothType: createOrderData.clothType,
       picture: createOrderData.picture,
       requests: createOrderData.requests,
       status: createOrderData.status

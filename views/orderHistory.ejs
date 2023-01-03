@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<!--<div>-->
+<!--    신청일-->
+<!--    <a>포인트 : <%= data[1].picture %></a><br>-->
+<!--    <p>이미지<img src="<%= data[1].picture %>" alt="이미지" width="280px" /></p>-->
+<!--    옷 목록-->
+<!--    사장님 성함-->
+<!--</div>-->
+<table>
+        <caption>주문 내역</caption>
+        <thead>
+            <tr>
+                <th>세탁물사진</th>
+                <th>옷 종류</th>
+                <th>Name</th>
+                <th>신청일</th>
+                <th>리뷰</th>
+            </tr>
+        </thead>
+        <tbody>
+        <% for ( var i = 0; i <data.length; i++ ) { %>
+            <tr>
+                <td><img src="<%= data[i].picture %>" alt="img"></td>
+                <td><%= data[i].clothType %></td>
+                <td><%= data[i].requests %></td>
+                <td><%= data[i].createdAt %></td>
+                <td>
+                    <button class="view">view</button>
+<!--                    <button class="delete">Delete</button>-->
+                </td>
+            </tr>
+            <% } %>
+        <tfoot>
+            <td colspan="5" class="tablefoot"></td>
+        </tfoot>
+    </table>
+</body>
+<style>
+    table {
+    width: 700px;
+    text-align: center;
+    border: 1px solid #fff;
+    border-spacing: 1px;
+    font-family: 'Cairo', sans-serif;
+  margin: auto;
+}
+
+caption {
+    font-weight: bold;
+}
+
+table td {
+    padding: 10px;
+    background-color: #eee;
+}
+
+table th {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+}
+
+img {
+    width: 90px;
+    height: 90px;
+}
+
+.view,
+.delete {
+    border: none;
+    padding: 5px 10px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.view {
+    background-color: #03A9F4;
+}
+
+.delete {
+    background-color: #E91E63;
+}
+
+.tablefoot {
+    padding: 0;
+    border-bottom: 3px solid #009688;
+}
+</style>
+</html>
