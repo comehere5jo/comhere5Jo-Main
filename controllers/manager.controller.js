@@ -17,28 +17,9 @@ class ManagerController {
         name,
       );
 
-      if (!signup) {
-        if (signup.message === 'id 형식 틀림') {
-          throw new Error('id 형식 틀림');
-          return;
-        }
-
-        if (signup.message === 'pw 형식 틀림') {
-          throw new Error('pw 형식 틀림');
-          return;
-        }
-
-        if (signup.message === 'pw 일치 안함') {
-          throw new Error('pw 일치 안함');
-          return;
-        }
-
-        if (signup.message === '닉네임 중복됨') {
-          throw new Error('닉네임 중복됨');
-          return;
-        }
+      if (typeof signup.message !== "undefined") {
+        throw signup;
       }
-
       return res.status(201).send({ message: '회원가입 완료!' });
     } catch (error) {
       if (error.message === 'id 형식 틀림') {
