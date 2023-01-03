@@ -9,7 +9,8 @@
     "test:silent": "NODE_ENV=test jest --silent --forceExit",
     "test:coverage": "NODE_ENV=test jest --coverage --forceExit",
     "test:unit": "NODE_ENV=test jest __tests__/unit --forceExit",
-    "test:integration": "NODE_ENV=test jest __tests__/integration --forceExit"
+    "test:integration": "NODE_ENV=test jest __tests__/integration --forceExit",
+    "start": "nodemon --watch app.js"
   },
   "repository": {
     "type": "git",

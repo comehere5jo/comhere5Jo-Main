@@ -17,6 +17,21 @@ class ReviewRepository {
     return review;
   };
 
+  findReviewOrderId = async (orderId) => {
+    const review = await this.reviewModel.findOne(orderId);
+    return review;
+  };
+
+  findReviewManagerId = async (managerId) => {
+    const review = await this.reviewModel.findAll({
+      where: {
+        managerId: managerId
+      }
+    });
+    return review;
+  };
+
+
   createReview = async (customerId, rating, content, picture) => {
     const createReviewData = await this.reviewModel.create({
       customerId,
