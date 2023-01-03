@@ -31,7 +31,6 @@ class ReviewRepository {
     return review;
   };
 
-
   createReview = async (customerId, rating, content, picture) => {
     const createReviewData = await this.reviewModel.create({
       customerId,
