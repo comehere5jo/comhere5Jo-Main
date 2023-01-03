@@ -65,10 +65,12 @@ class OrderRepository {
 
     return deleteOrder;
   };
+
   managerSelect = async (managerId) => {
     const manager = await this.orderModel.findAll({
       where: { managerId: managerId }
     })
+    return manager;
   }
   selectOrder = async (id) => {
     const orders = await this.orderModel.findAll({
