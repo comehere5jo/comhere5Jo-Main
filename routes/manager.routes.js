@@ -10,4 +10,10 @@ router.get('/me/review',
 managerController.getMyOrderReview);
 router.get('/manager/my_point',managerController.getMyPoint);
 
+<<<<<<< HEAD
+=======
+router.get('/', managerController.getMangers)
+router.put('/:managerId', managerController.putFirstOreder)
+router.put('/:managerId/:orderId', managerController.putOrederUpdate)
+>>>>>>> fa609409c0f9b9a2e1a89687136602eb986c1a67
 module.exports = router;

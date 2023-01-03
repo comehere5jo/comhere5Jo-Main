@@ -4,3 +4,4 @@ module.exports = {
     // 테스트 실행 시 각 TestCase에 대한 출력을 해줍니다.
     verbose: true,
   }
+

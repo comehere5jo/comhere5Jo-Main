@@ -1,21 +1,21 @@
-const { Customer } = require('.././models');
+// const { Customer } = require('.././models');
 
 class CustomerRepository {
-  // constructor(CustomerModel) {
-  //   this.CustomerModel = CustomerModel;
-  // }
+  constructor(CustomerModel) {
+    this.CustomerModel = CustomerModel;
+  }
 
   findAllCustomer = async () => {
-    const findCustomers = await Customer.findAll();
+    const findCustomers = await this.CustomerModel.findAll();
     return findCustomers;
   };
 
   findOneCustomer = async function (id) {
-    return await Customer.findOne({ where: { id } });
+    return await this.CustomerModel.findOne({ where: { id } });
   };
 
   createCustomer = async (loginId, loginPw, name) => {
-    const createCustomerData = await Customer.create({
+    const createCustomerData = await this.CustomerModel.create({
       loginId,
       loginPw,
       name,
@@ -25,7 +25,7 @@ class CustomerRepository {
 }
 
 customerPoint = async (id) => {
-  const customerPoint = await Customer.findByPk(id);
+  const customerPoint = await this.CustomerModel.findByPk(id);
   return customerPoint;
 };
 

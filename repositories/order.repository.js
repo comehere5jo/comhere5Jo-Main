@@ -4,9 +4,9 @@
 // sequelize를 사용하지 않으면 아래와 같이 data Access Layer를 담당하는 파일에 쿼리문을
 // 모아서 필요할 때 service 계층에서 호출해서 사용합니다.
 
-const { Order } = require('../models');
-const { Op } = require('sequelize')
-
+// const { Order } = require('../models');
+// const { Op } = require('sequelize')
+// const { Manager } = require('../models');
 class OrderRepository {
   constructor(orderModel) {
     this.orderModel = orderModel;
@@ -14,7 +14,7 @@ class OrderRepository {
 
 
   findAllOrder = async () => {
-    const orders = await Order.findAll();
+    const orders = await this.orderModel.findAll();
     return orders;
   };
 
@@ -29,7 +29,7 @@ class OrderRepository {
 
 
   createOrder = async (phone_number, address, cloth_type, picture, requests, status) => {
-    const createOrderData = await Order.create(
+    const createOrderData = await this.orderModel.create(
       {
         phone_number,
         address,
@@ -44,7 +44,7 @@ class OrderRepository {
   };
 
   updateOrder = async (id, phone_number, address, cloth_type, picture, requests, status) => {
-    const updateOrder = await Order.update(
+    const updateOrder = await this.orderModel.update(
       {
         phone_number,
         address,
@@ -59,46 +59,39 @@ class OrderRepository {
   };
 
   deleteOrder = async (id) => {
-    const deleteOrder = await Order.destroy(
+    const deleteOrder = await this.orderModel.destroy(
       { where: { id } }
     );
 
     return deleteOrder;
   };
   managerSelect = async (managerId) => {
-    const manager = await Order.findAll({
+    const manager = await this.orderModel.findAll({
       where: { managerId: managerId }
     })
   }
   selectOrder = async (id) => {
-    const orders = await Order.findAll({
+    const orders = await this.orderModel.findAll({
       where: { id }
     });
     return orders;
   }
-  startOrder = async (id, managerId, status) => {
-    const orders = await Order.findAll({
-      where: {
-        [Op.or]: [{ id }, { status }],
-      },
-    });
-    return orders;
-  }
-  statusFind = async (id) => {
-    const status = await Order.findAll({
-      // attributes: ['status'],
-      where: { id },
-    })
-    console.log('aaa', status)
-    return status;
-  }
+  
   statusUpdate = async (new_status,orderId) => {
-    const statusUpdate = await Order.update({
+    const statusUpdate = await this.orderModel.update({
       status: new_status
     },
     {where:{id:orderId}})
     return statusUpdate
   }
+  // pointUpdate = async(point,managerId) => {
+  //   const pointUpdate = await Manager.update({
+  //     point
+  //   },{
+  //     where: {id:managerId}
+  //   })
+  //   return pointUpdate
+  // }
 }
 
 module.exports = OrderRepository;

@@ -77,9 +77,6 @@ class ManagerService {
     
 }
 
-};
-
-
 findCustomerOreder = async () => {
   const customerOrder = await this.orderRepository.findAllOrder()
 
@@ -227,6 +224,9 @@ updateOrder = async (orderId, managerId, status) => {
   }
 
 }
+
+};
+
 
 
 
