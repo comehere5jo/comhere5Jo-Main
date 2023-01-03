@@ -19,11 +19,6 @@ module.exports = (sequelize, DataTypes) => {
         as: 'customer',
         onDelete: 'NO ACTION',
       });
-      models.Order.hasOne(models.Review, {
-        foreignKey: 'reviewId',
-        as: 'review',
-        onDelete: 'NO ACTION',
-      });
 
     }
   }
