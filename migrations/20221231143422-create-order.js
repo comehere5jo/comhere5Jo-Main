@@ -27,7 +27,7 @@ module.exports = {
       },
       status: {
         type: Sequelize.INTEGER,
-        defaultValue:0
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,
@@ -36,10 +36,6 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-      },
-
-      reviewId: {
-        type: Sequelize.INTEGER,
       },
       customerId: {
         type: Sequelize.INTEGER,
