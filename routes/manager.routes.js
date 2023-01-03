@@ -9,7 +9,6 @@ router.get('/order/:orderId/review', managerController.getOrderReview);
 router.get('/me/review', 
 managerController.getMyOrderReview);
 router.get('/manager/my_point',managerController.getMyPoint);
-
 router.get('/', managerController.getMangers)
 router.put('/:managerId', managerController.putFirstOrder)
 router.put('/:managerId/:orderId', managerController.putOrderUpdate)

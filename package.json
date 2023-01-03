@@ -4,7 +4,12 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    
+
+    "test": "NODE_ENV=test jest --forceExit",
+    "test:silent": "NODE_ENV=test jest --silent --forceExit",
+    "test:coverage": "NODE_ENV=test jest --coverage --forceExit",
+    "test:unit": "NODE_ENV=test jest __tests__/unit --forceExit",
+    "test:integration": "NODE_ENV=test jest __tests__/integration --forceExit",
     "test": "jest --forceExit",
     "test:silent": "jest --silent --forceExit",
     "test:coverage": "jest --coverage --forceExit",
@@ -36,4 +41,3 @@
     "sequelize": "^6.28.0"
   }
 }
-

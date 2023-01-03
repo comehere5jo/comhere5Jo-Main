@@ -1,19 +1,19 @@
+
 // 🥫 data Access Layer
 // 데이터 액세스 계층은 쿼리를 수행하여 데이터베이스와 상호 작용합니다. 제가 사용하고 있는 Sequelize는 Data Access Layer의 역할의 일부를 대체해줍니다.
 // sequelize를 사용하지 않으면 아래와 같이 data Access Layer를 담당하는 파일에 쿼리문을 모아서 필요할 때 service 계층에서 호출해서 사용합니다.
-// const { Review } = require('.././models');
+
+const { Review } = require('.././models');
+
 class ReviewRepository {
-  constructor(reviewModel) {
-    this.reviewModel = reviewModel;
-  }
+  // constructor(reviewModel) {
+  //   this.reviewModel = reviewModel;
+  // }
 
-  findAllReview = async () => {
-    const reviews = await this.reviewModel.findAll();
-    return reviews;
-  };
+  //리뷰조회(주문번호에대한리뷰조회)
+  findReviewByOrderId = async (orderId) => {
+    const review = await Review.findAll({ where: { orderId } });
 
-  findReviewId = async (id) => {
-    const review = await this.reviewModel.findByPk(id);
     return review;
   };
 
@@ -42,17 +42,49 @@ class ReviewRepository {
       rating,
       content,
       picture,
+      orderId,
+      // customerId,
     });
     return createReviewData;
   };
 
-  managerReviewUpdate = async (id, managerId, comment) => {
-    const managerReviewUpdateData = await this.reviewModel.update(
-      { managerId, comment },
-      { where: { id: id } },
+  //리뷰작성
+  writeReview = async (rating, content, picture, orderId) => {
+    return await Review.create({
+
+      rating,
+      content,
+      picture,
+      orderId,
+
+      // customerId,
+    });
+  };
+
+  //리뷰수정
+  updateReview = async (id, rating, content, picture) => {
+    const updatedReviewData = await Review.update(
+      { rating, content, picture },
+      { where: { id } },
     );
-    return managerReviewUpdateData;
+    return updatedReviewData;
+  };
+
+  //리뷰삭제
+  deleteReview = async (id) => {
+    return await Review.destroy({ where: { id } });
   };
 }
 
+managerReviewUpdate = async (id, managerId, comment) => {
+  const managerReviewUpdateData = await this.reviewModel.update(
+    { managerId, comment },
+    { where: { id: id } },
+  );
+  return managerReviewUpdateData;
+};
+
 module.exports = ReviewRepository;
+
+
+

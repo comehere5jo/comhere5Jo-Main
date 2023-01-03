@@ -4,19 +4,19 @@
 // sequelize를 사용하지 않으면 아래와 같이 data Access Layer를 담당하는 파일에 쿼리문을
 // 모아서 필요할 때 service 계층에서 호출해서 사용합니다.
 
-// const { Order } = require('../models');
-// const { Op } = require('sequelize')
-// const { Manager } = require('../models');
 class OrderRepository {
   constructor(orderModel) {
-    this.orderModel = orderModel;
-  }
-
+    this.orderModel =orderModel;
+ } 
 
   findAllOrder = async () => {
+
     const orders = await this.orderModel.findAll();
+
+
     return orders;
   };
+
 
   findAllOrderStatus0 = async () => {
     const orders = await this.orderModel.findAll({
@@ -28,22 +28,40 @@ class OrderRepository {
   };
 
 
-  createOrder = async (phone_number, address, cloth_type, picture, requests, status) => {
+  findOrderById = async (orderId) => {
+    const byIdOders = await this.orderModel.findByPk(orderId);
+    return byIdOders;
+  };
+
+
+
+  createOrder = async (phoneNumber, address, clothType, picture, requests, status) => {
     const createOrderData = await this.orderModel.create(
       {
-        phone_number,
+        phoneNumber,
         address,
-        cloth_type,
+        clothType,
         picture,
         requests,
         status
       }
     );
+    // console.log("레파지토리", createOrderData);
 
     return createOrderData;
   };
 
-  updateOrder = async (id, phone_number, address, cloth_type, picture, requests, status) => {
+
+
+  updateOrder = async (
+    orderId,
+    phone_number,
+    address,
+    cloth_type,
+    picture,
+    requests,
+    status,
+  ) => {
     const updateOrder = await this.orderModel.update(
       {
         phone_number,
@@ -51,8 +69,12 @@ class OrderRepository {
         cloth_type,
         picture,
         requests,
-        status
-      }, { where: { id } }
+      //   status
+      // }, { where: { id } }
+        status,
+      },
+      { where: { orderId } },
+
     );
 
     return updateOrder;
@@ -97,3 +119,13 @@ class OrderRepository {
 }
 
 module.exports = OrderRepository;
+
+//   deleteOrder = async (orderId) => {
+//     const deleteOrder = await this.orderModle.destroy({ where: { orderId } });
+
+//     return deleteOrder;
+//   };
+// }
+
+// module.exports = OrderRepository;
+
