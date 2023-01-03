@@ -41,11 +41,9 @@ class ReviewController {
         content,
         picture,
         orderId,
-
         // customerId,
       );
       console.log('ControllerwriteReviewData', writeReviewData);
-
       res.status(201).json({ data: writeReviewData });
     } catch (error) {
       res.status(400).json({ errorMessage: error.message });

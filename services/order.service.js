@@ -13,10 +13,10 @@
 // 데이터베이스와 직접 상호 작용
 
 const OrderRepository = require('../repositories/order.repository');
-// const { Orders } = require('../models');
+const { Order } = require('../models');
 
 class OrderService {
-  orderRepository = new OrderRepository();
+  orderRepository = new OrderRepository(Order);
 
   findAllOrder = async () => {
     const allOrder = await this.orderRepository.findAllOrder();

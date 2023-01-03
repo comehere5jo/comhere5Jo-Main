@@ -10,10 +10,7 @@ class OrderRepository {
  } 
 
   findAllOrder = async () => {
-
     const orders = await this.orderModel.findAll();
-
-
     return orders;
   };
 
@@ -108,6 +105,15 @@ class OrderRepository {
     {where:{id:orderId}})
     return statusUpdate
   }
+  statusFind = async (id) => {
+    const status = await Order.findAll({
+      // attributes: ['status'],
+      where: { id },
+    })
+    console.log('aaa', status)
+    return status;
+  }
+
   // pointUpdate = async(point,managerId) => {
   //   const pointUpdate = await Manager.update({
   //     point

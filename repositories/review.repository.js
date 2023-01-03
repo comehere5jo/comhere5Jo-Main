@@ -6,14 +6,22 @@
 const { Review } = require('.././models');
 
 class ReviewRepository {
-  // constructor(reviewModel) {
-  //   this.reviewModel = reviewModel;
-  // }
+  constructor(reviewModel) {
+    this.reviewModel =reviewModel;
+ } 
 
   //리뷰조회(주문번호에대한리뷰조회)
   findReviewByOrderId = async (orderId) => {
-    const review = await Review.findAll({ where: { orderId } });
+    const review = await this.reviewModel.findOne({ where: { orderId } });
 
+    return review;
+  };
+
+  //리뷰찾기
+  findById = async (id) => {
+    const review = await Review.findByPk(id);
+
+    console.log(review);
     return review;
   };
 
@@ -50,7 +58,7 @@ class ReviewRepository {
 
   //리뷰작성
   writeReview = async (rating, content, picture, orderId) => {
-    return await Review.create({
+    return await this.reviewModel.create({
 
       rating,
       content,
@@ -63,7 +71,7 @@ class ReviewRepository {
 
   //리뷰수정
   updateReview = async (id, rating, content, picture) => {
-    const updatedReviewData = await Review.update(
+    const updatedReviewData = await this.reviewModel.update(
       { rating, content, picture },
       { where: { id } },
     );
@@ -72,7 +80,7 @@ class ReviewRepository {
 
   //리뷰삭제
   deleteReview = async (id) => {
-    return await Review.destroy({ where: { id } });
+    return await this.reviewModel.destroy({ where: { id } });
   };
 }
 

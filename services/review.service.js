@@ -1,5 +1,5 @@
 const reviewRepository = require('../repositories/review.repository.js');
-const { Review } = require('../models/index.js');
+const { Review } = require('../models');
 
 class ReviewService {
   reviewRepository = new reviewRepository(Review);
