@@ -4,37 +4,48 @@
 // sequelize를 사용하지 않으면 아래와 같이 data Access Layer를 담당하는 파일에 쿼리문을
 // 모아서 필요할 때 service 계층에서 호출해서 사용합니다.
 
-// const { Orders } = require('../models');
-
+const { Orders } = require('../models');
 
 class OrderRepository {
-  constructor(orderModel) {
-    this.orderModle = orderModel;
-  }
-
+  // constructor(orderModel) {
+  //   this.orderModle = orderModel;
+  // }
 
   findAllOrder = async () => {
-    const orders = await this.orderModle.findAll();
+    const orders = await this.Orders.findAll();
 
     return orders;
   };
 
-  createOrder = async (phone_number, address, cloth_type, picture, requests, status) => {
-    const createOrderData = await this.orderModle.create(
-      {
-        phone_number,
-        address,
-        cloth_type,
-        picture,
-        requests,
-        status
-      }
-    );
+  createOrder = async (
+    phone_number,
+    address,
+    cloth_type,
+    picture,
+    requests,
+    status,
+  ) => {
+    const createOrderData = await this.orderModle.create({
+      phone_number,
+      address,
+      cloth_type,
+      picture,
+      requests,
+      status,
+    });
 
     return createOrderData;
   };
 
-  updateOrder = async (orderId, phone_number, address, cloth_type, picture, requests, status) => {
+  updateOrder = async (
+    orderId,
+    phone_number,
+    address,
+    cloth_type,
+    picture,
+    requests,
+    status,
+  ) => {
     const updateOrder = await this.orderModle.update(
       {
         phone_number,
@@ -42,23 +53,19 @@ class OrderRepository {
         cloth_type,
         picture,
         requests,
-        status
-      }, { where: { orderId } }
+        status,
+      },
+      { where: { orderId } },
     );
 
     return updateOrder;
   };
 
   deleteOrder = async (orderId) => {
-    const deleteOrder = await this.orderModle.destroy(
-      { where: { orderId } }
-    );
+    const deleteOrder = await this.orderModle.destroy({ where: { orderId } });
 
     return deleteOrder;
   };
-
-
 }
-
 
 module.exports = OrderRepository;

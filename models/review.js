@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       models.Review.belongsTo(models.Order, {
         foreignKey: 'orderId',
         as: 'order',
-        onDelete: 'NO ACTION',
+        onDelete: 'NO ACTION ',
       });
     }
   }
