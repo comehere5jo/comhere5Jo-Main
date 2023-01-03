@@ -29,14 +29,11 @@ class ManagerRepository {
 
 
 getMyPoint = async (id) => {
-    const managerPoint = await  Manager.findOne({
+    const managerPoint = await this.managerModel.findOne({
       where: {
         id: id
       }
     });
-
-  managerPoint = async (id) => {
-    const managerPoint = await this.managerModel.findAll(id);
     return managerPoint;
   };
   managerPointUpdate = async (point, id) => {
@@ -55,5 +52,5 @@ getMyPoint = async (id) => {
     return manager
   }
 }
-}
+
 module.exports = ManagerRepository;
