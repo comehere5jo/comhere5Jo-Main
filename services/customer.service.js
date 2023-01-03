@@ -11,22 +11,20 @@
 // req , res 활용
 // 클라이언트에 대한 응답 처리
 // 데이터베이스와 직접 상호 작용
-const express = require('express');
-const app = express();
+
 const CustomerRepository = require('../repositories/customer.repository');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
-app.use(cookieParser());
+
 
 class CustomerService {
   customerRepository = new CustomerRepository();
 
   customerSignup = async (loginId, loginPw, confirmPw, name) => {
-    const nameReg = /^[a-zA-Z0-9]{3,}$/;
+    const idReg = /^[a-zA-Z0-9]{3,}$/;
     try {
-      if (!nameReg.test(loginId)) {
+      if (!idReg.test(loginId)) {
         throw new Error('id 형식 틀림');
         return;
       }
@@ -68,14 +66,10 @@ class CustomerService {
         loginId,
       );
 
-      console.log(customer);
-
       const check = await bcrypt.compare(loginPw, customer.loginPw);
-      console.log(check);
 
       if (customer) {
         if (check) {
-          console.log('확인용');
           const token = jwt.sign(
             { loginId: loginId, id: customer.id },
             process.env.JWT_ACCESS_SECRET,
@@ -83,9 +77,7 @@ class CustomerService {
               expiresIn: '1h',
             },
           );
-          /* console.log(token);
-          res.cookie('token', token);
-          console.log(res.cookie('token', token)); */
+
           return token;
         }
       } else {

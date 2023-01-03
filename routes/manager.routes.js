@@ -5,7 +5,7 @@ const ManagerController = require('../controllers/manager.controller');
 const managerController = new ManagerController();
 
 
-// router.get('/', postsController.getPosts);
-// router.post('/', postsController.createPost);
+router.post('/signin/manager', managerController.managerSignin);
+router.post('/signup/manager', managerController.managerSignup);
 
 module.exports = router;

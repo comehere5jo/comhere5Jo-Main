@@ -9,27 +9,38 @@
 
 
 
+const {Manager} = require("../models");
+
 class ManagerRepository {
 constructor(managerModel) {
    this.managerModel = managerModel;
 } 
 
 findManager = async () => {
-  const findManager = await this.managerModel.findAll();
+  const findManager = await Manager.findAll();
   return findManager;
 }
 
-createManager = async (loginId,loginPw,name) => {
-    const createManagerdata = await this.managerModel.create({
+findCertainManager = async (loginId) => {
+    try {
+      const findCustomer = await Manager.findOne({ where: { loginId } });
+      return findCustomer;
+    } catch (error) {
+      return error;
+    }
+  };
+
+createManager = async (loginId,encryptedPassword,name) => {
+    const createManagerdata = await Manager.create({
       loginId,
-      loginPw,
+      loginPw: encryptedPassword,
       name,
     });
     return createManagerdata;
 }
 
 managerPoint = async (id) => {
-    const managerPoint = await this.managerModel.findAll(id);
+    const managerPoint = await Manager.findAll(id);
     return managerPoint;
   };
 
