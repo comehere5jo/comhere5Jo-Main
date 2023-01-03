@@ -1,0 +1,39 @@
+###고객 회원가입
+POST localhost:3000/signup/customer
+Content-Type: application/json
+
+{
+  "loginId": "ssssss",
+  "loginPw": "pwppwppp",
+  "confirmPw": "pwppwppp",
+  "name": "이름"
+}
+
+###고객 로그인
+POST localhost:3000/signin/customer
+Content-Type: application/json
+
+{
+  "loginId": "ssssss",
+  "loginPw": "pwppwppp"
+}
+
+###사장님 회원가입
+POST localhost:3000/signup/manager
+Content-Type: application/json
+
+{
+  "loginId": "ssssss",
+  "loginPw": "pwppwppp",
+  "confirmPw": "pwppwppp",
+  "name": "이름"
+}
+
+###사장님 로그인
+POST localhost:3000/signin/manager
+Content-Type: application/json
+
+{
+  "loginId": "ppppppp",
+  "loginPw": "pwppwppp"
+}

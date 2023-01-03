@@ -7,43 +7,66 @@
 // Manager에 들어가야 할것들
 // 사장님 회원가입, 로그인, 포인트 확인 find create / point
 
-
-
-const {Manager} = require("../models");
+const { Manager } = require('../models');
 
 class ManagerRepository {
-constructor(managerModel) {
-   this.managerModel = managerModel;
-} 
+  constructor(managerModel) {
+    this.managerModel = managerModel;
+  }
 
-findManager = async () => {
-  const findManager = await Manager.findAll();
-  return findManager;
-}
+  findManager = async () => {
+    const findManager = await this.managerModel.findAll();
+    return findManager;
+  };
 
-findCertainManager = async (loginId) => {
+  findCertainManager = async (loginId) => {
     try {
-      const findCustomer = await Manager.findOne({ where: { loginId } });
+      const findCustomer = await this.managerModel.findOne({
+        where: { loginId },
+      });
       return findCustomer;
     } catch (error) {
       return error;
     }
   };
 
-createManager = async (loginId,encryptedPassword,name) => {
-    const createManagerdata = await Manager.create({
+  createManager = async (loginId, encryptedPassword, name) => {
+    const createManagerdata = await this.managerModel.create({
       loginId,
       loginPw: encryptedPassword,
       name,
     });
     return createManagerdata;
-}
+  };
 
-managerPoint = async (id) => {
+  managerPoint = async (id) => {
     const managerPoint = await Manager.findAll(id);
     return managerPoint;
   };
 
-}    
+  getMyPoint = async (id) => {
+    const managerPoint = await this.managerModel.findOne({
+      where: {
+        id: id,
+      },
+    });
+    return managerPoint;
+  };
+  managerPointUpdate = async (point, id) => {
+    const pointUp = await this.managerModel.update(
+      {
+        point: point,
+      },
+      { where: { id: id } },
+    );
+    return pointUp;
+  };
+  findOneManager = async (managerId) => {
+    const manager = await this.managerModel.findAll({
+      where: { id: managerId },
+    });
+    return manager;
+  };
+}
 
 module.exports = ManagerRepository;
