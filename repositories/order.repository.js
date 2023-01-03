@@ -8,9 +8,9 @@ const { Order } = require('../models');
 const { Op } = require('sequelize')
 
 class OrderRepository {
-  // constructor(orderModel) {
-  //   this.orderModle = orderModel;
-  // }
+  constructor(orderModel) {
+    this.orderModel = orderModel;
+  }
 
 
   findAllOrder = async () => {
@@ -19,7 +19,7 @@ class OrderRepository {
   };
 
   findAllOrderStatus0 = async () => {
-    const orders = await this.orderModle.findAll({
+    const orders = await this.orderModel.findAll({
       where: {
         status: '0'
       }

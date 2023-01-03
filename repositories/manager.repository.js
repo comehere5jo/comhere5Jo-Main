@@ -20,7 +20,7 @@ findManager = async () => {
 }
 
 createManager = async (loginId,loginPw,name) => {
-    const createManagerdata = await  Manager.create({
+    const createManagerdata = await Manager.create({
       loginId,
       loginPw,
       name,
@@ -28,8 +28,12 @@ createManager = async (loginId,loginPw,name) => {
     return createManagerdata;
 }
 
-managerPoint = async (id) => {
-    const managerPoint = await  Manager.findAll(id);
+getMyPoint = async (id) => {
+    const managerPoint = await  Manager.findOne({
+      where: {
+        id: id
+      }
+    });
     return managerPoint;
   };
 
