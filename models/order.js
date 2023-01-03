@@ -20,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'NO ACTION',
       });
 
-
     }
   }
   Order.init(

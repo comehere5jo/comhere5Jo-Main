@@ -20,7 +20,6 @@ const { Manager, Review, Order } = require('../models/index.js');
 // 서비스 계층은 나머지 애플리케이션에서 모든 비즈니스 로직을 캡슐화하고 추상화합니다.
 class ManagerService {
     managerRepository = new ManagerRepository(Manager);
-
     orderRepository = new OrderRepository(Order);
     //가져올때 0이 아닌것들 다 제외 (0만 불러오면 됨)
     getOrder = async () => {
@@ -66,6 +65,7 @@ class ManagerService {
       })
   }
 };
+
 
 
 

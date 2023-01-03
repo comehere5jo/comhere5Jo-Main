@@ -4,18 +4,17 @@
 // sequelize를 사용하지 않으면 아래와 같이 data Access Layer를 담당하는 파일에 쿼리문을
 // 모아서 필요할 때 service 계층에서 호출해서 사용합니다.
 
-// const { Orders } = require('../models');
-
+const { Order } = require('../models');
+const { Op } = require('sequelize')
 
 class OrderRepository {
-  constructor(orderModel) {
-    this.orderModle = orderModel;
-  }
+  // constructor(orderModel) {
+  //   this.orderModle = orderModel;
+  // }
 
 
   findAllOrder = async () => {
-    const orders = await this.orderModle.findAll();
-
+    const orders = await Order.findAll();
     return orders;
   };
 
@@ -30,7 +29,7 @@ class OrderRepository {
 
 
   createOrder = async (phone_number, address, cloth_type, picture, requests, status) => {
-    const createOrderData = await this.orderModle.create(
+    const createOrderData = await Order.create(
       {
         phone_number,
         address,
@@ -44,8 +43,8 @@ class OrderRepository {
     return createOrderData;
   };
 
-  updateOrder = async (orderId, phone_number, address, cloth_type, picture, requests, status) => {
-    const updateOrder = await this.orderModle.update(
+  updateOrder = async (id, phone_number, address, cloth_type, picture, requests, status) => {
+    const updateOrder = await Order.update(
       {
         phone_number,
         address,
@@ -53,22 +52,53 @@ class OrderRepository {
         picture,
         requests,
         status
-      }, { where: { orderId } }
+      }, { where: { id } }
     );
 
     return updateOrder;
   };
 
-  deleteOrder = async (orderId) => {
-    const deleteOrder = await this.orderModle.destroy(
-      { where: { orderId } }
+  deleteOrder = async (id) => {
+    const deleteOrder = await Order.destroy(
+      { where: { id } }
     );
 
     return deleteOrder;
   };
-
-
+  managerSelect = async (managerId) => {
+    const manager = await Order.findAll({
+      where: { managerId: managerId }
+    })
+  }
+  selectOrder = async (id) => {
+    const orders = await Order.findAll({
+      where: { id }
+    });
+    return orders;
+  }
+  startOrder = async (id, managerId, status) => {
+    const orders = await Order.findAll({
+      where: {
+        [Op.or]: [{ id }, { status }],
+      },
+    });
+    return orders;
+  }
+  statusFind = async (id) => {
+    const status = await Order.findAll({
+      // attributes: ['status'],
+      where: { id },
+    })
+    console.log('aaa', status)
+    return status;
+  }
+  statusUpdate = async (new_status,orderId) => {
+    const statusUpdate = await Order.update({
+      status: new_status
+    },
+    {where:{id:orderId}})
+    return statusUpdate
+  }
 }
-
 
 module.exports = OrderRepository;
