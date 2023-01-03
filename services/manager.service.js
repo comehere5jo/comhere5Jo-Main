@@ -223,7 +223,7 @@ updateOrder = async (orderId, managerId, status) => {
   }
   catch(err) {
     console.log('error',err)
-  }
+  }}
   managerSignup = async (loginId, loginPw, confirmPw, name) => {
     const idReg = /^[a-zA-Z0-9]{3,}$/;
     try {
@@ -291,8 +291,4 @@ updateOrder = async (orderId, managerId, status) => {
     }
   };
 }
-
-};
-
-
 module.exports = ManagerService;
