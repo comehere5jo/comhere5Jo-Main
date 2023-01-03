@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'customer',
         onDelete: 'NO ACTION',
       });
+
     }
   }
   Order.init(

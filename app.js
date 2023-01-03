@@ -4,6 +4,7 @@ const port = 3000;
 require('dotenv').config({ path: '../../.env' });
 
 const router = require('./routes');
+const cookieParser = require('cookie-parser');
 
 const path = require("path");
 const bodyParser = require("express")
@@ -15,9 +16,11 @@ const requestMiddleware = (req, res, next) => {
   console.log('Request URL:', req.originalUrl, ' - ', new Date());
   next();
 };
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs'); //view engine이 사용할 Template Engine
 app.set('views', __dirname + '/views'); // Template가 있는 디렉토리
+
 app.use(express.json());
 app.use(requestMiddleware);
 app.use(bodyParser.urlencoded({extend : false}));
@@ -25,6 +28,9 @@ app.set('view engine', 'ejs'); //view engine이 사용할 Template Engine
 app.set('views', 'views');
 app.use('/', router);
 app.use('/api',router)
+app.use(cookieParser());
+app.engine('html', require('ejs').renderFile);
+
 app.listen(port, () => {
   console.log(
     `

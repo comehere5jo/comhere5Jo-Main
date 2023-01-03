@@ -33,6 +33,7 @@ class CustomerRepository {
     return createCustomerData;
   };
 
+
   //손님포인트조회
   findCustomerPoint = async (id) => {
     const customerPoint = await Customer.findByPk(id);

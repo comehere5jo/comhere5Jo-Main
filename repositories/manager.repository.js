@@ -17,16 +17,24 @@ class ManagerRepository {
     return findManager;
   }
 
+findCertainManager = async (loginId) => {
+    try {
+      const findCustomer = await this.managerModel.findOne({ where: { loginId } });
+      return findCustomer;
+    } catch (error) {
+      return error;
+    }
+  };
 
-  createManager = async (loginId, loginPw, name) => {
+createManager = async (loginId,encryptedPassword,name) => {
     const createManagerdata = await this.managerModel.create({
+
       loginId,
-      loginPw,
+      loginPw: encryptedPassword,
       name,
     });
     return createManagerdata;
   }
-
 
 getMyPoint = async (id) => {
     const managerPoint = await this.managerModel.findOne({
