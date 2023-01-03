@@ -18,7 +18,11 @@ class ReviewRepository {
   };
 
   findReviewOrderId = async (orderId) => {
-    const review = await this.reviewModel.findOne(orderId);
+    const review = await this.reviewModel.findAll({
+      where: {
+      orderId: orderId
+      }
+    });
     return review;
   };
 

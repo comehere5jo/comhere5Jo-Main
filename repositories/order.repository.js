@@ -10,7 +10,6 @@
 class OrderRepository {
   constructor(orderModel) {
     this.orderModel = orderModel;
-    console.log('aaaaa',orderModel)
   }
 
 
@@ -20,7 +19,7 @@ class OrderRepository {
   };
 
   findAllOrderStatus0 = async () => {
-    const orders = await this.orderModle.findAll({
+    const orders = await this.orderModel.findAll({
       where: {
         status: '0'
       }
@@ -66,10 +65,12 @@ class OrderRepository {
 
     return deleteOrder;
   };
+
   managerSelect = async (managerId) => {
     const manager = await this.orderModel.findAll({
       where: { managerId: managerId }
     })
+    return manager;
   }
   selectOrder = async (id) => {
     const orders = await this.orderModel.findAll({

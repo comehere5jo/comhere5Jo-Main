@@ -17,6 +17,7 @@ class ManagerRepository {
     return findManager;
   }
 
+
   createManager = async (loginId, loginPw, name) => {
     const createManagerdata = await this.managerModel.create({
       loginId,
@@ -26,8 +27,13 @@ class ManagerRepository {
     return createManagerdata;
   }
 
-  managerPoint = async (id) => {
-    const managerPoint = await this.managerModel.findAll(id);
+
+getMyPoint = async (id) => {
+    const managerPoint = await this.managerModel.findOne({
+      where: {
+        id: id
+      }
+    });
     return managerPoint;
   };
   managerPointUpdate = async (point, id) => {
