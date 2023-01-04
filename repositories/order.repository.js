@@ -92,6 +92,7 @@ class OrderRepository {
       status: new_status
     },
       { where: { id: orderId } })
+      console.log()
     return statusUpdate
   }
   // pointUpdate = async(point,managerId) => {
