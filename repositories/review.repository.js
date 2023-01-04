@@ -19,9 +19,9 @@ class ReviewRepository {
 
   //리뷰찾기
   findById = async (id) => {
-    const review = await Review.findByPk(id);
+    const review = await this.reviewModel.findByPk(id);
 
-    console.log(review);
+    // console.log(review);
     return review;
   };
 
@@ -43,18 +43,18 @@ class ReviewRepository {
     return review;
   };
 
-
-  createReview = async (customerId, rating, content, picture) => {
-    const createReviewData = await this.reviewModel.create({
-      customerId,
-      rating,
-      content,
-      picture,
-      orderId,
-      // customerId,
-    });
-    return createReviewData;
-  };
+//지워야함
+  // createReview = async (customerId, rating, content, picture) => {
+  //   const createReviewData = await this.reviewModel.create({
+  //     customerId,
+  //     rating,
+  //     content,
+  //     picture,
+  //     orderId,
+  //     // customerId,
+  //   });
+  //   return createReviewData;
+  // };
 
   //리뷰작성
   writeReview = async (rating, content, picture, orderId) => {
