@@ -82,15 +82,16 @@ class ReviewRepository {
   deleteReview = async (id) => {
     return await this.reviewModel.destroy({ where: { id } });
   };
+  managerReviewUpdate = async (id, managerId, comment) => {
+    const managerReviewUpdateData = await this.reviewModel.update(
+      { managerId, comment },
+      { where: { id: id } },
+    );
+    return managerReviewUpdateData;
+  };
 }
 
-managerReviewUpdate = async (id, managerId, comment) => {
-  const managerReviewUpdateData = await this.reviewModel.update(
-    { managerId, comment },
-    { where: { id: id } },
-  );
-  return managerReviewUpdateData;
-};
+
 
 module.exports = ReviewRepository;
 

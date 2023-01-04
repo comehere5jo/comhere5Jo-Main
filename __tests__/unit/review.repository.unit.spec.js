@@ -65,50 +65,81 @@ describe('Layered Architecture Pattern Review Repository Unit Test', () => {
       return "writeReview String"
     })
     const writeManagerParams = {
-      rating:"writeReviewRating",
-      content:"writeReviewContent",
-      picture:"writeReviewPicture",
-      orderId:"writeReviewOrderId",
+      rating: "writeReviewRating",
+      content: "writeReviewContent",
+      picture: "writeReviewPicture",
+      orderId: "writeReviewOrderId",
     }
     const writeReviewData = await reviewRepository.writeReview(
-      writeManagerParams.rating,
-      writeManagerParams.content,
-      writeManagerParams.picture,
-      writeManagerParams.orderId,
+      
+       writeManagerParams.rating,
+        writeManagerParams.content,
+         writeManagerParams.picture,
+       writeManagerParams.orderId,
     )
     expect(writeReviewData).toBe("writeReview String")
     expect(mockReviewModel.create).toHaveBeenCalledTimes(1)
     expect(mockReviewModel.create).toHaveBeenCalledWith({
-      rating:writeManagerParams.rating,
-      content:writeManagerParams.content,
-      picture:writeManagerParams.picture,
-      orderId:writeManagerParams.orderId,
-    })
+      rating: writeManagerParams.rating,
+      content: writeManagerParams.content,
+      picture: writeManagerParams.picture,
+      orderId: writeManagerParams.orderId,
+  })
   });
   test('Review Repository updateReview Method', async () => {
     mockReviewModel.update = jest.fn(() => {
       return "updateReview String"
     })
     const updateReviewParams = {
-      rating:"updateReviewRating",
-      content:"updateReviewContent",
-      picture:"updateReviewPicture",
-      id:"updateReviewId"
+      content: "updateReviewContent",
+      rating: "updateReviewRating",
+      picture: "updateReviewPicture",
+      id: "id"
     }
     const updateReviewData = await reviewRepository.updateReview(
+      updateReviewParams.id,
       updateReviewParams.rating,
       updateReviewParams.content,
       updateReviewParams.picture,
-      updateReviewParams.id,
     )
-    expect(updateReviewData).toEqual("updateReview String")
+    expect(updateReviewData).toBe("updateReview String")
     expect(mockReviewModel.update).toHaveBeenCalledTimes(1)
-    expect(mockReviewModel.update).toHaveBeenCalledWith({
-      rating:updateReviewParams.rating,
+    expect(mockReviewModel.update).toHaveBeenCalledWith(
+      {rating:updateReviewParams.rating,
       content:updateReviewParams.content,
-      picture:updateReviewParams.picture,
-      id:updateReviewParams.id,
-      
+      picture:updateReviewParams.picture,},
+      {where:{id:updateReviewParams.id}}
+    )
+  });
+  test('Review Repository deleteReview Method', async () => {
+    mockReviewModel.destroy = jest.fn(() => {
+      return "deleteReview String"
     })
+    const review = await reviewRepository.deleteReview()
+    expect(reviewRepository.reviewModel.destroy).toHaveBeenCalledTimes(1)
+    expect(review).toBe('deleteReview String')
+  });
+  test('Review Repository managerReviewUpdate Method', async () => {
+    mockReviewModel.update = jest.fn(() => {
+      return "managerReviewUpdate String"
+    })
+    const managerReviewUpdateParams = {
+      managerId: "managerReviewUpdateManagerId",
+      comment: "managerReviewUpdateComment",
+      id: "managerReviewUpdateid"
+    }
+    const managerReviewUpdateData = await reviewRepository.managerReviewUpdate(
+      managerReviewUpdateParams.id,
+      managerReviewUpdateParams.managerId,
+      managerReviewUpdateParams.comment,
+    )
+    expect(managerReviewUpdateData).toBe('managerReviewUpdate String')
+    expect(reviewRepository.reviewModel.update).toHaveBeenCalledTimes(1)
+    expect(mockReviewModel.update).toHaveBeenCalledWith({
+      managerId: managerReviewUpdateParams.managerId,
+      comment: managerReviewUpdateParams.comment,
+    },
+      { where: { id: managerReviewUpdateParams.id } }
+    )
   });
 });
