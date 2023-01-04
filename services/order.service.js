@@ -38,6 +38,7 @@ class OrderService {
     };
   }
 
+  //수락 안 된 모든 주문 조회
   getOrder = async () => {
     const getLaundry = await this.orderRepository.findAllOrderStatus0();
   return getLaundry.map((laundry)=> {
@@ -53,7 +54,7 @@ class OrderService {
   })
   };
 
-
+    //주문 진행 상태 상관 없이 모든 주문 조회
   findAllOrder = async () => {
     const allOrder = await this.orderRepository.findAllOrder();
 
@@ -74,9 +75,10 @@ class OrderService {
     });
   };
 
-  findOrderById = async (orderId) => {
+    //특정 주문 조회
+  findOrderById = async (id) => {
 
-    const byIdOrder = await this.orderRepository.findOrderById(orderId);
+    const byIdOrder = await this.orderRepository.findOrderById(id);
       return {
         orderId: byIdOrder.id,
         phoneNumber: byIdOrder.phoneNumber,
@@ -90,29 +92,31 @@ class OrderService {
 
   }
 
-  findCustomerOrder = async () => {
-    const customerOrder = await this.orderRepository.findAllOrder()
-  
-    customerOrder.sort((a, b) => {
-      return b.createdAt - a.createdAt
-    });
-  
-    return customerOrder.map((customer) => {
-      return {
-        id: customer.id,
-        customerId: customer.customerId,
-        phoneNumber: customer.phoneNumber,
-        address: customer.address,
-        clothType: customer.clothType,
-        picture: customer.picture,
-        requests: customer.requests,
-        status: customer.status
-      }
-    })
-  }
-    selectOrder = async (orderId, managerId) => {
+  // //????
+  // findCustomerOrder = async () => {
+  //   const customerOrder = await this.orderRepository.findAllOrder()
+  //
+  //   customerOrder.sort((a, b) => {
+  //     return b.createdAt - a.createdAt
+  //   });
+  //
+  //   return customerOrder.map((customer) => {
+  //     return {
+  //       id: customer.id,
+  //       customerId: customer.customerId,
+  //       phoneNumber: customer.phoneNumber,
+  //       address: customer.address,
+  //       clothType: customer.clothType,
+  //       picture: customer.picture,
+  //       requests: customer.requests,
+  //       status: customer.status
+  //     }
+  //   })
+  // }
+
+  //주문 수락(확인완료)
+  selectOrder = async (orderId, managerId) => {
       const selectOrder = await this.orderRepository.selectOrder(orderId)
-  
       if (!selectOrder) {
         return console.log("없습니다.")
       }
@@ -121,10 +125,10 @@ class OrderService {
       }
       let new_status = selectOrder[0].status + 1
 
-      await this.orderRepository.statusUpdate(new_status, orderId)
+      await this.orderRepository.statusUpdate(new_status, orderId, managerId)
   
-      const updateOreder = await this.orderRepository.selectOrder(managerId)
-      return updateOreder.map((order) => {
+      const updateOrder = await this.orderRepository.selectOrder(orderId)
+      return updateOrder.map((order) => {
         return {
           id: order.id,
           customerId: order.customerId,
@@ -136,15 +140,17 @@ class OrderService {
           status: order.status
         }
       })
-    }
-    updateOrder = async (orderId, managerId) => {
+  }
+
+  //주문 진행 상태 변경(확인 필요. customerId=null, status=0으로 출력됨(실제 db에는 제대로 수정됨))
+    updateOrder = async (orderId, managerId, status) => {
       const selectOrder = await this.orderRepository.selectOrder(orderId)
 
       if (selectOrder[0].status === 1) {
         const new_status = selectOrder[0].status + 1
         console.log("추가 스테이터스 2가되어야함", new_status)
         await this.orderRepository.statusUpdate(new_status, orderId)
-        const updateOrder = await this.orderRepository.selectOrder(managerId)
+        const updateOrder = await this.orderRepository.selectOrder(orderId)
         return updateOrder.map((order) => {
           return {
             id: order.id,
@@ -162,7 +168,7 @@ class OrderService {
         const new_status = selectOrder[0].status + 1
         console.log("추가 스테이터스 3이되어야함", new_status)
         await this.orderRepository.statusUpdate(new_status, orderId)
-        const updateOrder = await this.orderRepository.selectOrder(managerId)
+        const updateOrder = await this.orderRepository.selectOrder(orderId)
         return updateOrder.map((order) => {
           return {
             id: order.id,
@@ -180,7 +186,7 @@ class OrderService {
         const new_status = selectOrder[0].status + 1
         console.log("추가 스테이터스 4가되어야함", new_status)
         await this.orderRepository.statusUpdate(new_status, orderId)
-        const updateOrder = await this.orderRepository.selectOrder(managerId)
+        const updateOrder = await this.orderRepository.selectOrder(orderId)
         return updateOrder.map((order) => {
           return {
             id: order.id,
@@ -198,7 +204,7 @@ class OrderService {
         const new_status = selectOrder[0].status + 1
         await this.orderRepository.statusUpdate(new_status, orderId)
         await this.managerRepository.managerPointUpdate(10000, orderId)
-        const updateOrder = await this.orderRepository.selectOrder(managerId)
+        const updateOrder = await this.orderRepository.selectOrder(orderId)
         return updateOrder.map((order) => {
           return {
             id: order.id,
@@ -216,10 +222,6 @@ class OrderService {
         return console.log("완료된 주문")
       }
     };
-  
-
-
-
 
 }
 

@@ -16,10 +16,11 @@ router.post('/orderPost', authMiddleware, orderController.createOrder);
 
 // 임의 생성 - 마이페이지
 router.get('/myPage' ,orderController.controller)
-//
-router.get('/', orderController.getMangers)
-
+// //????
+// router.get('/', orderController.getManagers)
+//주문 수락
 router.put('/api/:orderId', authMiddleware, orderController.putFirstOrder)
-router.put('/api/:orderId/statusChange', orderController.putOrderUpdate)
+//주문 진행 상태 변경
+router.put('/api/:orderId/statusChange', authMiddleware, orderController.putOrderUpdate)
 
 module.exports = router;

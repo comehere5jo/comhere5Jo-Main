@@ -24,13 +24,11 @@ class OrderRepository {
     return orders;
   };
 
-
-  findOrderById = async (orderId) => {
-    const byIdOders = await this.orderModel.findByPk(orderId);
-    return byIdOders;
+//수정 필요함.findByPk값이 잘못 들어가게 됨.
+  findOrderById = async (id) => {
+    const byIdOrders = await this.orderModel.findByPk(id);
+    return byIdOrders;
   };
-
-
 
   createOrder = async (customerId, phoneNumber, address, clothType, picture, requests) => {
     const createOrderData = await this.orderModel.create(
@@ -74,20 +72,23 @@ class OrderRepository {
     return updateOrder;
   };
 
-  deleteOrder = async (id) => {
-    const deleteOrder = await this.orderModel.destroy(
-      { where: { id } }
-    );
+  // deleteOrder = async (id) => {
+  //   const deleteOrder = await this.orderModel.destroy(
+  //     { where: { id } }
+  //   );
+  //
+  //   return deleteOrder;
+  // };
+  //
+  // managerSelect = async (managerId) => {
+  //   const manager = await this.orderModel.findAll({
+  //     where: { managerId: managerId }
+  //   })
+  //   return manager;
+  // }
 
-    return deleteOrder;
-  };
 
-  managerSelect = async (managerId) => {
-    const manager = await this.orderModel.findAll({
-      where: { managerId: managerId }
-    })
-    return manager;
-  }
+    //위에 있는 findOrderById와 다를 게 없는 코드로 보임. 둘 중 하나 삭제 필요.
   selectOrder = async (id) => {
     const orders = await this.orderModel.findAll({
       where: { id }
@@ -95,40 +96,25 @@ class OrderRepository {
     return orders;
   }
   
-  statusUpdate = async (new_status,orderId) => {
+  statusUpdate = async (new_status,orderId, managerId) => {
     const statusUpdate = await this.orderModel.update({
-      status: new_status
+      status: new_status,
+        managerId: managerId
     },
-    {where:{id:orderId}})
-    return statusUpdate
+    {where:{id:orderId}});
+    return statusUpdate;
   }
-  statusFind = async (id) => {
-    const status = await Order.findAll({
-      // attributes: ['status'],
-      where: { id },
-    })
-    console.log('aaa', status)
-    return status;
-  }
-
-  // pointUpdate = async(point,managerId) => {
-  //   const pointUpdate = await Manager.update({
-  //     point
-  //   },{
-  //     where: {id:managerId}
+  // statusFind = async (id) => {
+  //   const status = await Order.findAll({
+  //     // attributes: ['status'],
+  //     where: { id },
   //   })
-  //   return pointUpdate
+  //   console.log('aaa', status)
+  //   return status;
   // }
+
 }
 
 module.exports = OrderRepository;
 
-//   deleteOrder = async (orderId) => {
-//     const deleteOrder = await this.orderModle.destroy({ where: { orderId } });
-
-//     return deleteOrder;
-//   };
-// }
-
-// module.exports = OrderRepository;
 

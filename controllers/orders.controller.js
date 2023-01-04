@@ -33,7 +33,7 @@ class OrdersController {
       res.status(200).json({data:getOrder})
   }
 
-  //주문 진행 상태 상관 없이 모든 주문 조회
+  //주문 진행 상태 상관 없이 모든 주문 조회(customerId로만 필터되도록 수정필요)
   getOrders = async (req, res, next) => {
     const orders = await this.orderService.findAllOrder();
 
@@ -42,40 +42,41 @@ class OrdersController {
 
   //특정 주문 조회
   getOrderById = async (req, res, next) => {
-    const { orderId } = req.params;
+    const id = req.params.orderId;
 
-    const orderById = await this.orderService.findOrderById(orderId);
+    const orderById = await this.orderService.findOrderById(id);
     res.status(200).json({ data: orderById });
   };
 
-  //
-  getMangers = async (req,res,next) => {
-    const managers = await this.orderService.findCustomerOrder()
-    console.log("불러올값",managers)
-    res.status(200).render('main',{data:managers})
-  }
+  // //????
+  // getManagers = async (req,res,next) => {
+  //   const managers = await this.orderService.findCustomerOrder()
+  //   console.log("불러올값",managers)
+  //   res.status(200).render('main',{data:managers})
+  // }
 
+  //주문 수락(확인완료)
   putFirstOrder = async(req,res,next) => {
-    const { managerId } = req.params
-    const {orderId} = req.body
+    const managerId = req.manager.id
+    const {orderId} = req.params
     const firstOrder = await this.orderService.selectOrder(orderId, managerId)
-    console.log("주문 수락", firstOrder)
     if(!firstOrder){
       return res.status(400).json({errorMessage:"사장님은 이미 주문을 진행중입니다."})
     }
     res.status(200).json({data:firstOrder})
   }
 
+  //주문 진행상태 변경(확인 필요. customerId=null, status=0으로 출력됨(실제 db에는 제대로 수정됨))
   putOrderUpdate = async(req,res,next) => {
-    const { managerId, orderId } = req.params
-    const {status} = req.body
-    const updateOrder = await this.orderService.updateOrder(orderId, managerId, status)
-    console.log('주문현황',updateOrder)
+    const managerId = req.manager.id;
+    const { orderId } = req.params;
+    const updateOrder = await this.orderService.updateOrder(orderId, managerId);
+
     if(!updateOrder){
       return res.status(400).json({errorMessage:"주문을 이미 완료하셨습니다."})
     }
-    res.status(200).json({data:updateOrder})
-  }
+    res.status(200).json({data:updateOrder});
+  };
 
 
   controller = async (req, res, next) => {
