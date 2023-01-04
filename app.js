@@ -27,7 +27,6 @@ app.use(bodyParser.urlencoded({extend : false}));
 app.set('view engine', 'ejs'); //view engine이 사용할 Template Engine
 app.set('views', 'views');
 app.use('/', router);
-app.use('/api',router)
 app.use(cookieParser());
 app.engine('html', require('ejs').renderFile);
 

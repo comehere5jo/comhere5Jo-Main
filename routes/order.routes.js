@@ -10,7 +10,9 @@ router.post('/orderPost', orderController.createOrder);
 
 // 임의 생성 - 마이페이지
 router.get('/myPage' ,orderController.controller)
-
-
+router.get('/', orderController.getMangers)
+router.get('/manager/order', orderController.getOrder);
+router.put('/:managerId', orderController.putFirstOrder)
+router.put('/:managerId/:orderId', orderController.putOrderUpdate)
 
 module.exports = router;

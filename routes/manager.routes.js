@@ -4,15 +4,8 @@ const router = express.Router();
 const ManagerController = require('../controllers/manager.controller');
 const managerController = new ManagerController();
 
-
-router.get('/manager/order', managerController.getOrder);
-router.get('/order/:orderId/review', managerController.getOrderReview);
-router.get('/me/review', 
-managerController.getMyOrderReview);
 router.get('/manager/my_point',managerController.getMyPoint);
-router.get('/', managerController.getMangers)
-router.put('/:managerId', managerController.putFirstOrder)
-router.put('/:managerId/:orderId', managerController.putOrderUpdate)
+
 router.post('/signin/manager', managerController.managerSignin);
 router.post('/signup/manager', managerController.managerSignup);
 

@@ -21,6 +21,18 @@ class ReviewController {
     }
   };
 
+  getOrderReview = async (req, res, next) => {
+    const {orderId} = req.params;
+    console.log(orderId)
+    const getOrderReview = await this.reviewService.getOrderReview(orderId);
+    res.status(200).json({data:getOrderReview})
+}
+getMyOrderReview = async (req, res, next) => {
+  const {managerId} = req.params;
+    const getMyOrderReview = await this.reviewService.getMyOrderReview(managerId);
+    res.status(200).json({data:getMyOrderReview})
+}
+
   //리뷰작성
   writeReview = async (req, res, next) => {
     try {
