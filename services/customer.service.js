@@ -16,15 +16,15 @@ const CustomerRepository = require('../repositories/customer.repository');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
+const { Customer } = require('.././models');
 
 
 class CustomerService {
-  customerRepository = new CustomerRepository();
+  customerRepository = new CustomerRepository(Customer);
 
 
   //손님포인트조회
   getCustomerPoint = async (id) => {
-    console.log(id);
     const customer = await this.customerRepository.findCustomerPoint(id);
     if (!customer) throw new Error('Customer not found');
 
@@ -77,20 +77,21 @@ class CustomerService {
 
       const check = await bcrypt.compare(loginPw, customer.loginPw);
 
-      if (customer) {
+      if (customer !== null) {
         if (check) {
           const token = jwt.sign(
-            { loginId: loginId, id: customer.id },
-            process.env.JWT_ACCESS_SECRET,
+            { loginId: loginId, id: customer.id, member: 'customer' },
+            process.env.JWT_SECRET,
             {
               expiresIn: '1h',
             },
           );
           console.log(token)
           return token;
-        }
+        }else if(check === false) {
+        throw new Error('비번 확인해');}
       } else {
-        throw new Error('id나 비번 확인해');
+        throw new Error('id 확인해');
       }
       return;
     } catch (error) {

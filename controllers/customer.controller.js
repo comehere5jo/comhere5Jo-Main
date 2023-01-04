@@ -11,12 +11,13 @@ class CustomerController {
   //손님포인트조회
   getCustomerPoint = async (req, res, next) => {
     // const id = req.customerId;
-    const id = 1;
-    console.log(id);
+    // const id = 1;
+    // console.log(id);
+
 
     try {
+      const { id } = req.customer
       const point = await this.customerService.getCustomerPoint(id);
-      console.log(point);
       res.status(200).json({ point });
     } catch (error) {
       res.status(500).json({ errorMessage: error.message });
@@ -78,7 +79,7 @@ class CustomerController {
 
       res.cookie('token', signin);
 
-      if (signin.message === 'id나 비번 확인해') {
+      if (typeof signin.message !== 'undefined') {
         throw new Error('id나 비번 확인해');
         return;
       }

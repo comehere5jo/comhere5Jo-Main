@@ -32,23 +32,20 @@ class OrderRepository {
 
 
 
-  createOrder = async (phoneNumber, address, clothType, picture, requests, status) => {
+  createOrder = async (customerId, phoneNumber, address, clothType, picture, requests) => {
     const createOrderData = await this.orderModel.create(
-      {
+      { customerId,
         phoneNumber,
         address,
         clothType,
         picture,
-        requests,
-        status
+        requests
       }
     );
     // console.log("레파지토리", createOrderData);
 
     return createOrderData;
   };
-
-
 
   updateOrder = async (
     orderId,

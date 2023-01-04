@@ -5,8 +5,9 @@ class ManagerController {
     managerService = new ManagerService();
 
     getMyPoint = async (req, res, next) => {
+      const { id } = req.manager
 
-        const myPoint = await this.managerService.getMyPoint();
+        const myPoint = await this.managerService.getMyPoint(id);
         res.status(200).json({data:myPoint})
     }
 
@@ -63,7 +64,7 @@ class ManagerController {
 
       res.cookie('token', signin);
 
-      if (signin.message === 'id나 비번 확인해') {
+      if (typeof signin.message !== 'undefined') {
         throw new Error('id나 비번 확인해');
         return;
       }

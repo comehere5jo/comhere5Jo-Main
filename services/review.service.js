@@ -20,39 +20,40 @@ class ReviewService {
     };
   };
 
-  //리뷰작성
-  writeReview = async (rating, content, picture, orderId) => {
-    const writeReviewData = await this.reviewRepository.writeReview(
-      rating,
-      content,
-      picture,
-      orderId,
 
-      //   customerId,
+  //리뷰작성
+  writeReview = async (rating, content, picture, orderId, customerId) => {
+    const writeReviewData = await this.reviewRepository.writeReview(
+        rating,
+        content,
+        picture,
+        orderId,
+        customerId
     );
-    console.log(writeReviewData);
 
     return {
       rating: writeReviewData.rating,
       content: writeReviewData.content,
       picture: writeReviewData.picture,
       orderId: writeReviewData.orderId,
+      customerId: writeReviewData.customerId,
       createdAt: writeReviewData.createdAt,
-      updatedAt: writeReviewData.updatedAt,
+      updatedAt: writeReviewData.updatedAt
     };
   };
 
   //리뷰수정
   updateReview = async (id, rating, content, picture) => {
+
     const findReview = await this.reviewRepository.findById(id);
-    if (!findReview) throw new Error("Review doesn't exist");
+
+    if (!findReview) throw new Error("작성한 리뷰가 없습니다.");
 
     // Update review
-    await this.reviewRepository.updateReview(id, rating, content, picture);
+     await this.reviewRepository.updateReview(id, rating, content, picture);
 
-    // Retrieve updated review
-    const updatedReview = await this.reviewRepository.findById(id);
-    console.log(updatedReview);
+     const updatedReview = await this.reviewRepository.findById(id);
+    console.log('서비스', updatedReview)
 
     return {
       id: updatedReview.id,
@@ -60,6 +61,7 @@ class ReviewService {
       content: updatedReview.content,
       picture: updatedReview.picture,
       updatedAt: updatedReview.updatedAt,
+      status: updatedReview.status
     };
   };
 
@@ -70,38 +72,24 @@ class ReviewService {
 
     await this.reviewRepository.deleteReview(id);
 
-    return {
-      id: findReview.id,
-      createdAt: findReview.createdAt,
-      updatedAt: findReview.updatedAt,
-    };
-};
+    return
+  };
 
-    //주문 1건에 대한 리뷰 보기
-    getOrderReview = async (orderId) => {
-      const getOrderReview = await this.reviewRepository.findReviewOrderId(orderId);
-      return {   
-          orderId: getOrderReview.orderId,
-          createdAt:getOrderReview.createdAt,
-          comment: getOrderReview.comment,
-          content: getOrderReview.content,
-          rating: getOrderReview.rating,
-          status: getOrderReview.status
-        };
-  }
+    //사장님이 본인이 처리한 주문에 대한 리뷰 조회
   getMyOrderReview = async (managerId) => {
     const getOrderReview = await this.reviewRepository.findReviewManagerId(managerId);
-    return getOrderReview.map((order)=> {
-    return {   
+    return getOrderReview.map((order) => {
+      return {
         orderId: order.orderId,
-        createdAt:order.createdAt,
+        createdAt: order.createdAt,
         comment: order.comment,
         content: order.content,
         rating: order.rating,
         status: order.status
       };
     })
-}
+  }
+
 }
 
 

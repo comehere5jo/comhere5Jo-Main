@@ -17,17 +17,20 @@ module.exports = (req, res, next) => {
 
   try {
     // 복호화 및 검증
-    const { id } = jwt.verify(token, process.env.JWT_SECRET);
+    const { id, member } = jwt.verify(token, process.env.JWT_SECRET);
 
-    Customer.findByPk(id).then((customer) => {
-      res.locals.customer = customer;
-      return next();
-    });
+    if (member === 'customer'){
+      Customer.findByPk(id).then((customer) => {
+        req.customer = customer;
+        return next();
+      });
+    } else if (member === 'manager'){
+      Manager.findByPk(id).then((manager) => {
+        req.manager = manager;
+        return next();
+      });
+    }
 
-    Manager.findByPk(id).then((manager) => {
-      res.locals.manager = manager;
-      return next();
-    });
   } catch (err) {
     res.status(401).send({
       errorMessage: '로그인 후 이용 가능한 기능입니다.',

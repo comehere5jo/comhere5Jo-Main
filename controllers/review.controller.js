@@ -6,59 +6,42 @@ class ReviewController {
   ////리뷰조회(주문번호에대한리뷰조회)
   getReviewByOrderId = async (req, res, next) => {
     try {
-      const { orderId } = req.params;
+      const {orderId} = req.params;
       console.log(orderId);
       if (!orderId) {
-        res.status(400).json({ errorMessage: 'An orderId is required' });
+        res.status(400).json({errorMessage: 'An orderId is required'});
         return;
       }
 
       const review = await this.reviewService.findReviewByOrderId(orderId);
-      res.status(200).json({ review });
+      res.status(200).json({review});
     } catch (error) {
       // Handle any errors that may occur
-      res.status(500).json({ errorMessage: error.message });
+      res.status(500).json({errorMessage: error.message});
     }
   };
-
-  getOrderReview = async (req, res, next) => {
-    const {orderId} = req.params;
-    console.log(orderId)
-    const getOrderReview = await this.reviewService.getOrderReview(orderId);
-    res.status(200).json({data:getOrderReview})
-}
-getMyOrderReview = async (req, res, next) => {
-  const {managerId} = req.params;
-    const getMyOrderReview = await this.reviewService.getMyOrderReview(managerId);
-    res.status(200).json({data:getMyOrderReview})
-}
 
   //리뷰작성
   writeReview = async (req, res, next) => {
     try {
-      const { rating, content, picture } = req.body;
-      //   const { orderId, customerId } = req.params;  //auth만들어지면하자.
-      const { orderId } = req.params;
-      console.log(`orderId: ${orderId}`);
-
-      //   if (!rating || !content || !picture || !orderId || !customerId) {
-      //     throw new Error('내용을 입력하세요.');
-      //   }
+      const customerId = req.customer.id;
+      const {rating, content, picture} = req.body;
+      const {orderId} = req.params;
       if (!rating || !content || !picture || !orderId) {
         throw new Error('내용을 입력하세요.');
       }
 
       const writeReviewData = await this.reviewService.writeReview(
-        rating,
-        content,
-        picture,
-        orderId,
-        // customerId,
+          rating,
+          content,
+          picture,
+          orderId,
+          customerId
       );
-      console.log('ControllerwriteReviewData', writeReviewData);
-      res.status(201).json({ data: writeReviewData });
+
+      res.status(201).json({data: writeReviewData});
     } catch (error) {
-      res.status(400).json({ errorMessage: error.message });
+      res.status(400).json({errorMessage: error.message});
     }
   };
 
@@ -66,24 +49,21 @@ getMyOrderReview = async (req, res, next) => {
   updateReview = async (req, res, next) => {
     try {
       const id = req.params.reviewId;
-      const { rating, content, picture } = req.body;
-      console.log(id);
-      console.log(rating);
-      //   if (!id || !rating || !content || !picture) {
-      //     throw new Error('Missing required parameters');
-      //   }
+
+      const {rating, content, picture} = req.body;
 
       const updatedReview = await this.reviewService.updateReview(
-        id,
-        rating,
-        content,
-        picture,
+          id,
+          rating,
+          content,
+          picture,
       );
-      console.log(updatedReview);
+      console.log('컨트롤러', updatedReview)
 
-      res.status(200).json({ data: updatedReview });
+
+      res.status(200).json({data: updatedReview});
     } catch (error) {
-      res.status(500).json({ errorMessage: error.message });
+      res.status(500).json({errorMessage: error.message});
     }
   };
 
@@ -94,11 +74,18 @@ getMyOrderReview = async (req, res, next) => {
 
       await this.reviewService.deleteReview(id);
 
-      res.status(201).json({ Message: '삭제가 성공했습니다.' }); // No Content
+      res.status(201).json({Message: '삭제가 성공했습니다.'}); // No Content
     } catch (error) {
       next(error);
     }
   };
+
+  //사장님이 본인이 처리한 주문에 대한 리뷰 조회
+  getMyOrderReview = async (req, res, next) => {
+    const {managerId} = req.params;
+    const getMyOrderReview = await this.reviewService.getMyOrderReview(managerId);
+    res.status(200).json({data: getMyOrderReview})
+  }
 }
 
 module.exports = ReviewController;

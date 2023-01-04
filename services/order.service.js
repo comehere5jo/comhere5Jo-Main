@@ -22,9 +22,24 @@ class OrderService {
   orderRepository = new OrderRepository(Order);
   managerRepository = new ManagerRepository(Manager);
 
+  //고객님이 주문
+  createOrder = async (customerId, phoneNumber, address, clothType, picture, requests) => {
+    const createOrderData = await this.orderRepository.createOrder(
+      customerId, phoneNumber, address, clothType, picture, requests);
+
+    return {
+      customerId: createOrderData.customerId,
+      phoneNumber: createOrderData.phoneNumber,
+      address: createOrderData.address,
+      clothType: createOrderData.clothType,
+      picture: createOrderData.picture,
+      requests: createOrderData.requests,
+      status: createOrderData.status
+    };
+  }
+
   getOrder = async () => {
     const getLaundry = await this.orderRepository.findAllOrderStatus0();
-    console.log("getLaundry.service",getLaundry)
   return getLaundry.map((laundry)=> {
     return {
       address: laundry.address,
@@ -75,21 +90,6 @@ class OrderService {
 
   }
 
-
-    createOrder = async (phoneNumber, address, clothType, picture, requests, status) => {
-    const createOrderData = await this.orderRepository.createOrder(
-      phoneNumber, address, clothType, picture, requests, status);
-
-    return {
-      phoneNumber: createOrderData.phoneNumber,
-      address: createOrderData.address,
-      clothType: createOrderData.clothType,
-      picture: createOrderData.picture,
-      requests: createOrderData.requests,
-      status: createOrderData.status
-    };
-  }
-
   findCustomerOrder = async () => {
     const customerOrder = await this.orderRepository.findAllOrder()
   
@@ -113,9 +113,6 @@ class OrderService {
     selectOrder = async (orderId, managerId) => {
       const selectOrder = await this.orderRepository.selectOrder(orderId)
   
-      console.log('1234', selectOrder[0].managerId)
-      console.log('스테이터스참', selectOrder[0].managerId === 0)
-  
       if (!selectOrder) {
         return console.log("없습니다.")
       }
@@ -123,7 +120,7 @@ class OrderService {
         return console.log("이미 진행중")
       }
       let new_status = selectOrder[0].status + 1
-      console.log("vvvv", new_status)
+
       await this.orderRepository.statusUpdate(new_status, orderId)
   
       const updateOreder = await this.orderRepository.selectOrder(managerId)
@@ -142,7 +139,7 @@ class OrderService {
     }
     updateOrder = async (orderId, managerId) => {
       const selectOrder = await this.orderRepository.selectOrder(orderId)
-      console.log('현스테이터스', selectOrder[0].status)
+
       if (selectOrder[0].status === 1) {
         const new_status = selectOrder[0].status + 1
         console.log("추가 스테이터스 2가되어야함", new_status)

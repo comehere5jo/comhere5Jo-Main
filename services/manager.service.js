@@ -24,7 +24,6 @@ class ManagerService {
   }
 
   getMyPoint = async (id) => {
-    id = 1;
     const getMyPoint = await this.managerRepository.getMyPoint(id);
     return {   
       point: getMyPoint.point,
@@ -79,19 +78,21 @@ class ManagerService {
 
       const check = await bcrypt.compare(loginPw, manager.loginPw);
 
-      if (manager) {
+      if (manager !== null) {
         if (check) {
           const token = jwt.sign(
-            { loginId: loginId, id: manager.id },
-            process.env.JWT_ACCESS_SECRET,
+            { loginId: loginId, id: manager.id, member: 'manager' },
+            process.env.JWT_SECRET,
             {
               expiresIn: '1h',
             },
           );
+          console.log(token)
           return token;
-        }
+        }else if(check === false) {
+        throw new Error('비번 확인해');}
       } else {
-        throw new Error('id나 비번 확인해');
+        throw new Error('id 확인해');
       }
       return;
     } catch (error) {

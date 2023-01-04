@@ -5,19 +5,56 @@ const OrderService = require('../services/order.service');
 
 class OrdersController {
   orderService = new OrderService();
+  //고객님이 주문
+  createOrder = async (req, res, next) => {
+    const customerId = req.customer.id;
 
-      //현재 손님들이 신청한 세탁물에 대한 조회
+    const { phoneNumber, address, clothType, picture, requests } = req.body;
+
+    const createOrderData = await this.orderService.createOrder( customerId,
+      phoneNumber,
+      address,
+      clothType,
+      picture,
+      requests
+    );
+    console.log('첵첵', createOrderData)
+
+    res.status(201).json({ data: createOrderData });
+    // res.status(200).render('../views/order.ejs');
+    //res.redirect('../views/order.ejs');  필요하지않다.
+  };
+
+  //수락 안된 모든 주문 조회
     //controller에서는 클라이언트에 대한 응답만을 작성하였다.
-    getOrder = async (req, res, next) => {
+  getOrder = async (req, res, next) => {
       const getOrder = await this.orderService.getOrder();
       console.log("getOrder.controller",getOrder)
       res.status(200).json({data:getOrder})
   }
+
+  //주문 진행 상태 상관 없이 모든 주문 조회
+  getOrders = async (req, res, next) => {
+    const orders = await this.orderService.findAllOrder();
+
+    return res.status(200).render('../views/orderHistory.ejs', { data: orders });
+  };
+
+  //특정 주문 조회
+  getOrderById = async (req, res, next) => {
+    const { orderId } = req.params;
+
+    const orderById = await this.orderService.findOrderById(orderId);
+    res.status(200).json({ data: orderById });
+  };
+
+  //
   getMangers = async (req,res,next) => {
     const managers = await this.orderService.findCustomerOrder()
     console.log("불러올값",managers)
     res.status(200).render('main',{data:managers})
   }
+
   putFirstOrder = async(req,res,next) => {
     const { managerId } = req.params
     const {orderId} = req.body
@@ -39,44 +76,6 @@ class OrdersController {
     }
     res.status(200).json({data:updateOrder})
   }
-
-
-
-
-  getOrders = async (req, res, next) => {
-    const orders = await this.orderService.findAllOrder();
-
-    // res.status(200).json({ data: orders });
-    return res.status(200).render('../views/orderHistory.ejs', { data: orders });
-  };
-
-
-  getOrderById = async (req, res, next) => {
-    const { orderId } = req.params;
-
-    const orderById = await this.orderService.findOrderById(orderId);
-    res.status(200).json({ data: orderById });
-  };
-
-
-
-  createOrder = async (req, res, next) => {
-    const { customerId } = req.params;
-    const { phoneNumber, address, clothType, picture, requests } = req.body;
-    console.log(req.body);
-
-    const createOrderData = await this.orderService.createOrder(
-      phoneNumber,
-      address,
-      clothType,
-      picture,
-      requests
-    );
-
-    // res.status(201).json({ data: createOrderData });
-    res.status(200).render('../views/order.ejs');
-    //res.redirect('../views/order.ejs');  필요하지않다.
-  };
 
 
   controller = async (req, res, next) => {

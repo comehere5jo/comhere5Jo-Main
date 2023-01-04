@@ -18,14 +18,14 @@ const requestMiddleware = (req, res, next) => {
 };
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.set('view engine', 'ejs'); //view engine이 사용할 Template Engine
-app.set('views', __dirname + '/views'); // Template가 있는 디렉토리
+// app.set('view engine', 'ejs'); //view engine이 사용할 Template Engine
+// app.set('views', __dirname + '/views'); // Template가 있는 디렉토리
 
 app.use(express.json());
 app.use(requestMiddleware);
-app.use(bodyParser.urlencoded({extend : false}));
-app.set('view engine', 'ejs'); //view engine이 사용할 Template Engine
-app.set('views', 'views');
+app.use(bodyParser.urlencoded({ extended : false}));
+// app.set('view engine', 'ejs'); //view engine이 사용할 Template Engine
+// app.set('views', 'views');
 app.use('/', router);
 app.use(cookieParser());
 app.engine('html', require('ejs').renderFile);
