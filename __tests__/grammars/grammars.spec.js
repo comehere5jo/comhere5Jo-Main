@@ -77,7 +77,7 @@ describe('Layered Architecture Pattern Manager Controller Unit Test', () => {
         comment: '아아아악',
         content: '으아아악',
         rating: 0,
-        status: 2,
+        status: 0,
       },
     ];
     mockManagerService.getOrderReview = jest.fn(() => managerReturnValue);
