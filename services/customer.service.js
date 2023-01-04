@@ -16,10 +16,10 @@ const CustomerRepository = require('../repositories/customer.repository');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
-
+const { Customer } = require('../models');
 
 class CustomerService {
-  customerRepository = new CustomerRepository();
+  customerRepository = new CustomerRepository(Customer);
 
 
   //손님포인트조회

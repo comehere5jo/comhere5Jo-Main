@@ -1,19 +1,16 @@
-const { Customer } = require('.././models');
-const { Op } = require('sequelize');
-
 class CustomerRepository {
-  // constructor(CustomerModel) {
-  //   this.CustomerModel = CustomerModel;
-  // }
+  constructor(customerModel) {
+    this.customerModel = customerModel;
+  }
 
   findAllCustomer = async () => {
-    const findCustomers = await Customer.findAll();
+    const findCustomers = await this.customerModel.findAll();
     return findCustomers;
   };
 
   findCertainCustomer = async (loginId) => {
     try {
-      const findCustomer = await Customer.findOne({ where: { loginId } });
+      const findCustomer = await this.customerModel.findOne({ where: { loginId } });
       return findCustomer;
     } catch (error) {
       return error;
@@ -21,11 +18,11 @@ class CustomerRepository {
   };
 
   findOneCustomer = async function (id) {
-    return await Customer.findOne({ where: { id } });
+    return await this.customerModel.findOne({ where: { id } });
   };
 
   createCustomer = async (loginId, encryptedPassword, name) => {
-    const createCustomerData = await Customer.create({
+    const createCustomerData = await this.customerModel.create({
       loginId,
       loginPw: encryptedPassword,
       name,
@@ -33,10 +30,9 @@ class CustomerRepository {
     return createCustomerData;
   };
 
-
   //손님포인트조회
   findCustomerPoint = async (id) => {
-    const customerPoint = await Customer.findByPk(id);
+    const customerPoint = await this.customerModel.findByPk(id);
     return customerPoint;
   };
 }
