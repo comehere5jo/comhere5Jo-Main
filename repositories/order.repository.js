@@ -13,12 +13,16 @@ class OrderRepository {
 
     //고객님이 신청한 모든 주문내역 조회
   findAllOrder = async (customerId) => {
-    const orders = await this.orderModel.findAll(
-        {where: {
-            customerId
-            }}
-    );
-    return orders;
+      try{
+          const orders = await this.orderModel.findAll(
+                {where: {
+                    customerId
+                    }}
+            );
+            return orders;
+      } catch (error){
+          return error;
+      }
   };
 
 //수락 안된 모든 주문 조회
@@ -36,8 +40,12 @@ class OrderRepository {
   };
 
   findOrderById = async (id) => {
-    const byIdOrders = await this.orderModel.findByPk(id);
-    return byIdOrders;
+      try{
+          const byIdOrders = await this.orderModel.findByPk(id);
+            return byIdOrders;
+      } catch (error){
+          return error;
+      }
   };
 
   createOrder = async (customerId, phoneNumber, address, clothType, picture, requests) => {
@@ -57,32 +65,32 @@ class OrderRepository {
       }
   };
 
-  updateOrder = async (
-    orderId,
-    phone_number,
-    address,
-    cloth_type,
-    picture,
-    requests,
-    status,
-  ) => {
-    const updateOrder = await this.orderModel.update(
-      {
-        phone_number,
-        address,
-        cloth_type,
-        picture,
-        requests,
-      //   status
-      // }, { where: { id } }
-        status,
-      },
-      { where: { orderId } },
-
-    );
-
-    return updateOrder;
-  };
+  // updateOrder = async (
+  //   orderId,
+  //   phone_number,
+  //   address,
+  //   cloth_type,
+  //   picture,
+  //   requests,
+  //   status,
+  // ) => {
+  //   const updateOrder = await this.orderModel.update(
+  //     {
+  //       phone_number,
+  //       address,
+  //       cloth_type,
+  //       picture,
+  //       requests,
+  //     //   status
+  //     // }, { where: { id } }
+  //       status,
+  //     },
+  //     { where: { orderId } },
+  //
+  //   );
+  //
+  //   return updateOrder;
+  // };
 
   // deleteOrder = async (id) => {
   //   const deleteOrder = await this.orderModel.destroy(
@@ -102,26 +110,38 @@ class OrderRepository {
 
     //위에 있는 findOrderById와 다를 게 없는 코드로 보임. 둘 중 하나 삭제 필요.
   selectOrder = async (id) => {
-    const orders = await this.orderModel.findAll({
-      where: { id }
-    });
+      try{
+          const orders = await this.orderModel.findAll({
+          where: { id }
+        });
     return orders;
+      } catch (error){
+          return error;
+      }
   }
 
   findIfProceedingOrder = async (managerId) => {
-      const orders = await this.orderModel.findAll(
+      try{
+          const orders = await this.orderModel.findAll(
       {where: {[Op.and]: [{managerId: managerId}, {status: {[Op.not]:5}}]}}
       );
       return orders;
+      } catch (error){
+          return error;
+      }
   }
 
   statusUpdate = async (new_status,orderId, managerId) => {
-    const statusUpdate = await this.orderModel.update({
-      status: new_status,
+      try{
+          const statusUpdate = await this.orderModel.update({
+        status: new_status,
         managerId: managerId
     },
     {where:{id:orderId}});
     return statusUpdate;
+      } catch (error){
+          return error;
+      }
   }
   // statusFind = async (id) => {
   //   const status = await Order.findAll({

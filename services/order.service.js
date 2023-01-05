@@ -93,10 +93,13 @@ class OrderService {
     });
   };
 
-    //특정 주문 조회
+    //특정 주문 조회(확인완료)
   findOrderById = async (id) => {
-
-    const byIdOrder = await this.orderRepository.findOrderById(id);
+    try{
+      const byIdOrder = await this.orderRepository.findOrderById(id);
+      if(!byIdOrder){
+        throw new Error('주문이 존재하지 않습니다.')
+      }
       return {
         orderId: byIdOrder.id,
         phoneNumber: byIdOrder.phoneNumber,
@@ -107,7 +110,9 @@ class OrderService {
         createdAt: byIdOrder.createdAt,
         updatedAt: byIdOrder.updatedAt
       };
-
+    } catch (error) {
+      return error;
+    }
   }
 
   // //????
@@ -174,10 +179,8 @@ class OrderService {
   acceptOrder = async (orderId, managerId) => {
     try{
       const proceedingOrder = await this.orderRepository.findIfProceedingOrder(managerId);
-      console.log('111111', proceedingOrder)
 
       if (proceedingOrder) {
-        console.log('진행중주문이씀')
         throw new Error('진행 중인 주문이 있습니당.')
       }
 
@@ -207,6 +210,7 @@ class OrderService {
 
   //주문 진행 상태 변경(확인 완료))
     updateOrder = async (orderId, status) => {
+    try{
       const selectOrder = await this.orderRepository.selectOrder(orderId)
 
       if (selectOrder[0].status === 1) {
@@ -281,10 +285,13 @@ class OrderService {
           }
         })
       }
-      if (selectOrder[0].status > 4 || selectOrder[0].status < 0) {
-        return console.log("완료된 주문")
+      if (selectOrder[0].status > 4 || selectOrder[0].status <= 0) {
+        throw new Error('완료되었거나 수락하지 않은 주문입니다.')
       }
-    };
+    } catch (error) {
+      return error;
+    }
+  };
 
 }
 

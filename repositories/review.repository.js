@@ -10,73 +10,100 @@ class ReviewRepository {
         this.reviewModel = reviewModel;
     }
 
-    //리뷰조회(주문번호에대한리뷰조회)
+    //리뷰조회(주문번호에대한리뷰조회)(확인완료)
     findReviewByOrderId = async (orderId) => {
-        const review = await this.reviewModel.findOne({where: {orderId}});
+        try{
+            const review = await this.reviewModel.findOne({where: {orderId}});
+            return review;
+        } catch (error){
+            return error;
+        }
 
-        return review;
     };
 
     //리뷰찾기
     findById = async (id) => {
-        const review = await this.reviewModel.findByPk(id);
-
-        return review;
+        try{
+            const review = await this.reviewModel.findByPk(id);
+            return review;
+        } catch (error){
+            return error;
+        }
     };
 
-    //특정 주문 찾기
+    //특정 주문 찾기(확인완료)
     findCertainOrder = async (orderId) => {
-        const order = await Order.findOne({
-            where: {
-                id: orderId,
+        try {
+            const order = await Order.findOne({
+                where: {
+                    id: orderId,
                 },
             });
-        return order;
+            return order;
+        } catch (error) {
+            return error;
         }
+    }
 
-    //리뷰작성
-    writeReview = async (rating, content, picture, orderId, customerId) => {
-        return await this.reviewModel.create({
+    //리뷰작성(확인완료)
+    writeReview = async (rating, content, picture, orderId, customerId, managerId) => {
+        try{
+            return await this.reviewModel.create({
             rating,
             content,
             picture,
             orderId,
             customerId,
+            managerId
         })
+        } catch (error) {
+            return error;
+        }
     };
 
-    //리뷰 수정
+    //리뷰 수정(확인완료)
     updateReview = async (id, rating, content , picture, comment, status, managerId) => {
-        console.log('레포', rating)
-        const updatedReviewData = await this.reviewModel.update(
-            { rating, content, picture, comment, status, managerId },
-            { where: { id } },
-        );
-    return updatedReviewData;
+        try{
+            const updatedReviewData = await this.reviewModel.update(
+                { rating, content, picture, comment, status, managerId },
+                { where: { id } },
+            );
+            return updatedReviewData;
+        } catch (error){
+            return error;
+        }
     }
 
-    //리뷰삭제
+    //리뷰삭제(확인완료)
     deleteReview = async (id) => {
-        return await this.reviewModel.destroy({where: {id}});
+        try{
+            return await this.reviewModel.destroy({where: {id}});
+        } catch (error){
+            return error;
+        }
     };
 
-    //사장님이 본인이 처리한 주문에 대한 리뷰 조회
-    findReviewManagerId = async (managerId) => {
-        const review = await this.reviewModel.findAll({
-            where: {
-                managerId: managerId
-            }
-        });
-        return review;
+    //사장님이 본인이 처리한 주문에 대한 리뷰 조회(확인완료)
+    findReviewManagerId = async (id) => {
+        try{
+            const review = await this.reviewModel.findAll({
+                where: {
+                    managerId: id
+                }
+            });
+            return review;
+        } catch (error){
+            return error;
+        }
     };
 
-    managerReviewUpdate = async (id, managerId, comment) => {
-        const managerReviewUpdateData = await this.reviewModel.update(
-            {managerId, comment},
-            {where: {id: id}},
-        );
-        return managerReviewUpdateData;
-    };
+    // managerReviewUpdate = async (id, managerId, comment) => {
+    //     const managerReviewUpdateData = await this.reviewModel.update(
+    //         {managerId, comment},
+    //         {where: {id: id}},
+    //     );
+    //     return managerReviewUpdateData;
+    // };
 }
 
 module.exports = ReviewRepository;

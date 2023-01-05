@@ -74,15 +74,26 @@ class OrdersController {
     }
   };
 
-  //특정 주문 조회
+  //특정 주문 조회(확인 완료)
   getOrderById = async (req, res, next) => {
     try{
       const id = req.params.orderId;
       const orderById = await this.orderService.findOrderById(id);
+
+      console.log('컨트롤', orderById)
+
+      if(typeof orderById.message !== 'undefined'){
+        throw orderById;
+      }
+
       res.status(200).json({ data: orderById });
     } catch (error) {
       console.error(error);
-      res.status(400).json({message: '주문 조회 실패'})
+      if(error.message === '주문이 존재하지 않습니다.'){
+        return res.status(404).json({message: error.message})
+      } else{
+        return res.status(400).json({message: '주문 조회 실패'})
+      }
     }
   };
 
@@ -97,30 +108,42 @@ class OrdersController {
   putFirstOrder = async(req,res,next) => {
     try{
       const managerId = req.manager.id
-    const {orderId} = req.params
-    const firstOrder = await this.orderService.acceptOrder(orderId, managerId)
-      console.log('333333', firstOrder)
+      const {orderId} = req.params
+      const firstOrder = await this.orderService.acceptOrder(orderId, managerId)
+        console.log('333333', firstOrder)
 
-    if (typeof firstOrder.message !== "undefined"){
-      throw firstOrder;
-    }
-    res.status(200).json({data:firstOrder})
+      if (typeof firstOrder.message !== "undefined"){
+        throw firstOrder;
+      }
+      res.status(200).json({data:firstOrder})
     } catch (error) {
+      console.error(error);
       if(error.message === '진행 중인 주문이 있습니당.'){
-        return res.status(400).send({message: error.message})
+        return res.status(400).send({message: error.message});
+      } else {
+        return res.status(400).send({message: '주문 수락 실패'});
       }
     }
   }
 
   //주문 진행상태 변경(확인 완료))
   putOrderUpdate = async(req,res,next) => {
-    const { orderId } = req.params;
-    const updateOrder = await this.orderService.updateOrder(orderId);
+    try{
+      const { orderId } = req.params;
+      const updateOrder = await this.orderService.updateOrder(orderId);
 
-    if(!updateOrder){
-      return res.status(400).json({errorMessage:"주문을 이미 완료하셨습니다."})
+      if(typeof updateOrder.message !== 'undefined'){
+        throw updateOrder;
+      }
+      res.status(200).json({data:updateOrder});
+    } catch (error) {
+        console.error(error);
+        if(error.message === "완료되었거나 수락하지 않은 주문입니다."){
+          return res.status(409).json({errorMessage:error.message})
+        } else {
+          return res.status(400).json({errorMessage: "주문 진행 상태 변경 실패"})
+        }
     }
-    res.status(200).json({data:updateOrder});
   };
 
 
