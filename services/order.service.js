@@ -22,7 +22,7 @@ class OrderService {
   orderRepository = new OrderRepository(Order);
   managerRepository = new ManagerRepository(Manager);
 
-  //고객님이 주문
+  //고객님이 주문(확인완료)
   createOrder = async (customerId, phoneNumber, address, clothType, picture, requests) => {
     const createOrderData = await this.orderRepository.createOrder(
       customerId, phoneNumber, address, clothType, picture, requests);
@@ -114,19 +114,60 @@ class OrderService {
   //   })
   // }
 
-  //주문 수락(확인완료)
-  selectOrder = async (orderId, managerId) => {
+  //주문 수락(작동오류)
+  // selectOrder = async (orderId, managerId) => {
+  //   try{
+  //     const selectOrder = await this.orderRepository.selectOrder(orderId)
+  //     if (!selectOrder) {
+  //       return console.log("없습니다.")
+  //     }
+  //     console.log(selectOrder)
+  //
+  //     if (selectOrder.managerId === managerId) {
+  //       throw new Error('이미 수락하신 주문이 있습니당')
+  //     }
+  //
+  //     if (selectOrder[0].managerId !== 0 && 0 < selectOrder[0].status && Number(selectOrder[0].status) < 4 ) {
+  //       return console.log("이미 진행중")
+  //     }
+  //     let new_status = selectOrder[0].status + 1
+  //
+  //     await this.orderRepository.statusUpdate(new_status, orderId, managerId)
+  //
+  //     const updateOrder = await this.orderRepository.selectOrder(orderId)
+  //     return updateOrder.map((order) => {
+  //       return {
+  //         id: order.id,
+  //         customerId: order.customerId,
+  //         phoneNumber: order.phoneNumber,
+  //         address: order.address,
+  //         clothType: order.clothType,
+  //         picture: order.picture,
+  //         requests: order.requests,
+  //         status: order.status
+  //       }
+  //     })
+  //   } catch (error) {
+  //     return error;
+  //   }
+  // }
+
+  //사장님이 주문 수락(확인완료)
+  acceptOrder = async (orderId, managerId) => {
+    try{
+      const proceedingOrder = await this.orderRepository.findIfProceedingOrder(managerId);
+      console.log('111111', proceedingOrder)
+
+      if (proceedingOrder) {
+        console.log('진행중주문이씀')
+        throw new Error('진행 중인 주문이 있습니당.')
+      }
+
+      console.log('222222')
       const selectOrder = await this.orderRepository.selectOrder(orderId)
-      if (!selectOrder) {
-        return console.log("없습니다.")
-      }
-      if (selectOrder[0].managerId !== 0 && 0 < selectOrder[0].status && Number(selectOrder[0].status) < 4 || selectOrder[0].status > 5) {
-        return console.log("이미 진행중")
-      }
       let new_status = selectOrder[0].status + 1
 
       await this.orderRepository.statusUpdate(new_status, orderId, managerId)
-  
       const updateOrder = await this.orderRepository.selectOrder(orderId)
       return updateOrder.map((order) => {
         return {
@@ -140,10 +181,14 @@ class OrderService {
           status: order.status
         }
       })
+
+    } catch(error) {
+      return error;
+    }
   }
 
-  //주문 진행 상태 변경(확인 필요. customerId=null, status=0으로 출력됨(실제 db에는 제대로 수정됨))
-    updateOrder = async (orderId, managerId, status) => {
+  //주문 진행 상태 변경(확인 완료))
+    updateOrder = async (orderId, status) => {
       const selectOrder = await this.orderRepository.selectOrder(orderId)
 
       if (selectOrder[0].status === 1) {

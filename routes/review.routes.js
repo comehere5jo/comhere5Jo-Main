@@ -7,15 +7,18 @@ const reviewController = new ReviewController();
 
 //리뷰조회(주문번호에대한리뷰조회)
 router.get('/:orderId/review', reviewController.getReviewByOrderId);
+
+//리뷰조회(사장님이 본인이 처리한 주문에 대한 리뷰 조회)
 router.get('/:managerId/me/review', authMiddleware, reviewController.getMyOrderReview);
 //리뷰작성
-router.post(':orderId/review', authMiddleware, reviewController.writeReview);
+router.post('/:orderId/review', authMiddleware, reviewController.writeReview);
 
 //리뷰수정
 router.put('/:orderId/review/:reviewId', authMiddleware, reviewController.updateReview);
 
-// //리뷰삭제
+//리뷰삭제
 router.delete('/:orderId/review/:reviewId', authMiddleware, reviewController.deleteReview);
+
 
 
 

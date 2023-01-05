@@ -5,10 +5,9 @@ const OrderService = require('../services/order.service');
 
 class OrdersController {
   orderService = new OrderService();
-  //고객님이 주문
+  //고객님이 주문(확인완료)
   createOrder = async (req, res, next) => {
     const customerId = req.customer.id;
-
     const { phoneNumber, address, clothType, picture, requests } = req.body;
 
     const createOrderData = await this.orderService.createOrder( customerId,
@@ -57,20 +56,27 @@ class OrdersController {
 
   //주문 수락(확인완료)
   putFirstOrder = async(req,res,next) => {
-    const managerId = req.manager.id
+    try{
+      const managerId = req.manager.id
     const {orderId} = req.params
-    const firstOrder = await this.orderService.selectOrder(orderId, managerId)
-    if(!firstOrder){
-      return res.status(400).json({errorMessage:"사장님은 이미 주문을 진행중입니다."})
+    const firstOrder = await this.orderService.acceptOrder(orderId, managerId)
+      console.log('333333', firstOrder)
+
+    if (typeof firstOrder.message !== "undefined"){
+      throw firstOrder;
     }
     res.status(200).json({data:firstOrder})
+    } catch (error) {
+      if(error.message === '진행 중인 주문이 있습니당.'){
+        return res.status(400).send({message: error.message})
+      }
+    }
   }
 
-  //주문 진행상태 변경(확인 필요. customerId=null, status=0으로 출력됨(실제 db에는 제대로 수정됨))
+  //주문 진행상태 변경(확인 완료))
   putOrderUpdate = async(req,res,next) => {
-    const managerId = req.manager.id;
     const { orderId } = req.params;
-    const updateOrder = await this.orderService.updateOrder(orderId, managerId);
+    const updateOrder = await this.orderService.updateOrder(orderId);
 
     if(!updateOrder){
       return res.status(400).json({errorMessage:"주문을 이미 완료하셨습니다."})

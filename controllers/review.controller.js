@@ -1,9 +1,11 @@
 const ReviewService = require('../services/review.service.js');
+const OrderRepository = require("../repositories/order.repository");
+const {Order} = require("../models");
 
 class ReviewController {
   reviewService = new ReviewService();
 
-  ////리뷰조회(주문번호에대한리뷰조회)
+  //리뷰조회(주문번호에대한리뷰조회)
   getReviewByOrderId = async (req, res, next) => {
     try {
       const {orderId} = req.params;
@@ -21,15 +23,12 @@ class ReviewController {
     }
   };
 
-  //리뷰작성
+  //리뷰작성(확인완료)
   writeReview = async (req, res, next) => {
     try {
       const customerId = req.customer.id;
       const {rating, content, picture} = req.body;
       const {orderId} = req.params;
-      if (!rating || !content || !picture || !orderId) {
-        throw new Error('내용을 입력하세요.');
-      }
 
       const writeReviewData = await this.reviewService.writeReview(
           rating,
@@ -38,6 +37,10 @@ class ReviewController {
           orderId,
           customerId
       );
+
+      if (typeof writeReviewData.message !== 'undefined') {
+        throw writeReviewData
+      }
 
       res.status(201).json({data: writeReviewData});
     } catch (error) {
@@ -50,20 +53,43 @@ class ReviewController {
     try {
       const id = req.params.reviewId;
 
-      const {rating, content, picture} = req.body;
+      const {rating, content, picture, comment} = req.body;
 
-      const updatedReview = await this.reviewService.updateReview(
+      if (req.customer){
+        const updatedReview = await this.reviewService.updateReview(
           id,
           rating,
           content,
           picture,
-      );
-      console.log('컨트롤러', updatedReview)
+            null,
+            null
+          )
+        if(typeof updatedReview.message !== "undefined"){
+          throw updatedReview;
+        }
+        return res.status(200).json({data: updatedReview});
+      } else if (req.manager){
+        const managerId = req.manager.id
+        const updatedReview = await this.reviewService.updateReview(
+            id,
+            null,
+            null,
+            null,
+            comment,
+            managerId
+        )
+        if(typeof updatedReview.message !== "undefined"){
+          throw updatedReview;
+        }
+        return res.status(200).json({data: updatedReview});
+      }
 
-
-      res.status(200).json({data: updatedReview});
     } catch (error) {
-      res.status(500).json({errorMessage: error.message});
+      if(error.message = "작성된 리뷰가 없습니다."){
+        res.status(400).send({errorMessage: error.message});
+      } else {
+        res.status(412).send({errorMessage: "작성 및 수정에 실패하였습니다."})
+      }
     }
   };
 
@@ -86,8 +112,8 @@ class ReviewController {
     const getMyOrderReview = await this.reviewService.getMyOrderReview(managerId);
     res.status(200).json({data: getMyOrderReview})
   }
-}
 
+}
 module.exports = ReviewController;
 
 //내가 작성한 리뷰조회 (나의 주문에 대한 리뷰보기)

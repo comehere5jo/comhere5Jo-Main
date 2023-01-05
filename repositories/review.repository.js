@@ -3,7 +3,7 @@
 // 데이터 액세스 계층은 쿼리를 수행하여 데이터베이스와 상호 작용합니다. 제가 사용하고 있는 Sequelize는 Data Access Layer의 역할의 일부를 대체해줍니다.
 // sequelize를 사용하지 않으면 아래와 같이 data Access Layer를 담당하는 파일에 쿼리문을 모아서 필요할 때 service 계층에서 호출해서 사용합니다.
 
-const { Review } = require('.././models');
+const { Order } = require('.././models');
 
 class ReviewRepository {
     constructor(reviewModel) {
@@ -24,6 +24,15 @@ class ReviewRepository {
         return review;
     };
 
+    //특정 주문 찾기
+    findCertainOrder = async (orderId) => {
+        const order = await Order.findOne({
+            where: {
+                id: orderId,
+                },
+            });
+        return order;
+        }
 
     //리뷰작성
     writeReview = async (rating, content, picture, orderId, customerId) => {
@@ -33,19 +42,18 @@ class ReviewRepository {
             picture,
             orderId,
             customerId,
-        });
+        })
     };
 
-    //리뷰수정
-    updateReview = async (id, rating, content, picture) => {
+    //리뷰 수정
+    updateReview = async (id, rating, content , picture, comment, status, managerId) => {
+        console.log('레포', rating)
         const updatedReviewData = await this.reviewModel.update(
-            {rating, content, picture},
-            {where: {id}},
+            { rating, content, picture, comment, status, managerId },
+            { where: { id } },
         );
-
-        console.log('레포', updatedReviewData)
-        return updatedReviewData;
-    };
+    return updatedReviewData;
+    }
 
     //리뷰삭제
     deleteReview = async (id) => {

@@ -3,6 +3,7 @@
 // 제가 사용하고 있는 Sequelize는 Data Access Layer의 역할의 일부를 대체해줍니다.
 // sequelize를 사용하지 않으면 아래와 같이 data Access Layer를 담당하는 파일에 쿼리문을
 // 모아서 필요할 때 service 계층에서 호출해서 사용합니다.
+const { Op } = require('sequelize')
 
 class OrderRepository {
   constructor(orderModel) {
@@ -95,7 +96,14 @@ class OrderRepository {
     });
     return orders;
   }
-  
+
+  findIfProceedingOrder = async (managerId) => {
+      const orders = await this.orderModel.findAll(
+      {where: {[Op.and]: [{managerId: managerId}, {status: {[Op.not]:5}}]}}
+      );
+      return orders;
+  }
+
   statusUpdate = async (new_status,orderId, managerId) => {
     const statusUpdate = await this.orderModel.update({
       status: new_status,
