@@ -19,11 +19,14 @@ const ManagerRepository = require('../repositories/manager.repository');
 const { Manager }  = require('../models');
 
 class OrderService {
-  orderRepository = new OrderRepository(Order);
-  managerRepository = new ManagerRepository(Manager);
+  constructor(){
+    this.orderRepository = new OrderRepository(Order);
+    this.managerRepository = new ManagerRepository(Manager);
+  }
+  
 
   getOrder = async () => {
-    const getLaundry = await this.orderRepository.findAllOrderStatus0();
+    const getLaundry = await this.orderRepository.findAllOrder();
     console.log("getLaundry.service",getLaundry)
   return getLaundry.map((laundry)=> {
     return {
@@ -111,14 +114,14 @@ class OrderService {
     })
   }
     selectOrder = async (orderId, managerId) => {
-      const selectOrder = await this.orderRepository.selectOrder(orderId)
-  
-      console.log('1234', selectOrder[0].managerId)
+      const selectOrder = await this.orderRepository.selectOrder(orderId)  
+      console.log('1234', selectOrder)
       console.log('스테이터스참', selectOrder[0].managerId === 0)
   
       if (!selectOrder) {
         return console.log("없습니다.")
       }
+  
       if (selectOrder[0].managerId !== 0 && 0 < selectOrder[0].status && Number(selectOrder[0].status) < 4 || selectOrder[0].status > 5) {
         return console.log("이미 진행중")
       }
@@ -126,7 +129,7 @@ class OrderService {
       console.log("vvvv", new_status)
       await this.orderRepository.statusUpdate(new_status, orderId)
   
-      const updateOreder = await this.orderRepository.selectOrder(managerId)
+      const updateOreder = await this.orderRepository.selectOrder(orderId)
       return updateOreder.map((order) => {
         return {
           id: order.id,

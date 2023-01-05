@@ -75,33 +75,33 @@ class ReviewService {
       createdAt: findReview.createdAt,
       updatedAt: findReview.updatedAt,
     };
-};
+  };
 
-    //주문 1건에 대한 리뷰 보기
-    getOrderReview = async (orderId) => {
-      const getOrderReview = await this.reviewRepository.findReviewOrderId(orderId);
-      return {   
-          orderId: getOrderReview.orderId,
-          createdAt:getOrderReview.createdAt,
-          comment: getOrderReview.comment,
-          content: getOrderReview.content,
-          rating: getOrderReview.rating,
-          status: getOrderReview.status
-        };
+  //주문 1건에 대한 리뷰 보기
+  getOrderReview = async (orderId) => {
+    const getOrderReview = await this.reviewRepository.findReviewOrderId(orderId);
+    return {
+      orderId: getOrderReview.orderId,
+      createdAt: getOrderReview.createdAt,
+      comment: getOrderReview.comment,
+      content: getOrderReview.content,
+      rating: getOrderReview.rating,
+      status: getOrderReview.status
+    };
   }
   getMyOrderReview = async (managerId) => {
     const getOrderReview = await this.reviewRepository.findReviewManagerId(managerId);
-    return getOrderReview.map((order)=> {
-    return {   
+    return getOrderReview.map((order) => {
+      return {
         orderId: order.orderId,
-        createdAt:order.createdAt,
+        createdAt: order.createdAt,
         comment: order.comment,
         content: order.content,
         rating: order.rating,
         status: order.status
       };
     })
-}
+  }
 }
 
 

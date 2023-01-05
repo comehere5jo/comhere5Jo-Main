@@ -4,40 +4,43 @@
 const OrderService = require('../services/order.service');
 
 class OrdersController {
-  orderService = new OrderService();
+  constructor(){
+    this.orderService = new OrderService();
+  }
+  
 
-      //현재 손님들이 신청한 세탁물에 대한 조회
-    //controller에서는 클라이언트에 대한 응답만을 작성하였다.
-    getOrder = async (req, res, next) => {
-      const getOrder = await this.orderService.getOrder();
-      console.log("getOrder.controller",getOrder)
-      res.status(200).json({data:getOrder})
+  //현재 손님들이 신청한 세탁물에 대한 조회
+  //controller에서는 클라이언트에 대한 응답만을 작성하였다.
+  getOrder = async (req, res, next) => {
+    const getOrder = await this.orderService.getOrder();
+    console.log("getOrder.controller", getOrder)
+    res.status(200).json({ data: getOrder })
   }
-  getMangers = async (req,res,next) => {
+  getMangers = async (req, res, next) => {
     const managers = await this.orderService.findCustomerOrder()
-    console.log("불러올값",managers)
-    res.status(200).render('main',{data:managers})
+    console.log("불러올값", managers)
+    res.status(200).render('main', { data: managers })
   }
-  putFirstOrder = async(req,res,next) => {
-    const { managerId } = req.params
-    const {orderId} = req.body
+  putFirstOrder = async (req, res, next) => {
+    const { orderId } = req.params
+    const { managerId } = req.body
     const firstOrder = await this.orderService.selectOrder(orderId, managerId)
     console.log("주문 수락", firstOrder)
-    if(!firstOrder){
-      return res.status(400).json({errorMessage:"사장님은 이미 주문을 진행중입니다."})
+    if (!firstOrder) {
+      return res.status(400).json({ errorMessage: "사장님은 이미 주문을 진행중입니다." })
     }
-    res.status(200).json({data:firstOrder})
+    res.status(200).json({ data: firstOrder })
   }
 
-  putOrderUpdate = async(req,res,next) => {
+  putOrderUpdate = async (req, res, next) => {
     const { managerId, orderId } = req.params
-    const {status} = req.body
+    const { status } = req.body
     const updateOrder = await this.orderService.updateOrder(orderId, managerId, status)
-    console.log('주문현황',updateOrder)
-    if(!updateOrder){
-      return res.status(400).json({errorMessage:"주문을 이미 완료하셨습니다."})
+    console.log('주문현황', updateOrder)
+    if (!updateOrder) {
+      return res.status(400).json({ errorMessage: "주문을 이미 완료하셨습니다." })
     }
-    res.status(200).json({data:updateOrder})
+    res.status(200).json({ data: updateOrder })
   }
 
 

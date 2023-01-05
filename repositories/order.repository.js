@@ -18,7 +18,7 @@ class OrderRepository {
   findAllOrderStatus0 = async () => {
     const orders = await this.orderModel.findAll({
       where: {
-        status: '0'
+        status: 0
       }
     });
     return orders;
