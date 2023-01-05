@@ -7,7 +7,8 @@ class OrdersController {
   orderService = new OrderService();
   //고객님이 주문(확인완료)
   createOrder = async (req, res, next) => {
-    const customerId = req.customer.id;
+    try{
+      const customerId = req.customer.id;
     const { phoneNumber, address, clothType, picture, requests } = req.body;
 
     const createOrderData = await this.orderService.createOrder( customerId,
@@ -19,32 +20,70 @@ class OrdersController {
     );
     console.log('첵첵', createOrderData)
 
+      if(createOrderData.message === '모든 정보를 입력해주세요.'){
+        throw createOrderData;
+      }
+
     res.status(201).json({ data: createOrderData });
     // res.status(200).render('../views/order.ejs');
     //res.redirect('../views/order.ejs');  필요하지않다.
+    } catch (error) {
+      console.error(error)
+      if (error.message === '모든 정보를 입력해주세요.'){
+        return res.status(412).json({message: error.message})
+      } else {
+        return res.status(400).json({message: '주문 실패'})
+      }
+    }
   };
 
-  //수락 안된 모든 주문 조회
+  //수락 안된 모든 주문 조회(확인완료)
     //controller에서는 클라이언트에 대한 응답만을 작성하였다.
   getOrder = async (req, res, next) => {
-      const getOrder = await this.orderService.getOrder();
-      console.log("getOrder.controller",getOrder)
-      res.status(200).json({data:getOrder})
+    try{
+      if(req.manager && req.manager.id){
+        const getOrder = await this.orderService.getOrder();
+        res.status(200).json({data:getOrder})
+      } else {
+        throw new Error('사장님만 이용하실 수 있는 서비스입니다.')
+      }
+    } catch (error) {
+      console.error(error)
+      if(error.message === '사장님만 이용하실 수 있는 서비스입니다.'){
+        return res.status(400).json({error: error.message})
+      }else{
+        return res.status(400).json({error: '주문 내역 조회 실패'})
+      }
+    }
   }
 
-  //주문 진행 상태 상관 없이 모든 주문 조회(customerId로만 필터되도록 수정필요)
-  getOrders = async (req, res, next) => {
-    const orders = await this.orderService.findAllOrder();
-
+  //주문 진행 상태 상관 없이 고객님이 주문한 모든 주문 조회(확인완료)
+  getMyOrders = async (req, res, next) => {
+    try {
+      if(req.customer && req.customer.id){
+        const customerId = req.customer.id;
+      const orders = await this.orderService.findMyOrder(customerId);
+      console.log(orders)
     return res.status(200).render('../views/orderHistory.ejs', { data: orders });
+      } else {
+        throw new Error('고객님만 이용하실 수 있는 서비스입니다.')
+      }
+    } catch (error) {
+      console.error(error)
+      return res.status(400).json({message: error.message})
+    }
   };
 
   //특정 주문 조회
   getOrderById = async (req, res, next) => {
-    const id = req.params.orderId;
-
-    const orderById = await this.orderService.findOrderById(id);
-    res.status(200).json({ data: orderById });
+    try{
+      const id = req.params.orderId;
+      const orderById = await this.orderService.findOrderById(id);
+      res.status(200).json({ data: orderById });
+    } catch (error) {
+      console.error(error);
+      res.status(400).json({message: '주문 조회 실패'})
+    }
   };
 
   // //????

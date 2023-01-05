@@ -17,6 +17,7 @@ const { Order } = require('../models');
 
 const ManagerRepository = require('../repositories/manager.repository');
 const { Manager }  = require('../models');
+const {get} = require("axios");
 
 class OrderService {
   orderRepository = new OrderRepository(Order);
@@ -24,7 +25,12 @@ class OrderService {
 
   //고객님이 주문(확인완료)
   createOrder = async (customerId, phoneNumber, address, clothType, picture, requests) => {
-    const createOrderData = await this.orderRepository.createOrder(
+    try{
+      if(!phoneNumber || !address || !clothType || !picture) {
+        throw new Error('모든 정보를 입력해주세요.')
+      }
+
+      const createOrderData = await this.orderRepository.createOrder(
       customerId, phoneNumber, address, clothType, picture, requests);
 
     return {
@@ -36,27 +42,39 @@ class OrderService {
       requests: createOrderData.requests,
       status: createOrderData.status
     };
+    } catch (error) {
+      return error;
+    }
   }
 
   //수락 안 된 모든 주문 조회
   getOrder = async () => {
-    const getLaundry = await this.orderRepository.findAllOrderStatus0();
-  return getLaundry.map((laundry)=> {
-    return {
-      address: laundry.address,
-      clothType: laundry.clothType,
-      phoneNumber: laundry.phoneNumber,
-      picture: laundry.picture,
-      requests: laundry.requests,
-      status: laundry.status,
-      createdAt: laundry.createdAt
-    };
-  })
-  };
+    try {
+      const getLaundry = await this.orderRepository.findAllOrderStatus0();
+      if (!getLaundry) {
+        throw new Error('수락 안 된 주문이 없습니다.')
+      }
 
-    //주문 진행 상태 상관 없이 모든 주문 조회
-  findAllOrder = async () => {
-    const allOrder = await this.orderRepository.findAllOrder();
+      return getLaundry.map((laundry) => {
+        return {
+          address: laundry.address,
+          clothType: laundry.clothType,
+          phoneNumber: laundry.phoneNumber,
+          picture: laundry.picture,
+          requests: laundry.requests,
+          status: laundry.status,
+          createdAt: laundry.createdAt
+        }
+      })
+    } catch (error) {
+      return error;
+    }
+  }
+
+
+    //주문 진행 상태 상관 없이 고객님이 주문한 모든 주문 조회(확인완료)
+  findMyOrder = async (customerId) => {
+    const allOrder = await this.orderRepository.findAllOrder(customerId);
 
     allOrder.sort((a, b) => {
       return b.createdAt - a.createdAt;

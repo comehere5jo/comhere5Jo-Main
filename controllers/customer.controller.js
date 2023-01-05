@@ -8,22 +8,20 @@ const CustomerService = require('../services/customer.service');
 
 class CustomerController {
   customerService = new CustomerService();
-  //손님포인트조회
+  //손님포인트조회(확인완료)
   getCustomerPoint = async (req, res, next) => {
-    // const id = req.customerId;
-    // const id = 1;
-    // console.log(id);
-
 
     try {
       const { id } = req.customer
       const point = await this.customerService.getCustomerPoint(id);
       res.status(200).json({ point });
     } catch (error) {
-      res.status(500).json({ errorMessage: error.message });
+      res.status(400).json({ errorMessage: error.message });
     }
   };
 
+
+  //회원가입(확인완료)
   customerSignup = async (req, res) => {
     const { loginId, loginPw, confirmPw, name } = req.body;
 
@@ -68,6 +66,7 @@ class CustomerController {
     }
   };
 
+  //로그인(확인완료)
   customerSignin = async (req, res, next) => {
     try {
       const { loginId, loginPw } = req.body;
@@ -98,6 +97,13 @@ class CustomerController {
 
     }
   };
+
+  customerSignout = (req,res,next) => {
+    res.clearCookie('token');
+    // res.redirect('/login'); <-- 로그인페이지 리다이렉트. 페이지 추가 필요.
+
+     res.status(200).json({ message: '로그아웃 완료!' });
+  }
 }
 
 module.exports = CustomerController;

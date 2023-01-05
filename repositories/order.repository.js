@@ -8,31 +8,41 @@ const { Op } = require('sequelize')
 class OrderRepository {
   constructor(orderModel) {
     this.orderModel =orderModel;
- } 
+ }
 
-  findAllOrder = async () => {
-    const orders = await this.orderModel.findAll();
+
+    //고객님이 신청한 모든 주문내역 조회
+  findAllOrder = async (customerId) => {
+    const orders = await this.orderModel.findAll(
+        {where: {
+            customerId
+            }}
+    );
     return orders;
   };
 
-
+//수락 안된 모든 주문 조회
   findAllOrderStatus0 = async () => {
-    const orders = await this.orderModel.findAll({
-      where: {
-        status: '0'
+      try{
+          const orders = await this.orderModel.findAll({
+              where: {
+                status: '0'
+              }
+            });
+          return orders;
+      }catch (error) {
+          return error;
       }
-    });
-    return orders;
   };
 
-//수정 필요함.findByPk값이 잘못 들어가게 됨.
   findOrderById = async (id) => {
     const byIdOrders = await this.orderModel.findByPk(id);
     return byIdOrders;
   };
 
   createOrder = async (customerId, phoneNumber, address, clothType, picture, requests) => {
-    const createOrderData = await this.orderModel.create(
+      try{
+        const createOrderData = await this.orderModel.create(
       { customerId,
         phoneNumber,
         address,
@@ -41,9 +51,10 @@ class OrderRepository {
         requests
       }
     );
-    // console.log("레파지토리", createOrderData);
-
     return createOrderData;
+      } catch (error) {
+          return error;
+      }
   };
 
   updateOrder = async (

@@ -25,11 +25,18 @@ class CustomerService {
 
   //손님포인트조회
   getCustomerPoint = async (id) => {
-    const customer = await this.customerRepository.findCustomerPoint(id);
-    if (!customer) throw new Error('Customer not found');
+    try {
+       const customer = await this.customerRepository.findOneCustomer(id);
+    if (!customer) throw new Error('등록된 고객 정보가 없습니다.');
 
     return customer.point;
+    } catch (error) {
+      return error;
+    }
+
   }
+
+  //회원가입(확인완료)
   customerSignup = async (loginId, loginPw, confirmPw, name) => {
     const idReg = /^[a-zA-Z0-9]{3,}$/;
     try {
@@ -69,6 +76,7 @@ class CustomerService {
     }
   };
 
+  //로그인(확인완료)
   customerSignin = async (loginId, loginPw) => {
     try {
       const customer = await this.customerRepository.findCertainCustomer(
@@ -99,6 +107,7 @@ class CustomerService {
     }
 
   };
+
 }
 
 module.exports = CustomerService;

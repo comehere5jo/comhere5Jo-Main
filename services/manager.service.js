@@ -17,19 +17,25 @@ const { Manager } = require('../models');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
+const {get} = require("axios");
 
 class ManagerService {
   constructor(){
     this.managerRepository = new ManagerRepository(Manager)
   }
 
-  getMyPoint = async (id) => {
-    const getMyPoint = await this.managerRepository.getMyPoint(id);
-    return {   
-      point: getMyPoint.point,
-      };
-    
-}
+  //사장님 포인트 조회(확인완료)
+  getManagerPoint = async (id) => {
+    try {
+      const getMyPoint = await this.managerRepository.findOneManager(id);
+      if (!getMyPoint){
+        throw new Error('등록된 사장님 정보가 없습니다.')
+      }
+      return {point: getMyPoint.point};
+    } catch (error) {
+      return error;
+    }
+  }
 
   managerSignup = async (loginId, loginPw, confirmPw, name) => {
     const idReg = /^[a-zA-Z0-9]{3,}$/;

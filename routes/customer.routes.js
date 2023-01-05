@@ -9,5 +9,7 @@ const customerController = new CustomerController();
 router.get('/me', authMiddleware, customerController.getCustomerPoint);
 router.post('/signup/customer', customerController.customerSignup);
 router.post('/signin/customer', customerController.customerSignin);
+//로그아웃
+router.post('/signout/customer', authMiddleware, customerController.customerSignout);
 
 module.exports = router;

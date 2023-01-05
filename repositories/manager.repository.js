@@ -36,7 +36,7 @@ createManager = async (loginId,encryptedPassword,name) => {
     return createManagerdata;
   }
 
-getMyPoint = async (id) => {
+findOneManager = async (id) => {
     const managerPoint = await this.managerModel.findOne({
       where: {
         id: id
@@ -53,12 +53,12 @@ getMyPoint = async (id) => {
     )
     return pointUp
   }
-  findOneManager = async (managerId) => {
-    const manager = await this.managerModel.findAll({
-      where: { id: managerId }
-    })
-    return manager
-  }
+  // findOneManager = async (managerId) => {
+  //   const manager = await this.managerModel.findAll({
+  //     where: { id: managerId }
+  //   })
+  //   return manager
+  // }
 }
 
 module.exports = ManagerRepository;

@@ -34,7 +34,7 @@ class CustomerRepository {
   };
 
 
-  //손님포인트조회
+  //손님포인트조회(상단의 findOneCustomer와 중복되어 사용안함)
   findCustomerPoint = async (id) => {
     const customerPoint = await this.customerModel.findByPk(id);
     return customerPoint;
