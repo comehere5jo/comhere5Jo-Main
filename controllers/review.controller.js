@@ -1,7 +1,10 @@
 const ReviewService = require('../services/review.service.js');
 
 class ReviewController {
-  reviewService = new ReviewService();
+  constructor(){
+    this.reviewService = new ReviewService();
+  }
+  
 
   ////리뷰조회(주문번호에대한리뷰조회)
   getReviewByOrderId = async (req, res, next) => {
@@ -12,7 +15,6 @@ class ReviewController {
         res.status(400).json({ errorMessage: 'An orderId is required' });
         return;
       }
-
       const review = await this.reviewService.findReviewByOrderId(orderId);
       res.status(200).json({ review });
     } catch (error) {
@@ -40,10 +42,7 @@ getMyOrderReview = async (req, res, next) => {
       //   const { orderId, customerId } = req.params;  //auth만들어지면하자.
       const { orderId } = req.params;
       console.log(`orderId: ${orderId}`);
-
-      //   if (!rating || !content || !picture || !orderId || !customerId) {
-      //     throw new Error('내용을 입력하세요.');
-      //   }
+      
       if (!rating || !content || !picture || !orderId) {
         throw new Error('내용을 입력하세요.');
       }

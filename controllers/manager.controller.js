@@ -5,7 +5,6 @@ class ManagerController {
     managerService = new ManagerService();
 
     getMyPoint = async (req, res, next) => {
-
         const myPoint = await this.managerService.getMyPoint();
         res.status(200).json({data:myPoint})
     }

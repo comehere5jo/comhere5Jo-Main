@@ -59,13 +59,10 @@ class ReviewRepository {
   //리뷰작성
   writeReview = async (rating, content, picture, orderId) => {
     return await this.reviewModel.create({
-
       rating,
       content,
       picture,
       orderId,
-
-      // customerId,
     });
   };
 

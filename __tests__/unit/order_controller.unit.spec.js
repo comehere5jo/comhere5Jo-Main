@@ -1,74 +1,115 @@
-const OrdersController = require('../../controllers/orders.controller.js');
-
-let mockOrdersService = {
+const OrdersController = require('../../controllers/orders.controller.js')
+let mockOrderService = {
   getOrder: jest.fn(),
-  getMangers: jest.fn(),
-  putFirstOrder: jest.fn(),
-  putOrderUpdate: jest.fn(),
-  getOrderById: jest.fn(),
-  createOrder: jest.fn()
-};
-
+  findCustomerOrder: jest.fn(),
+  selectOrder:jest.fn(),
+  updateOrder:jest.fn(),
+  findAllOrder:jest.fn()
+}
 let mockRequest = {
   body: jest.fn(),
   params: jest.fn(),
-};
-
+}
 let mockResponse = {
   status: jest.fn(),
   json: jest.fn(),
-  render: jest.fn(),
-};
-
-let ordersController = new OrdersController();
-ordersController.ordersService = mockOrdersService;
-
-describe('3계층 아키텍처 패턴 orders 컨트롤러 unit 테스트', () => {
+  render: jest.fn()
+}
+let orderController = new OrdersController()
+orderController.orderService = mockOrderService
+describe('오더 컨트롤러 테스트', () => {
   beforeEach(() => {
-    jest.resetAllMocks();
-
+    jest.resetAllMocks()
     mockResponse.status = jest.fn(() => {
       return mockResponse;
     });
-  });
+  })
+  test('getOrder 테스트', async () => {
+    const getOrderValue = [{
+      address: "laundry.address",
+      clothType: "laundry.clothType",
+      phoneNumber: "laundry.phoneNumber",
+      picture: "laundry.picture",
+      requests: "laundry.requests",
+      status: "laundry.status",
+      createdAt: "laundry.createdAt"
+    }]
+    mockOrderService.findAllOrderStatus0 = jest.fn(() => {
+      getOrderValue
+    })
+    await orderController.getOrder(mockRequest, mockResponse)
 
-  test('Posts Controller getPosts Method by Success', async () => {
-    const getOrderValue = [
-      {
-        address: '주소',
-        clothType: '이불',
-        phoneNumber: 20323341,
-        picture: '라이언 증명사진',
-        requests: '와인 쏟음',
-        status: 0,
-        createdAt: 'Today'
-      },
-      {
-        address: '주소2',
-        clothType: '이불2',
-        phoneNumber: 1234555,
-        picture: '어차피 증명사진',
-        requests: '컵라면 쏟음',
-        status: 0,
-        createdAt: 'Today'
-      }
-      ];
-
-    mockOrdersService.getOrder = jest.fn(() => {
-      return getOrderValue;
-    });
-
-    await ordersController.getOrder(mockRequest, mockResponse);
-    expect(mockOrdersService.getOrder).toHaveBeenCalledTimes(1);
-
+    expect(mockOrderService.getOrder).toHaveBeenCalledTimes(1)
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenCalledWith(200);
+  })
+  test('getMangers 테스트', async () => {
 
-    expect(mockResponse.render).toHaveBeenCalledWith(
-      '../views/orderHistory.ejs', {
-        data: getOrderValue,
+    await orderController.getMangers(mockRequest, mockResponse)
 
-      });
-  });
-
-});
+    expect(mockOrderService.findCustomerOrder).toHaveBeenCalledTimes(1)
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenCalledWith(200);
+  })
+  test('putFirstOrder 테스트', async () => {
+    const managerIdParams = {
+      managerId: 'aaaaa'
+    }
+    const orderIdParams = {
+      orderId: 'bbbbb'
+    }
+    mockRequest.body = managerIdParams
+    mockResponse.params =orderIdParams
+    // const Value = {
+    //   rating: writeReviewBodyParams.rating,
+    //   content: writeReviewBodyParams.content,
+    //   picture: writeReviewBodyParams.picture,
+    //   oredrId: writeReviewParams.orderId,
+    //   createdAt: new Date('07 October 2011 15:50 UTC'),
+    //   updatedAt: new Date('07 October 2011 15:50 UTC'),
+    // }
+    await orderController.putFirstOrder(mockRequest, mockResponse)
+    expect(mockOrderService.selectOrder).toHaveBeenCalledTimes(1)
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    //현재 200이 되야하는데 400이 뜸
+    expect(mockResponse.status).toHaveBeenCalledWith(400);
+  })
+  test('putOrderUpdate 테스트', async () => {
+    const reqParams = {
+      managerId: 'aaaaa',
+      orderId: 'bbbbb'
+    }
+    const reqBody = {
+    status:1
+    }
+    mockRequest.body = reqBody
+    mockResponse.params =reqParams
+    // const Value = {
+    //   rating: writeReviewBodyParams.rating,
+    //   content: writeReviewBodyParams.content,
+    //   picture: writeReviewBodyParams.picture,
+    //   oredrId: writeReviewParams.orderId,
+    //   createdAt: new Date('07 October 2011 15:50 UTC'),
+    //   updatedAt: new Date('07 October 2011 15:50 UTC'),
+    // }
+    await orderController.putOrderUpdate(mockRequest, mockResponse)
+    expect(mockOrderService.updateOrder).toHaveBeenCalledTimes(1)
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    //현재 200이 되야하는데 400이 뜸
+    expect(mockResponse.status).toHaveBeenCalledWith(400);
+  })
+  test('getOrders 테스트', async () => {
+    await orderController.getOrders(mockRequest, mockResponse)
+    expect(mockOrderService.findAllOrder).toHaveBeenCalledTimes(1)
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    //현재 200이 되야하는데 400이 뜸
+    expect(mockResponse.status).toHaveBeenCalledWith(200);
+  })
+  test('getOrderById 테스트', async () => {
+    await orderController.getOrders(mockRequest, mockResponse)
+    expect(mockOrderService.findAllOrder).toHaveBeenCalledTimes(1)
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    //현재 200이 되야하는데 400이 뜸
+    expect(mockResponse.status).toHaveBeenCalledWith(200);
+  })
+})

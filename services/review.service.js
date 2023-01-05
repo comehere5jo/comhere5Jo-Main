@@ -27,7 +27,6 @@ class ReviewService {
       content,
       picture,
       orderId,
-
       //   customerId,
     );
     console.log(writeReviewData);
