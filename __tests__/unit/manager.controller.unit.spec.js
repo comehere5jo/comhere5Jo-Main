@@ -3,6 +3,7 @@ let mockManagerService = {
   getManagerPoint: jest.fn(),
   managerSignup: jest.fn(),
   managerSignin: jest.fn(),
+  clearCookie:jest.fn()
 };
 
 let mockRequest = {
@@ -15,7 +16,8 @@ let mockResponse = {
   status: jest.fn(),
   json: jest.fn(),
   render: jest.fn(),
-  send: jest.fn()
+  send: jest.fn(),
+  clearCookie:jest.fn()
 };
 let managerController = new ManagerController();
 managerController.managerService = mockManagerService;
@@ -28,13 +30,13 @@ describe('3계층 아키텍처 패턴 매니저 컨트롤러 unit 테스트', ()
     });
   });
 
-  test('사장님 포인트 확인 테스트', async () => {
+  test('사장님 포인트 확인 테스트(getManagerPoint)', async () => {
     const pointReturnValue =
       {
         id: 1,
         point: 1000000
-      }
-      mockRequest.manager = 1
+      };
+    mockRequest.manager = 1
     ;
 
     mockManagerService.getManagerPoint = jest.fn(() => {
@@ -51,7 +53,7 @@ describe('3계층 아키텍처 패턴 매니저 컨트롤러 unit 테스트', ()
     });
   });
 
-  test('사장님 회원가입 테스트', async () => {
+  test('사장님 회원가입 테스트(managerSignup)', async () => {
     const managerSignup = {
       loginId: 'TestId',
       loginPw: 1234,
@@ -72,14 +74,13 @@ describe('3계층 아키텍처 패턴 매니저 컨트롤러 unit 테스트', ()
     });
   });
 
-  test('사장님 로그인 테스트', async () => {
+  test('사장님 로그인 테스트(managerSignin)', async () => {
     const managerSignin = {
       loginId: 'TestId',
       loginPw: 'TestPw',
     };
     mockManagerService.managerSignin = jest.fn(() => managerSignup);
     await managerController.managerSignin(mockRequest, mockResponse);
-
 
     expect(mockManagerService.managerSignin).toHaveBeenCalledTimes(1);
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
@@ -89,4 +90,18 @@ describe('3계층 아키텍처 패턴 매니저 컨트롤러 unit 테스트', ()
       errorMessage: '로그인에 실패하였습니다.'
     });
   });
+
+  test('사장님 로그아웃 테스트(managerSignout)', async () => {
+    // console.log("죄송합니다. 로그아웃 테스트 기능 구현 실패했습니다.");
+
+    mockResponse.clearCookie = jest.fn(() => {
+    });
+
+    await managerController.managerSignout(mockRequest, mockResponse);
+    expect(mockResponse.clearCookie).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenCalledWith(200);
   });
+
+
+});

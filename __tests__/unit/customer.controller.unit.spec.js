@@ -6,7 +6,8 @@ let mockCustomerService = {
   getCustomerPoint: jest.fn(),
   customerSignup: jest.fn(),
   customerSignin: jest.fn(),
-  customerSignout: jest.fn()
+  customerSignout: jest.fn(),
+  clearCookie: jest.fn()
 
 };
 
@@ -104,9 +105,16 @@ describe('Layered Architecture Pattern Customer Controller Unit Test', () => {
   });
 
 
-  test('고객 로그아웃 테스트(customerSignout)', async () => {
-    console.log("죄송합니다. 로그아웃 테스트 기능 구현 실패했습니다.");
+  test('손님 로그아웃 테스트(managerSignout)', async () => {
+    // console.log("죄송합니다. 로그아웃 테스트 기능 구현 실패했습니다.");
 
+    mockResponse.clearCookie = jest.fn(() => {
+    });
+
+    await customerController.customerSignout(mockRequest, mockResponse);
+    expect(mockResponse.clearCookie).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenCalledWith(200);
   });
 
 

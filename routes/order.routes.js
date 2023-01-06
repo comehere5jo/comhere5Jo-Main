@@ -5,6 +5,9 @@ const authMiddleware = require("../auth-middleware/auth-middleware");
 const OrderController = require('../controllers/orders.controller');
 const orderController = new OrderController();
 
+//주문 진행 상태 상관 없이 고객님이 주문한 모든 주문 조회
+router.get('/order', authMiddleware, orderController.getMyOrders);
+
 // Front용: 수락 안된 모든 주문 조회 (주문현황보기 화면)
 router.get('/orderlist', authMiddleware,orderController.getOrderForOrderlist);
 
