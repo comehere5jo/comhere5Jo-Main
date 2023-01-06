@@ -30,6 +30,22 @@
     - Github
     - Notion
     
+## ENV 설정
+
+- 
+    - MYSQL_USERNAME=root
+    - MYSQL_PASSWORD=PWD
+    - MYSQL_DATABASE=ENVNAME
+    - MYSQL_DATABASE_TEST = test
+    - MYSQL_DIALECT=mysql
+    - MYSQL_HOST=ORMHOST
+    - MYSQL_DIALECT=mysql
+    - JWT_SECRET=customized-secret-key
+    - ENVTEST = "ENV가 잘 로딩되었어요"
+    - keyForDecrypt=customized-secret-key
+    - NODE_ENV = TEST
+
+
 
 ## 통일 사항 D` Gaja
 
