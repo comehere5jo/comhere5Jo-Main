@@ -17,20 +17,41 @@ const { Manager } = require('../models');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
+const {get} = require("axios");
 
 class ManagerService {
   constructor(){
     this.managerRepository = new ManagerRepository(Manager)
   }
 
-  getMyPoint = async (id) => {
-    id = 1;
-    const getMyPoint = await this.managerRepository.getMyPoint(id);
-    return {   
-      point: getMyPoint.point,
-      };
-    
-}
+// 230106 Front: 마이페이지용 사장님 정보조회
+        findByPk = async (id) => {
+          const findManager = await this.managerRepository.findByPk(id);
+          console.log("service", id);
+  
+          return {
+            id: findManager.id,
+            loginId: findManager.loginId,
+            loginPw: findManager.loginPw,
+            name: findManager.name,
+            point: findManager.point,
+            createdAt: findManager.createdAt,
+            updatedAt: findManager.updatedAt,
+          };
+   };
+
+  //사장님 포인트 조회(확인완료)
+  getManagerPoint = async (id) => {
+    try {
+      const getMyPoint = await this.managerRepository.findOneManager(id);
+      if (!getMyPoint){
+        throw new Error('등록된 사장님 정보가 없습니다.')
+      }
+      return {point: getMyPoint.point};
+    } catch (error) {
+      return error;
+    }
+  }
 
   managerSignup = async (loginId, loginPw, confirmPw, name) => {
     const idReg = /^[a-zA-Z0-9]{3,}$/;
@@ -79,19 +100,21 @@ class ManagerService {
 
       const check = await bcrypt.compare(loginPw, manager.loginPw);
 
-      if (manager) {
+      if (manager !== null) {
         if (check) {
           const token = jwt.sign(
-            { loginId: loginId, id: manager.id },
-            process.env.JWT_ACCESS_SECRET,
+            { loginId: loginId, id: manager.id, member: 'manager' },
+            process.env.JWT_SECRET,
             {
               expiresIn: '1h',
             },
           );
+          console.log(token)
           return token;
-        }
+        }else if(check === false) {
+        throw new Error('비번 확인해');}
       } else {
-        throw new Error('id나 비번 확인해');
+        throw new Error('id 확인해');
       }
       return;
     } catch (error) {

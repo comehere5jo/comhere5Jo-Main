@@ -16,20 +16,48 @@ const CustomerRepository = require('../repositories/customer.repository');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
-const { Customer } = require('../models');
+const { Customer } = require('.././models');
+
 
 class CustomerService {
   customerRepository = new CustomerRepository(Customer);
 
 
+    // Front: 마이페이지용 고객정보조회
+    findByPk = async (id) => {
+      const findCustomer = await this.customerRepository.findByPk(id);
+      console.log("service", id);
+  
+      return {
+        id: findCustomer.id,
+        loginId: findCustomer.loginId,
+        loginPw: findCustomer.loginPw,
+        name: findCustomer.name,
+        point: findCustomer.point,
+        createdAt: findCustomer.createdAt,
+        updatedAt: findCustomer.updatedAt,
+      };
+    };
+  
+
+    
+
+
+
   //손님포인트조회
   getCustomerPoint = async (id) => {
-    console.log(id);
-    const customer = await this.customerRepository.findCustomerPoint(id);
-    if (!customer) throw new Error('Customer not found');
+    try {
+       const customer = await this.customerRepository.findOneCustomer(id);
+    if (!customer) throw new Error('등록된 고객 정보가 없습니다.');
 
     return customer.point;
+    } catch (error) {
+      return error;
+    }
+
   }
+
+  //회원가입(확인완료)
   customerSignup = async (loginId, loginPw, confirmPw, name) => {
     const idReg = /^[a-zA-Z0-9]{3,}$/;
     try {
@@ -69,6 +97,7 @@ class CustomerService {
     }
   };
 
+  //로그인(확인완료)
   customerSignin = async (loginId, loginPw) => {
     try {
       const customer = await this.customerRepository.findCertainCustomer(
@@ -77,20 +106,21 @@ class CustomerService {
 
       const check = await bcrypt.compare(loginPw, customer.loginPw);
 
-      if (customer) {
+      if (customer !== null) {
         if (check) {
           const token = jwt.sign(
-            { loginId: loginId, id: customer.id },
-            process.env.JWT_ACCESS_SECRET,
+            { loginId: loginId, id: customer.id, member: 'customer' },
+            process.env.JWT_SECRET,
             {
               expiresIn: '1h',
             },
           );
           console.log(token)
           return token;
-        }
+        }else if(check === false) {
+        throw new Error('비번 확인해');}
       } else {
-        throw new Error('id나 비번 확인해');
+        throw new Error('id 확인해');
       }
       return;
     } catch (error) {
@@ -98,6 +128,7 @@ class CustomerService {
     }
 
   };
+
 }
 
 module.exports = CustomerService;

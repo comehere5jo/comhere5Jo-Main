@@ -27,16 +27,16 @@ describe('Layered Architecture Pattern Customer Repository Unit Test', () => {
 //createCustomer
 //findCustomerPoint
 
-  test('Customer Repository findAllCustomer Method', async () => {
-    mockCustomerModel.findAll = jest.fn(() => {
-      return "findAll String"
-    });
-    const customer = await customerRepository.findAllCustomer();
-    expect(customerRepository.customerModel.findAll).toHaveBeenCalledTimes(1);
-    expect(customer).toBe("findAll String");
-  });
+  // test('Customer Repository findAllCustomer Method', async () => {
+  //   mockCustomerModel.findAll = jest.fn(() => {
+  //     return "findAll String"
+  //   });
+  //   const customer = await customerRepository.findAllCustomer();
+  //   expect(customerRepository.customerModel.findAll).toHaveBeenCalledTimes(1);
+  //   expect(customer).toBe("findAll String");
+  // });
 
-  test('Customer Repository findCertainCustomer Method', async () => {
+  test('특정 손님 조희 테스트(findCertainCustomer)', async () => {
     mockCustomerModel.findOne = jest.fn(() => {
       return "findOne String"
     });
@@ -45,7 +45,7 @@ describe('Layered Architecture Pattern Customer Repository Unit Test', () => {
     expect(customer).toBe("findOne String");
   });
 
-  test('Customer Repository findOneCustomer Method', async () => {
+  test('손님 상세 조회 테스트(findOneCustomer)', async () => {
     mockCustomerModel.findOne = jest.fn(() => {
       return "findOne String"
     });
@@ -54,7 +54,7 @@ describe('Layered Architecture Pattern Customer Repository Unit Test', () => {
     expect(customer).toBe("findOne String");
   });
 
-  test('Customer Repository createCustomer Method', async () => {
+  test('손님 회원가입 테스트(createCustomer)', async () => {
     mockCustomerModel.create = jest.fn(() => {
       return "create Return String"
     });
@@ -78,14 +78,14 @@ describe('Layered Architecture Pattern Customer Repository Unit Test', () => {
   });
 
 
-  test('Customer Repository findCustomerPoint Method', async () => {
-    mockCustomerModel.findByPk = jest.fn(() => {
-      return "findByPk String"
-    });
-    const customer = await customerRepository.findCustomerPoint();
-    expect(customerRepository.customerModel.findByPk).toHaveBeenCalledTimes(1);
-    expect(customer).toBe("findByPk String");
-  });
+  // test('손님 포인트 조회 테스트', async () => {
+  //   mockCustomerModel.findByPk = jest.fn(() => {
+  //     return "findByPk String"
+  //   });
+  //   const customer = await customerRepository.findCustomerPoint();
+  //   expect(customerRepository.customerModel.findByPk).toHaveBeenCalledTimes(1);
+  //   expect(customer).toBe("findByPk String");
+  // });
 
 
 

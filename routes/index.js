@@ -13,4 +13,17 @@ router.use('/', CustomerRouter);
 const OrderRouter = require('./order.routes')
 router.use('/', OrderRouter);
 
+
+// Front: 메인페이지 
+router.get('/', async (req, res, next) => {
+    res.render('index.ejs'); 
+});
+
+// Front: 로그인페이지
+router.get('/login', async (req, res, next) => {
+  res.render('login.ejs'); 
+});
+
+
+
 module.exports = router;

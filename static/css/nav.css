@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@500&family=Open+Sans:wght@400;700&display=swap');
+
+nav {
+  margin: 25px 25px;
+  max-width: 2000px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+.nav__column:nth-child(1) {
+  color: var(--nav--color);
+  font-size: 1.125rem;
+  font-weight: 500;
+  font-family: 'Fira Mono';
+}
+
+.nav__column:nth-child(2) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav__column--search-btn {
+  margin-left: 20px;
+}
+
+.nav__column--login-btn {
+  margin-left: 20px;
+
+  font-weight: bold;
+
+  color: white;
+  background-color: #312f1f;
+
+  width: 90px;
+  height: 40px;
+  border-radius: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav__column--long-login-btn {
+  margin-left: 20px;
+  font-weight: bold;
+  color:#212529 ;
+  border: 1px solid #212529 ;
+  background-color:white ;
+
+  width: 120px;
+  height: 40px;
+  border-radius: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav__column--post-btn {
+  margin-left: 20px;
+  font-weight: bold;
+  color:#212529 ;
+  border: 1px solid #212529 ;
+  background-color:white ;
+
+  width: 90px;
+  height: 40px;
+  border-radius: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav__column--long-btn {
+  margin-left: 20px;
+  font-weight: bold;
+  color:#212529 ;
+  border: 1px solid #212529 ;
+  background-color:white ;
+
+  width: 140px;
+  height: 40px;
+  border-radius: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.nav__column--loginpage-btn {
+  margin-left: 20px;
+  font-weight: bold;
+  color:#212529 ;
+  border: 1px solid #212529 ;
+  background-color:#ebebeb ;
+
+  width: 90px;
+  height: 40px;
+  border-radius: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+

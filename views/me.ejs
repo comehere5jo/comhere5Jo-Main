@@ -1,0 +1,479 @@
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Setak D'gaja</title>
+        <link rel="stylesheet" href="./css/index.css" />
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    </head>
+<body>
+  
+ 
+
+  <%- include('nav.html') %>
+
+  <div class="section_banner">
+    <!-- <img src={`http://localhost:1004/image/laudryfree.jpg`}> -->
+    <!-- <img src="http://localhost:1004/image/laundryfree.jpg" > -->
+    <!-- <img class="banner" src="http://localhost:3000/image/laundryfree.jpg" > -->
+    <!-- <img class="banner_image"
+      src="https://img.freepik.com/free-photo/close-up-white-folded-clean-towels_23-2148230572.jpg?w=900&t=st=1672879936~exp=1672880536~hmac=abdc23a00d5175bcc9000ed66cca732c37009574bd88e4546ae8876c4106240f"
+    /> -->
+
+    <div
+    class="banner_image"
+    style="background-image: url(https://images.unsplash.com/photo-1626806819282-2c1dc01a5e0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80);"
+  ></div>
+  </div>
+
+
+  <div class="myinfo"> 
+
+      <!-- <div class="customer_name">  <%= customerInfo.name %>님</div> -->
+      <div class="customer_point"> 나의 포인트 </div> 
+      <div class="customer_point">현재 <%= customerInfo.point %>P </div>
+
+  </div>
+    
+    <div class="tabs-container">
+    
+    <div class="tabs">
+      <div class="tab" id="tab-1" onclick="showTab(1)">주문 히스토리</div>
+      <div class="tab" id="tab-2" onclick="showTab(2)">리뷰 보기</div>
+      <div class="tab" id="tab-3" onclick="showTab(3)">메세지 보내기</div>
+    </div>
+    <div class="tab-content">
+      <div class="tab-pane" id="tab-pane-1">
+
+
+        <!-- <div class="board__parent">
+
+          <% for(var i = 0; i < data.length; i++) {%>
+            주문번호  <%= data[i].id %> 
+            배송주소 <%= data[i].address %> 
+            세탁담당 사장님 <%= data[i].managerId %> 
+            옷 유형 <%= data[i].clothType %> 
+            <% } %>
+     
+          </div> -->
+
+          <div class="board__parent">
+ 
+            <% for(var i = 0; i < data.length; i++) {%>
+            <!-- 글 한칸 -->
+    
+            <a class="board" href="/order/<%= data[i].id %>">
+              <div
+                class="content__thumbnail"
+                style="
+                  background-image: url(https://img.freepik.com/free-photo/bed-linen-laundry-basket-home-decor_53876-128234.jpg?w=740&t=st=1672910770~exp=1672911370~hmac=f9a57fddd325c6a40e631ca38d0c13dd678fd0c5350b55c323ea9ae2f6bc4a04);
+                "
+              ></div>
+              <!-- <img
+                class="content__thumbnail"
+                src="https://images.unsplash.com/photo-1670105791108-718c8d4b738e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
+              /> -->
+    
+              <!-- 여기서부터 content 제목div, 서브div, 작성일div -->
+              <div class="content__text">
+                <div class="content_date">
+                 주문번호  <%= data[i].id %>
+                </div>
+
+                
+                <div class="content_date">  
+        
+                  <%
+                  const dateString = data[i].updatedAt;
+                  const date = new Date(dateString);
+                
+                  // Define the options for formatting the date and time
+                  const options = {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    timeZone: 'Asia/Seoul',
+                    hour12: true,
+                  };
+                
+                  // Format the date using the Intl.DateTimeFormat object
+                  const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+            
+                  // Split the formatted date into two parts: the date and the time
+                  const dateParts = formattedDate.split(',');
+                
+                  // Remove the comma and space between the date and time
+                  const dateWithoutComma = dateParts[0] + dateParts[1];
+                %>
+                
+                <%= dateWithoutComma %>
+                </div>
+
+
+    
+                <div class="content">
+                 배송주소  <%= data[i].address %>
+                </div>
+
+                 <div class="content">
+                  옷 유형  <%= data[i].clothType %>
+                 </div>
+                 <div class="content">
+                  사진  <%= data[i].picture %>
+                 </div>
+                 <div class="content">
+                  요청사항  <%= data[i].requests %>
+                 </div>
+
+                <!-- <div class="conmmen_count">14개의 댓글</div> -->
+              </div>
+    
+              <!-- 여기서부터 유저 정보 -->
+              <div class="user">
+                <div>
+                  <img class="user__avatar" src="" alt="" />
+                  <span class="user__name">
+
+                    <%
+                    let statusmessage;  // Declare and initialize the variable here
+
+     
+                    let manager = data[i].managerId;
+
+                  
+                    if (data[i].status === 0) {
+                      statusmessage = "대기중";
+                    } else if (data[i].status === 1) {  // Use else if
+                      statusmessage =  "수거중";
+                    } else if (data[i].status === 2) {
+                      statusmessage = "배송중";
+                    } else if (data[i].status === 3) {
+                      statusmessage = "배송완료";
+                    }
+                  %>
+                  
+                  
+      
+  
+                  <div class="statusmessage">  <%= statusmessage %></div>
+                  
+ 
+                  </span>
+                </div>
+                
+       
+                <!-- <script
+                src="https://kit.fontawesome.com/af8a64a43c.js"
+                crossorigin="anonymous"
+              ></script> -->
+        
+    
+                <div>
+                  <i class="fas fa-heart"></i>
+                  <span>
+     
+
+                  </span>
+                </div>
+              </div>
+            </a>
+    
+              <!-- 글 한칸 끝 -->
+             <% } %>
+     
+    
+
+
+
+        <!-- Tab 1 content goes here -->
+      </div>
+      <div class="tab-pane" id="tab-pane-2">
+  
+ 
+
+
+
+
+ 
+        
+        <!-- Tab 2 content goes here -->
+      </div>
+      <div class="tab-pane" id="tab-pane-3">
+  <!-- Tab 3 content goes here -->
+
+      </div>
+      <div class="tab-pane" id="tab-pane-4">
+ 
+        444<!-- Tab 4 content goes here -->
+      </div>
+    </div>
+  </div>
+  
+
+  
+  <!-- include the jQuery library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+ <script>
+    function showTab(tabNumber) {
+      // Hide all tab panes
+      var tabPanes = document.getElementsByClassName('tab-pane');
+      for (var i = 0; i < tabPanes.length; i++) {
+        tabPanes[i].classList.remove('active');
+      }
+
+      // Mark all tabs as inactive
+      var tabs = document.getElementsByClassName('tab');
+      for (var i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove('active');
+      }
+
+      // Show the selected tab pane
+      document.getElementById('tab-pane-' + tabNumber).classList.add('active');
+
+      // Mark the selected tab as active
+      document.getElementById('tab-' + tabNumber).classList.add('active');
+    }
+
+    // Show the first tab by default
+    showTab(1);
+
+
+
+ </script>
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+
+
+<script>
+  // const token = Cookies.get('token');
+  // const token = req.headers.cookie.split('=')[1];
+  const token = '<%- token %>';
+  console.log(token);
+
+  axios.get('/me', {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+  .then((response) => {
+    console.log(response.data);  // prints the data returned by the server
+  })
+  .catch((error) => {
+    console.error(error);  // prints the error if the request fails
+  });
+</script>
+
+
+
+  <style>
+.banner_image {
+  width: 800px;  /* Set the width to 800 pixels */
+  height: 600px; /* Set the height to 600 pixels */
+  display: inline-block;  /* Make the element an inline-block element */
+  text-align: center;  /* Center the element horizontally */
+  background-size: cover;  /* Scale the image to cover the entire element */
+  background-position: center;  /* Center the image within the element */
+  background-repeat: no-repeat;  /* Do not repeat the image */
+}
+      /* Add some styling for the page */
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      body a {
+        color: black;
+      }
+
+
+      body a:hover {
+        color: white;
+      }
+
+      .section_banner {
+
+      }
+
+      .banner_image {
+        width:100%;        
+        height: 400px;
+
+      }
+ 
+      .content {
+        padding:10px;
+      }
+      .content_date {
+        padding:10px;
+        color: gray;
+      }
+
+      .customer_point {
+        font-weight: 600;
+        margin-left:20px;
+        padding:10px;
+      }
+
+
+      .myinfo {
+        margin-top:50px;
+        margin-left: 100px;
+      }
+ 
+      .mypage-buttons {
+        width: 400px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      .mypage-buttons input[type="text"],
+      .mypage-buttons input[type="password"] {
+        width: 100%;
+        margin-bottom: 20px;
+        padding: 12px 20px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+      }
+      .mypage-buttons input[type="submit"] {
+        font-size: 14px;
+        width: 100%;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color:#212529 ;
+        border: 1px solid #212529 ;
+        background-color:white ;
+ 
+        height: 40px;
+        border-radius: 10px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+     }
+     
+      .mypage-buttons input[type="submit"]:hover {
+        background-color: black;
+        color:white ;
+      }
+
+    .mypage {
+        margin-top: 20px;
+        font-size: 14px;
+        width: 400px;
+        margin: 0 auto;
+        text-align: center;
+        width: 100%;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color:#212529 ;
+        border: 1px solid #312f1f; 
+        background-color:white ;
+ 
+        height: 40px;
+        border-radius: 10px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .mypage:hover {
+        background-color: #312f1f; 
+        color:white ;
+      } 
+
+             
+
+ 
+      .confirm-dialog {
+      /* Add some styling for the dialog box */
+      background-color: #fff;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      width: 300px;
+      padding: 20px;
+      text-align: center;
+    }
+    .confirm-dialog p {
+      /* Add some styling for the message */
+      margin: 0;
+      font-size: 16px;
+    }
+    .confirm-dialog button {
+      /* Add some styling for the buttons */
+      background-color: #4caf50;
+      color: white;
+      padding: 14px 20px;
+      border: none;
+      cursor: pointer;
+    }
+    .confirm-dialog button:hover {
+      background-color: #45a049;
+    }
+
+
+    .tabs-container {
+        display: flex;
+        margin-left: 10%;
+
+      }
+
+      .tabs {
+        width: 200px; /* Adjust the width of the tab menu */
+        border-right: 1px solid #ccc;
+        margin-top:10px;
+        /* border-bottom: 1px solid #ccc; */
+      }
+
+      .tab {
+        cursor: pointer;
+        padding: 10px;
+        margin-top:10px;
+        font-weight: 500;
+        /* border: 1px solid #ccc; */
+        border-bottom: none;
+      }
+
+      .tab.active {
+        /* border-bottom: 1px solid #fff; */
+      }
+
+      .tab-content {
+        flex: 1; /* Make the tab content take up the remaining space */
+        padding: 10px;
+        margin-top:20px;
+        margin-left: 50px;
+
+        overflow: auto; /* Add scrollbars if the content is too tall */
+      }
+
+      .tab-pane {
+        display: none;
+      }
+
+      .tab-pane.active {
+        display: block;
+      }
+
+      
+
+  </style>
+
+ 
+
+
+ 
+
+ 
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>

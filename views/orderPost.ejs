@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>I-Log</title>
+        <link rel="stylesheet" href="./css/index.css" />
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+      </head>
+<body>
+   
+  <%- include('nav.html') %>
+ 
+  <div class="container">
+    <form  class="form" action="/write"  id ="write-form" method="post">
+
+      <input type="text" id="phoneNumber" name="phoneNumber" placeholder="연락처" />
+      <input type="text" id="address" name="address" placeholder="주소" />
+      <input type="text" id="clothType" name="clothType" placeholder="옷 유형" />
+      <!-- File input -->
+       <label class="file-label">
+           <input type="file" />
+           
+            </label>
+      <!-- Content textarea -->
+      <textarea id="requests" name="requests" placeholder="요청 사항"></textarea>
+
+      <!-- Submit button -->
+      <button type="submit">주문하기</button>
+    </form>
+  </div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<!-- include the jQuery library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+
+<script>
+
+         $(document).ready(function() {
+        $("#write-form").submit(function(e) {
+          e.preventDefault(); // prevent the form from submitting normally
+
+          // get the form data
+          var formData = {
+            "phoneNumber": $("#phoneNumber").val(),
+            "address": $("#address").val(),
+            "clothType": $("#clothType").val(),
+            "requests": $("#requests").val()
+          };
+ 
+          console.log(formData);
+
+          var token = localStorage.getItem("token");
+           console.log("토큰", token);
+        
+        // // function to get the value of a cookie
+        // function getCookie(name) {
+        //   var value = "; " + document.cookie;
+        //   var parts = value.split("; " + name + "=");
+        //   if (parts.length == 2) return parts.pop().split(";").shift();
+        // }
+ 
+
+          // send the POST request
+          $.ajax({
+            type: "POST",
+            url: "/orderPost",
+            data: formData,
+            //   // include the JWT token in the request header
+            beforeSend: function(xhr) {
+            xhr.setRequestHeader("Authorization", "Bearer " + token);
+          },
+            success: function(response) {
+              // handle the successful response
+              console.log(response);
+              window.alert('주문 신청이 완료되었습니다!');
+              window.location = '/me';
+            },
+            
+          //   error: function(xhr, status, error) {
+          //     // handle the error
+          //     console.log(error);
+          // // If the login fails, show a confirm dialog with the error message from the server
+          //     const response = JSON.parse(xhr.responseText);
+          //     window.confirm(response.errorMessage);
+          //   }
+
+            error: function(xhr, status, error) {
+            if (xhr.status === 400) {
+              // If the signup fails, show a confirm dialog with the error message from the server
+              const response = JSON.parse(xhr.responseText);
+              window.confirm(response.errorMessage);
+            } 
+          }
+
+          });
+        });
+      });
+
+
+
+</script>
+
+
+
+
+
+  <style>
+    /* Add some style to the page */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .form {
+      display: flex;
+      flex-direction: column;
+    }
+    .form input,
+    .form textarea,
+    .form input[type="file"] {
+      width: 100%;
+      margin-bottom: 20px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+    }
+    .form textarea {
+      height: 300px;
+    }
+    .form button {
+      width: 100%;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color:#212529 ;
+        border: 1px solid #212529 ;
+        background-color: white;
+ 
+        height: 40px;
+        border-radius: 10px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    .form button:hover {
+      background-color: black;
+        color:white ;
+    }
+    .form .file-label {
+      cursor: pointer;
+    }
+  </style>
+
+
+</body>
+</html>

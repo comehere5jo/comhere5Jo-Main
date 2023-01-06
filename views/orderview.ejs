@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Setak D'gaja<</title>
+        <link rel="stylesheet" href="/css/index.css" />
+      </head>
+<body>
+  
+  <%- include('nav.html') %>
+
+  <div class="content_border">  
+ 
+  <div class="order_header"> 
+
+    <div class="post_title"> 주문번호 <%= data.orderId %>  </div>
+
+    <div class="status">
+      <%
+              let statusmessage;
+
+              switch (data.status) {
+                  case 0:
+                  statusmessage = "대기중";
+                  break;
+                  case 1:
+                  statusmessage = "수거중";
+                  break;
+                  case 2:
+                  statusmessage = "배송중";
+                  break;
+                  case 3:
+                  statusmessage = "배송완료";
+                  break;
+              }
+              %>
+
+      <%= statusmessage %>
+      
+
+      </div>
+  </div>
+
+  <div class="post_info"> 
+
+   
+
+    <div class="post_user"> 배송주소 <%= data.address %>   </div>
+    <div class="post_time">
+      <%
+      const dateString = data.updatedAt;
+      const date = new Date(dateString);
+    
+      // Define the options for formatting the date and time
+      const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'Asia/Seoul',
+        hour12: true,
+      };
+    
+      // Format the date using the Intl.DateTimeFormat object
+      const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
+
+      // Split the formatted date into two parts: the date and the time
+      const dateParts = formattedDate.split(',');
+    
+      // Remove the comma and space between the date and time
+      const dateWithoutComma = dateParts[0] + dateParts[1];
+    %>
+    
+    <%= dateWithoutComma %></div>
+  </div>
+ 
+  <div class="post_contents"> <%= data.requests %>  </div>
+
+  <div class="post_buttons">
+      <div class="edit"><a href="/login" class="nav__column--long-btn">주문 수락하기</a></div>
+      <div class="edit"><a href="/login" class="nav__column--long-btn">상태 업데이트</a></div>
+      <!-- <div class="delete"> <a href="/login" class="nav__column--post-btn">메시지</a></div> -->
+  </div>
+
+
+  <div class="comments">
+ 
+      <div class="comments_title"> 
+        <div class="comments_titlename">리뷰 남기기</div>
+
+ 
+      </div>
+
+
+
+
+
+
+
+    <!-- Comment form -->
+    <form id="comment-form">
+      <textarea placeholder="리뷰를 입력해주세요" id="comment"></textarea>
+      <button type="submit">완료</button>
+    </form>
+
+   
+  </div>
+
+</div>
+
+  <style>
+
+    .content_border {
+      margin: 80px;
+      padding-bottom: 100px;
+      box-shadow: 0 2px 5px rgb(0 0 0 / 20%);
+      border-radius: 5px;
+    }
+
+    .order_header {
+      display: flex;
+    }
+    .post_title {
+      margin-top:100px;
+      margin-left: 100px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 2.25rem;
+    }
+    .status {
+      margin-left: 50px;
+      margin-top: 120px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .post_info {
+      display: flex;
+    }
+    .post_user {
+      margin-top: 50px;
+      margin-left: 100px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .post_time {
+      margin-top: 50px;
+      margin-left: 50px;
+      text-align: left;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+    .post_contents {
+      margin: 100px;
+      text-align: left;
+      font-weight: 500;
+      font-size: 1.25rem;
+    }
+
+    .post_buttons {
+      margin-left: 80px;
+      margin-bottom: 50px;
+      display: flex;
+    }
+    
+    .comments_title{
+      display:flex;
+    }
+    /* .comments_titlename{
+
+    } */
+    .comments_number{
+      margin-left: 10px;
+    }
+
+    .comments_info {
+     display: flex;
+     margin-bottom: 20px;
+     font-weight: 800;
+    }
+
+    .comments {
+      margin-left: 100px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .comment-author{
+      text-align: left;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .commnets_date {
+      font-size:0.8rem;
+      margin-left:20px;
+      font-weight: 400;
+    }
+    .comment-text
+    {
+      margin-top:20px;
+      text-align: left;
+      font-weight: 500;
+      font-size: 1rem;
+      margin-bottom: 25px;
+    }
+
+ 
+      
+      #comments {
+        margin-top: 20px;
+      }
+      .comment {
+        /* border: 1px solid #ccc; */
+        margin-bottom: 10px;
+      }
+      .comment-author {
+          text-align: left;
+          font-weight: 700;
+          font-size: 1rem;
+      }
+      .commnets_date {
+          font-size:0.8rem;
+          margin-left:20px;
+          font-weight: 400;
+        }
+
+      .comment-text {
+        font-size: 16px;
+        font-weight: 500;
+      }
+      textarea {
+      margin-top: 10px;
+      width: 60%;
+      font-size: 16px;
+      color: #333;
+      background-color: white;
+      }
+      button[type="submit"] {
+        margin-top: 0px;
+        border-radius: 5px;
+        height: 40px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #333;
+      }
+      
+
+
+  </style>
+
+  
+
+
+<script>
+
+  $('#comment-form button').on('click', event => {
+  event.preventDefault(); // prevent the form from reloading the page
+
+  try {
+    // get the form element and the comment field value
+    const $form = $(event.target).closest('form');
+    const comment = $form.find('#comment').val();
+
+    // send a POST request to the server with the form data
+    $.ajax({
+      method: 'POST',
+      url: '/:id/comments',
+      data: { text }, // include the comment field value in the request body
+      success: response => {
+        // handle the response from the server
+      },
+      error: error => {
+        throw error; // throw the error so it can be caught by the catch block
+      }
+    });
+  } catch (error) {
+    alert("Can't send a comment"); // show an alert window with the error message
+  }
+});
+
+
+</script>
+
+
+
+<!-- 
+<script>
+  // Get reference to the comment form and comments container
+  const commentForm = document.getElementById("comment-form");
+  const commentsContainer = document.getElementById("comments");
+  // Get reference to the comment template
+  const commentTemplate = document.querySelector(".comment");
+
+  // When the comment form is submitted
+  commentForm.addEventListener("submit", event => {
+    event.preventDefault(); // Prevent form submission
+
+    // Get the comment text
+    const commentText = document.getElementById("comment").value;
+    // Clear the comment text field
+    document.getElementById("comment").value = "";
+
+    // Create a new comment element by cloning the comment template
+    const commentElement = commentTemplate.cloneNode(true);
+    // Show the comment element
+    commentElement.style.display = "block";
+    // Set the comment text
+    commentElement.querySelector(".comment-text").innerText = commentText;
+    // Set the comment author
+    commentElement.querySelector(".comment-author").innerText = "LIV";
+
+    // Add the comment element to the comments container
+    commentsContainer.appendChild(commentElement);
+  });
+</script>
+
+
+<script>
+  $('#comment-form').on('submit', event => {
+  event.preventDefault(); // prevent the form from reloading the page
+
+  try {
+    const formData = $(event.target).serialize(); // get the form data as a string
+
+    // send a POST request to the server with the form data
+    $.ajax({
+      method: 'POST',
+      url: '/comments',
+      data: formData, // include the form data in the request body
+      success: response => {
+        // handle the response from the server
+      },
+      error: error => {
+        throw error; // throw the error so it can be caught by the catch block
+      }
+    });
+  } catch (error) {
+    alert("Can't send a comment"); // show an alert window with the error message
+  }
+});
+
+</script> -->
+
+
+
+
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>

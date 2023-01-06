@@ -12,9 +12,25 @@ class ManagerRepository {
      this.managerModel = managerModel;
   } 
 
+ // Front: 마이페이지용 사장님정보조회
+ findByPk = async (id) => {
+
+  // const customer = await Customer.findByPk(id);
+  const manager = await this.managerModel.findByPk(id);
+  // console.log(customer);
+
+  return manager;
+};
+
+
+
   findManager = async () => {
-    const findManager = await this.managerModel.findAll();
-    return findManager;
+      try{
+          const findManager = await this.managerModel.findAll();
+            return findManager;
+      } catch (error){
+          return error;
+      }
   }
 
 findCertainManager = async (loginId) => {
@@ -27,38 +43,51 @@ findCertainManager = async (loginId) => {
   };
 
 createManager = async (loginId,encryptedPassword,name) => {
-    const createManagerdata = await this.managerModel.create({
-
-      loginId,
-      loginPw: encryptedPassword,
-      name,
-    });
+    try{
+        const createManagerdata = await this.managerModel.create({
+          loginId,
+          loginPw: encryptedPassword,
+          name,
+        });
     return createManagerdata;
+    } catch (error){
+        return error;
+    }
   }
 
-getMyPoint = async (id) => {
-    const managerPoint = await this.managerModel.findOne({
-      where: {
-        id: id
-      }
-    });
-    return managerPoint;
+    findOneManager = async (id) => {
+        try{
+            const managerPoint = await this.managerModel.findOne({
+              where: {
+                id: id
+              }
+            });
+        return managerPoint;
+        } catch (error){
+            return error;
+        }
   };
+
   managerPointUpdate = async (point, id) => {
-    const pointUp = await this.managerModel.update(
-      {
-        point: point
-      },
-      { where: { id: id } }
-    )
-    return pointUp
+      try{
+          const pointUp = await this.managerModel.update(
+              {
+                point: point
+              },
+              { where: { id: id } }
+            )
+            return pointUp;
+      } catch (error){
+          return error;
+      }
+
   }
-  findOneManager = async (managerId) => {
-    const manager = await this.managerModel.findAll({
-      where: { id: managerId }
-    })
-    return manager
-  }
+  // findOneManager = async (managerId) => {
+  //   const manager = await this.managerModel.findAll({
+  //     where: { id: managerId }
+  //   })
+  //   return manager
+  // }
 }
 
 module.exports = ManagerRepository;

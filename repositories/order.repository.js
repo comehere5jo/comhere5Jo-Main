@@ -3,135 +3,182 @@
 // 제가 사용하고 있는 Sequelize는 Data Access Layer의 역할의 일부를 대체해줍니다.
 // sequelize를 사용하지 않으면 아래와 같이 data Access Layer를 담당하는 파일에 쿼리문을
 // 모아서 필요할 때 service 계층에서 호출해서 사용합니다.
+const { Op } = require('sequelize')
 
 class OrderRepository {
   constructor(orderModel) {
     this.orderModel =orderModel;
- } 
-
-  findAllOrder = async () => {
-    const orders = await this.orderModel.findAll();
-    return orders;
-  };
+ }
 
 
-  findAllOrderStatus0 = async () => {
-    const orders = await this.orderModel.findAll({
-      where: {
-        status: '0'
+    //고객님이 신청한 모든 주문내역 조회
+  findAllOrder = async (customerId) => {
+      try{
+          const orders = await this.orderModel.findAll(
+                {where: {
+                    customerId
+                    }}
+            );
+            return orders;
+      } catch (error){
+          return error;
       }
-    });
-    return orders;
   };
 
-
-  findOrderById = async (orderId) => {
-    const byIdOders = await this.orderModel.findByPk(orderId);
-    return byIdOders;
+//수락 안된 모든 주문 조회
+  findAllOrderStatus0 = async () => {
+      try{
+          const orders = await this.orderModel.findAll({
+              where: {
+                status: '0'
+              }
+            });
+          return orders;
+      }catch (error) {
+          return error;
+      }
   };
 
+  findOrderById = async (id) => {
+      try{
+          const byIdOrders = await this.orderModel.findByPk(id);
+            return byIdOrders;
+      } catch (error){
+          return error;
+      }
+  };
 
-
-  createOrder = async (phoneNumber, address, clothType, picture, requests, status) => {
-    const createOrderData = await this.orderModel.create(
-      {
+  createOrder = async (customerId, phoneNumber, address, clothType, picture, requests) => {
+      try{
+        const createOrderData = await this.orderModel.create(
+      { customerId,
         phoneNumber,
         address,
         clothType,
         picture,
-        requests,
-        status
+        requests
       }
     );
-    // console.log("레파지토리", createOrderData);
-
     return createOrderData;
+      } catch (error) {
+          return error;
+      }
   };
 
 
 
-  updateOrder = async (
-    orderId,
-    phone_number,
-    address,
-    cloth_type,
-    picture,
-    requests,
-    status,
-  ) => {
-    const updateOrder = await this.orderModel.update(
-      {
-        phone_number,
-        address,
-        cloth_type,
-        picture,
-        requests,
-      //   status
-      // }, { where: { id } }
-        status,
-      },
-      { where: { orderId } },
+   // Front: 마이페이지에 이 고객만이 주문한 정보를 조회하기 위해 사용
 
-    );
+  findOrderByCustomer = async (customerId) => {
 
-    return updateOrder;
-  };
-
-  deleteOrder = async (id) => {
-    const deleteOrder = await this.orderModel.destroy(
-      { where: { id } }
-    );
-
-    return deleteOrder;
-  };
-
-  managerSelect = async (managerId) => {
-    const manager = await this.orderModel.findAll({
-      where: { managerId: managerId }
-    })
-    return manager;
-  }
-  selectOrder = async (id) => {
-    const orders = await this.orderModel.findAll({
-      where: { id }
+    const byCustomerOders = await this.orderModel.findAll({
+      where : {customerId}
     });
+    return byCustomerOders;
+  };
+
+
+ // 230106 Front: 마이페이지에 이 사장님만의 접수 정보를 조회하기 위해 사용
+
+ findOrderByManager = async (managerId) => {
+
+  const byManagerOders = await this.orderModel.findAll({
+    where : {managerId}
+  });
+  return byManagerOders;
+};
+
+
+
+  // updateOrder = async (
+  //   orderId,
+  //   phone_number,
+  //   address,
+  //   cloth_type,
+  //   picture,
+  //   requests,
+  //   status,
+  // ) => {
+  //   const updateOrder = await this.orderModel.update(
+  //     {
+  //       phone_number,
+  //       address,
+  //       cloth_type,
+  //       picture,
+  //       requests,
+  //     //   status
+  //     // }, { where: { id } }
+  //       status,
+  //     },
+  //     { where: { orderId } },
+  //
+  //   );
+  //
+  //   return updateOrder;
+  // };
+
+  // deleteOrder = async (id) => {
+  //   const deleteOrder = await this.orderModel.destroy(
+  //     { where: { id } }
+  //   );
+  //
+  //   return deleteOrder;
+  // };
+  //
+  // managerSelect = async (managerId) => {
+  //   const manager = await this.orderModel.findAll({
+  //     where: { managerId: managerId }
+  //   })
+  //   return manager;
+  // }
+
+
+    //위에 있는 findOrderById와 다를 게 없는 코드로 보임. 둘 중 하나 삭제 필요.
+  selectOrder = async (id) => {
+      try{
+          const orders = await this.orderModel.findAll({
+          where: { id }
+        });
     return orders;
-  }
-  
-  statusUpdate = async (new_status,orderId) => {
-    const statusUpdate = await this.orderModel.update({
-      status: new_status
-    },
-    {where:{id:orderId}})
-    return statusUpdate
-  }
-  statusFind = async (id) => {
-    const status = await Order.findAll({
-      // attributes: ['status'],
-      where: { id },
-    })
-    console.log('aaa', status)
-    return status;
+      } catch (error){
+          return error;
+      }
   }
 
-  // pointUpdate = async(point,managerId) => {
-  //   const pointUpdate = await Manager.update({
-  //     point
-  //   },{
-  //     where: {id:managerId}
+  findIfProceedingOrder = async (managerId) => {
+      try{
+          const orders = await this.orderModel.findAll(
+      {where: {[Op.and]: [{managerId: managerId}, {status: {[Op.not]:5}}]}}
+      );
+      return orders;
+      } catch (error){
+          return error;
+      }
+  }
+
+  statusUpdate = async (new_status,orderId, managerId) => {
+      try{
+          const statusUpdate = await this.orderModel.update({
+        status: new_status,
+        managerId: managerId
+    },
+    {where:{id:orderId}});
+    return statusUpdate;
+      } catch (error){
+          return error;
+      }
+  }
+  // statusFind = async (id) => {
+  //   const status = await Order.findAll({
+  //     // attributes: ['status'],
+  //     where: { id },
   //   })
-  //   return pointUpdate
+  //   console.log('aaa', status)
+  //   return status;
   // }
+
 }
 
 module.exports = OrderRepository;
 
-//   deleteOrder = async (orderId) => {
-//     const deleteOrder = await this.orderModle.destroy({ where: { orderId } });
-
-//     return deleteOrder;
-//   };
-// }
-
-// module.exports = OrderRepository;
 

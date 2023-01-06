@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Setak D'gaja</title>
+        <link rel="stylesheet" href="./css/index.css" />
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    </head>
+<body>
+  
+ 
+
+  <%- include('nav.html') %>
+
+  <div class="mypage-buttons">
+ 
+    <a href="/signup"><button class="mypage">나의 정보 수정하기</button></a>
+    <a href="/order"><button class="mypage">주문 히스토리</button></a>
+    <a href="/signup"><button class="mypage">포인트 확인하기</button></a>
+    <a href="/signup"><button class="mypage">메세지보내기</button></a>
+
+
+ 
+    
+ 
+  </div>
+
+  <!-- include the jQuery library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- 
+  <script>
+
+    
+        // get the form data
+        var formData = {
+          "loginId": $("#loginId").val(),
+          "loginPw": $("#loginPw").val()
+        };
+
+        console.log("formData: ", formData);
+
+
+        
+    // send a POST request to the server
+    axios.post('/send-data', {
+        data: 'some data to send'
+      })
+      .then(response => {
+        // update the HTML element with the response data
+        document.getElementById('response').innerHTML = response.data;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  </script> -->
+
+
+  <script>
+    $(document).ready(function() {
+      $("#mypage-buttons").submit(function(e) {
+        e.preventDefault(); // prevent the form from submitting normally
+
+        // get the form data
+        var formData = {
+          "loginId": $("#loginId").val(),
+          "loginPw": $("#loginPw").val()
+        };
+
+        // send the POST request
+        $.ajax({
+          type: "POST",
+          url: "/signin/customer",
+          data: formData,
+          success: function(response) {
+            // handle the successful response
+            console.log(response);
+            window.alert('Login success');
+            window.location = '/';
+          },
+        //   error: function(xhr, status, error) {
+        //     // handle the error
+        //     console.log(error);
+        // // If the login fails, show a confirm dialog with the error message from the server
+        //     const response = JSON.parse(xhr.responseText);
+        //     window.confirm(response.errorMessage);
+        //   }
+
+          error: function(xhr, status, error) {
+          if (xhr.status === 400) {
+            // If the login fails, show a confirm dialog with the error message from the server
+            const response = JSON.parse(xhr.responseText);
+            window.confirm(response.errorMessage);
+          } 
+        }
+
+        });
+      });
+    });
+
+
+  </script>
+
+
+  <style>
+      /* Add some styling for the page */
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      body a {
+        color: black;
+      }
+
+
+      body a:hover {
+        color: white;
+      }
+
+ 
+      .mypage-buttons {
+        width: 400px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      .mypage-buttons input[type="text"],
+      .mypage-buttons input[type="password"] {
+        width: 100%;
+        margin-bottom: 20px;
+        padding: 12px 20px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+      }
+      .mypage-buttons input[type="submit"] {
+        font-size: 14px;
+        width: 100%;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color:#212529 ;
+        border: 1px solid #212529 ;
+        background-color:white ;
+ 
+        height: 40px;
+        border-radius: 10px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+     }
+     
+      .mypage-buttons input[type="submit"]:hover {
+        background-color: black;
+        color:white ;
+      }
+
+    .mypage {
+        margin-top: 20px;
+        font-size: 14px;
+        width: 400px;
+        margin: 0 auto;
+        text-align: center;
+        width: 100%;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color:#212529 ;
+        border: 1px solid #312f1f; 
+        background-color:white ;
+ 
+        height: 40px;
+        border-radius: 10px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .mypage:hover {
+        background-color: #312f1f; 
+        color:white ;
+      } 
+
+             
+
+ 
+      .confirm-dialog {
+      /* Add some styling for the dialog box */
+      background-color: #fff;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      width: 300px;
+      padding: 20px;
+      text-align: center;
+    }
+    .confirm-dialog p {
+      /* Add some styling for the message */
+      margin: 0;
+      font-size: 16px;
+    }
+    .confirm-dialog button {
+      /* Add some styling for the buttons */
+      background-color: #4caf50;
+      color: white;
+      padding: 14px 20px;
+      border: none;
+      cursor: pointer;
+    }
+    .confirm-dialog button:hover {
+      background-color: #45a049;
+    }
+
+
+  </style>
+
+ 
+
+
+ 
+
+ 
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<html>
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>I-Log</title>
+      <link rel="stylesheet" href="./css/index.css" />
+    </head>
+    <body>
+    
+      <%- include('nav.html') %>
+
+      <!-- <nav>
+        <a href="main.html" class="nav__column">I-log</a>
+        <div class="nav__column">
+          <div><i class="fas fa-adjust fa-xl"></i></div>
+          <a href="search.html" class="nav__column--search-btn">
+            <i class="fas fa-search fa-xl"></i>
+          </a>
+          <a href="login.html" class="nav__column--login-btn">로그인</a>
+        </div>
+      </nav> -->
+
+      <div class="sorting">
+        <div class="sorting__column">
+          <span><i class="fa-solid fa-arrow-trend-up"></i> Now </span>
+          <span><i class="fa-regular fa-clock"></i> <a>최신</a></span>
+        </div>
+        <div class="sorting__column">
+          <i class="fa-solid fa-ellipsis-vertical fa-lg"></i>
+          <span></span>
+        </div>
+      </div>
+
+ 
+
+      <div class="board__parent">
+
+        <!-- <% for(var i = 0; i < orders.length; i++) {%>
+            <p>
+                <h1><%= orders[i].title %> <%= orders[i].context %></h1>
+            </p>
+        <% } %> -->
+
+ 
+
+        <% for(var i = 0; i < orders.length; i++) {%>
+        <!-- 글 한칸 -->
+
+        <a class="board" href="/order/<%= orders[i].id %>">
+          <div
+            class="content__thumbnail"
+            style="
+              background-image: url(https://img.freepik.com/free-photo/bed-linen-laundry-basket-home-decor_53876-128234.jpg?w=740&t=st=1672910770~exp=1672911370~hmac=f9a57fddd325c6a40e631ca38d0c13dd678fd0c5350b55c323ea9ae2f6bc4a04);
+            "
+          ></div>
+          <!-- <img
+            class="content__thumbnail"
+            src="https://images.unsplash.com/photo-1670105791108-718c8d4b738e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
+          /> -->
+
+          <!-- 여기서부터 content 제목div, 서브div, 작성일div -->
+          <div class="content__text">
+
+            <div class="content_info">   
+                <div class="content__title">
+                주문번호 <%= orders[i].id %>
+                </div>
+
+                <div class="content_status">
+                <%
+                        let statusmessage;
+
+                        switch (orders[i].status) {
+                            case 0:
+                            statusmessage = "대기중";
+                            break;
+                            case 1:
+                            statusmessage = "수거중";
+                            break;
+                            case 2:
+                            statusmessage = "배송중";
+                            break;
+                            case 3:
+                            statusmessage = "배송완료";
+                            break;
+                        }
+                        %>
+
+                <%= statusmessage %>
+                
+
+                </div>
+            </div> 
+
+            <div class="content__sub">
+            배송지   <%= orders[i].address %>
+            </div>
+            <div class="content__sub">
+                옷 유형  <%= orders[i].clothType %>
+            </div>
+
+
+            <div class="content__date">            
+              <%
+              const dateString = orders[i].updatedAt;
+          
+              const date = new Date(dateString);
+              
+              const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                weekday: 'long',
+                timeZone: 'Asia/Seoul'
+              };
+              
+              const formattedDate = new Intl.DateTimeFormat('ko-KR', options).format(date);
+           
+              %>
+           
+             주문일시   <%= formattedDate %>
+
+
+            </div>
+            <!-- <div class="conmmen_count">14개의 댓글</div> -->
+          </div>
+
+          <!-- 여기서부터 유저 정보 -->
+          <div class="user">
+            <div>
+              <img class="user__avatar" src="" alt="" />
+              <span class="user__name">
+      
+                <%= orders[i].name %>
+
+             
+     
+              </span>
+            </div>
+            
+      <script>
+ 
+      </script>
+ 
+
+ 
+          </div>
+        </a>
+
+          <!-- 글 한칸 끝 -->
+         <% } %>
+ 
+
+ 
+      <script
+        src="https://kit.fontawesome.com/af8a64a43c.js"
+        crossorigin="anonymous"
+      ></script>
+
+      <style>
+        .content_info{
+            display: flex;
+            justify-content: space-between;
+            
+        }
+        .content_status{
+            margin-top:12px;
+            margin-right:10px;
+            text-align: right;
+            font-weight: 600;
+        }
+      </style>
+
+    </body>
+  </html>
+</html>

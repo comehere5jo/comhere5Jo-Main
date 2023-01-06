@@ -4,10 +4,15 @@ const ManagerService = require('../services/manager.service');
 class ManagerController {
     managerService = new ManagerService();
 
-    getMyPoint = async (req, res, next) => {
-
-        const myPoint = await this.managerService.getMyPoint();
+    //사장님 포인트 조회(확인완료)
+    getManagerPoint = async (req, res, next) => {
+      try{
+        const { id } = req.manager
+        const myPoint = await this.managerService.getManagerPoint(id);
         res.status(200).json({data:myPoint})
+      } catch (error) {
+        return res.status(400).json({message: error.message})
+      }
     }
 
   managerSignup = async (req, res) => {
@@ -63,7 +68,7 @@ class ManagerController {
 
       res.cookie('token', signin);
 
-      if (signin.message === 'id나 비번 확인해') {
+      if (typeof signin.message !== 'undefined') {
         throw new Error('id나 비번 확인해');
         return;
       }
@@ -82,6 +87,12 @@ class ManagerController {
     }
   };
 
+  managerSignout = (req,res,next) => {
+    res.clearCookie('token');
+    // res.redirect('/login'); <-- 로그인페이지 리다이렉트. 페이지 추가 필요.
+
+    res.status(200).json({message: '로그아웃 완료!'});
+  }
 }
 
 module.exports = ManagerController;
