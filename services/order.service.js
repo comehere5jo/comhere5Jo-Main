@@ -273,10 +273,10 @@ class OrderService {
     updateOrder = async (orderId, status) => {
     try{
       const selectOrder = await this.orderRepository.selectOrder(orderId)
-
-      if (selectOrder[0].status === 1) {
+      console.log('현스테이터스', selectOrder[0].status)
+      if (selectOrder[0].status === 1 || selectOrder[0].status === 2 || selectOrder[0].status === 3 || selectOrder[0].status === 4 ) {
         const new_status = selectOrder[0].status + 1
-        console.log("추가 스테이터스 2가되어야함", new_status)
+        console.log("추가 스테이터스 ", new_status)
         await this.orderRepository.statusUpdate(new_status, orderId)
         const updateOrder = await this.orderRepository.selectOrder(orderId)
         return updateOrder.map((order) => {
@@ -292,61 +292,7 @@ class OrderService {
           }
         })
       }
-      if (selectOrder[0].status === 2) {
-        const new_status = selectOrder[0].status + 1
-        console.log("추가 스테이터스 3이되어야함", new_status)
-        await this.orderRepository.statusUpdate(new_status, orderId)
-        const updateOrder = await this.orderRepository.selectOrder(orderId)
-        return updateOrder.map((order) => {
-          return {
-            id: order.id,
-            customerId: order.customerId,
-            phoneNumber: order.phoneNumber,
-            address: order.address,
-            clothType: order.clothType,
-            picture: order.picture,
-            requests: order.requests,
-            status: order.status
-          }
-        })
-      }
-      if (selectOrder[0].status === 3) {
-        const new_status = selectOrder[0].status + 1
-        console.log("추가 스테이터스 4가되어야함", new_status)
-        await this.orderRepository.statusUpdate(new_status, orderId)
-        const updateOrder = await this.orderRepository.selectOrder(orderId)
-        return updateOrder.map((order) => {
-          return {
-            id: order.id,
-            customerId: order.customerId,
-            phoneNumber: order.phoneNumber,
-            address: order.address,
-            clothType: order.clothType,
-            picture: order.picture,
-            requests: order.requests,
-            status: order.status
-          }
-        })
-      }
-      if (selectOrder[0].status === 4) {
-        const new_status = selectOrder[0].status + 1
-        await this.orderRepository.statusUpdate(new_status, orderId)
-        await this.managerRepository.managerPointUpdate(10000, orderId)
-        const updateOrder = await this.orderRepository.selectOrder(orderId)
-        return updateOrder.map((order) => {
-          return {
-            id: order.id,
-            customerId: order.customerId,
-            phoneNumber: order.phoneNumber,
-            address: order.address,
-            clothType: order.clothType,
-            picture: order.picture,
-            requests: order.requests,
-            status: order.status
-          }
-        })
-      }
-      if (selectOrder[0].status > 4 || selectOrder[0].status <= 0) {
+      else{
         throw new Error('완료되었거나 수락하지 않은 주문입니다.')
       }
     } catch (error) {
